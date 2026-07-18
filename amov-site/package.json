@@ -1,0 +1,9 @@
+{
+  "name": "amov-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Amov Network — site institucional + landing imobiliárias",
+  "dependencies": {
+    "@vercel/postgres": "^0.10.0"
+  }
+}

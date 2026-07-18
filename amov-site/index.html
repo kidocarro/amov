@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Amov Network — Não estamos fazendo nada de novo.</title>
+<meta name="description" content="O mercado de marketing é barulho. Nós somos o ponto de partida para se movimentar. Amov Network — São José do Rio Preto.">
+<meta name="theme-color" content="#1A1719">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.cdnfonts.com/css/tasa-orbiter-display" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Archivo:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   AMOV NETWORK — manual de marca v1
+   cores: #E52B20 · #6F1418 · #1A1719 · #4B4645 · #9B9593 · #EEE9E5
+   type:  TASA Orbiter (títulos) + Gelasio itálico (destaques)
+   ============================================================ */
+:root{
+  --red:#E52B20;
+  --wine:#6F1418;
+  --green:#4E9B6B;
+  --ink:#1A1719;
+  --ink-2:#141112;
+  --gray:#4B4645;
+  --stone:#9B9593;
+  --paper:#EEE9E5;
+  --line:rgba(238,233,229,.12);
+  --line-dark:rgba(26,23,25,.14);
+  --disp:'TASA Orbiter Display','Archivo',system-ui,sans-serif;
+  --serif:'Gelasio',Georgia,serif;
+  --mono:'Space Mono',monospace;
+  --e1:cubic-bezier(.16,1,.3,1);
+  --e2:cubic-bezier(.76,0,.24,1);
+  --pad:clamp(20px,5vw,80px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{
+  font-family:var(--disp);
+  background:var(--ink);
+  color:var(--paper);
+  font-size:clamp(15px,1.05vw,17px);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--red);color:#fff}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:var(--pad)}
+.serif{font-family:var(--serif)}
+.mono{font-family:var(--mono)}
+.kick{font-family:var(--mono);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--red);font-weight:700}
+.kick.mut{color:var(--stone)}
+em{font-family:var(--serif);font-style:italic;letter-spacing:0}
+
+/* ===== GRAIN ===== */
+.grain{position:fixed;inset:-100%;z-index:2000;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-8%)}30%{transform:translate(4%,6%)}50%{transform:translate(-6%,3%)}70%{transform:translate(6%,-4%)}90%{transform:translate(-3%,5%)}}
+
+/* ===== LOADER ===== */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--red);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;transition:transform 1s var(--e2) .15s}
+#loader.done{transform:translateY(-101%)}
+#loader .word{font-family:var(--disp);font-weight:800;font-size:clamp(3.4rem,14vw,9rem);line-height:.9;letter-spacing:-.045em;color:var(--paper);overflow:hidden}
+#loader .word span{display:block;transform:translateY(110%);animation:lup .9s var(--e1) forwards}
+#loader .sub{font-family:var(--serif);font-style:italic;color:var(--ink);font-size:clamp(.95rem,3vw,1.2rem);opacity:0;animation:lfade .7s var(--e1) .5s forwards}
+@keyframes lup{to{transform:none}}
+@keyframes lfade{to{opacity:1}}
+
+/* ===== PROGRESS + CHECKPOINT ===== */
+.prog{position:fixed;top:0;left:0;height:3px;background:var(--red);width:100%;transform:scaleX(0);transform-origin:left;z-index:1500;transition:transform .1s linear}
+.checkpoint{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(140%);z-index:1400;
+  display:flex;align-items:center;gap:12px;padding:10px 18px 10px 12px;border-radius:100px;
+  background:rgba(26,23,25,.55);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.45);
+  transition:transform .7s var(--e1),opacity .5s;opacity:0}
+.checkpoint.show{transform:translateX(-50%);opacity:1}
+.checkpoint .ring{position:relative;width:32px;height:32px;flex:none}
+.checkpoint .ring svg{width:32px;height:32px;transform:rotate(-90deg)}
+.checkpoint .ring circle{fill:none;stroke-width:3}
+.checkpoint .ring .bg{stroke:rgba(238,233,229,.15)}
+.checkpoint .ring .fg{stroke:var(--red);stroke-linecap:round;stroke-dasharray:81.7;stroke-dashoffset:81.7;transition:stroke-dashoffset .35s var(--e1)}
+.checkpoint .ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.5rem;color:var(--paper)}
+.checkpoint .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);white-space:nowrap}
+.checkpoint .lbl b{color:var(--paper);font-weight:400}
+.checkpoint.pulse{animation:cpulse .6s var(--e1)}
+@keyframes cpulse{0%{transform:translateX(-50%) scale(1)}40%{transform:translateX(-50%) scale(1.07)}100%{transform:translateX(-50%) scale(1)}}
+
+/* ===== HEADER ===== */
+header{position:fixed;inset:0 0 auto 0;z-index:1300;transition:background .5s,border-color .5s,backdrop-filter .5s}
+header.sh{background:rgba(26,23,25,.6);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);transition:padding .5s var(--e1)}
+header.sh .nav{padding-block:12px}
+.logo{font-family:var(--disp);font-weight:800;font-size:1.7rem;letter-spacing:-.045em;line-height:.8;display:flex;align-items:baseline;gap:7px}
+.logo .net{font-family:var(--serif);font-style:italic;font-weight:500;font-size:.62rem;line-height:1;letter-spacing:0;color:var(--stone);display:inline-block;max-width:3ch}
+.menu{display:none;gap:34px;font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase}
+.menu a{opacity:.7;position:relative;padding:6px 0;transition:opacity .3s}
+.menu a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--red);transition:width .4s var(--e1)}
+.menu a:hover{opacity:1}.menu a:hover::after{width:100%}
+.nav .cta-mini{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;padding:11px 18px;border:1px solid var(--red);color:var(--paper);background:var(--red);border-radius:100px;transition:background .35s,color .35s}
+.nav .cta-mini:hover{background:transparent;color:var(--red)}
+@media(min-width:900px){.menu{display:flex}}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding-bottom:clamp(90px,14vh,150px)}
+.hero .bg{position:absolute;inset:0;z-index:0}
+.hero .bg::before{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(90% 70% at 85% 10%,rgba(229,43,32,.16),transparent 55%),
+   radial-gradient(70% 60% at 10% 90%,rgba(111,20,24,.35),transparent 60%),
+   var(--ink)}
+.hero .bg .street{position:absolute;inset:0;opacity:.14;filter:grayscale(1) contrast(1.5);
+  background:
+   linear-gradient(115deg,transparent 42%,rgba(238,233,229,.5) 42.5%,rgba(238,233,229,.5) 44%,transparent 44.5%),
+   linear-gradient(115deg,transparent 52%,rgba(238,233,229,.35) 52.5%,rgba(238,233,229,.35) 53.5%,transparent 54%),
+   linear-gradient(115deg,transparent 62%,rgba(238,233,229,.22) 62.5%,rgba(238,233,229,.22) 63%,transparent 63.5%),
+   linear-gradient(180deg,rgba(0,0,0,.9),transparent 40%);
+  animation:street 22s linear infinite}
+@keyframes street{to{background-position:60vw 0,60vw 0,60vw 0,0 0}}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(26,23,25,.5),rgba(26,23,25,0) 40%,rgba(26,23,25,.72));pointer-events:none}
+.hero .inner{position:relative;z-index:2}
+.h-kick{overflow:hidden;margin-bottom:18px}
+.h-kick span{display:inline-block;transform:translateY(120%);transition:transform 1s var(--e1) .25s}
+.loaded .h-kick span{transform:none}
+.hl{font-family:var(--disp);font-weight:800;font-size:clamp(2.6rem,10.5vw,8.6rem);line-height:.9;letter-spacing:-.045em;text-transform:lowercase}
+.hl .row{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.hl .row>span{display:block;transform:translateY(112%);transition:transform 1.15s var(--e1)}
+.hl .row:nth-child(1)>span{transition-delay:.35s}
+.hl .row:nth-child(2)>span{transition-delay:.45s}
+.hl .row:nth-child(3)>span{transition-delay:.55s}
+.loaded .hl .row>span{transform:none}
+.hl em{color:var(--red);font-weight:600}
+.hsub{max-width:44ch;margin-top:26px;font-family:var(--serif);font-size:clamp(1.02rem,2.4vw,1.4rem);line-height:1.5;color:#cfc9c4;opacity:0;transform:translateY(20px);transition:1s var(--e1) .85s}
+.hsub em{color:var(--paper)}
+.loaded .hsub{opacity:1;transform:none}
+.hact{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap;opacity:0;transform:translateY(20px);transition:1s var(--e1) 1s}
+.loaded .hact{opacity:1;transform:none}
+.btn{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  padding:17px 28px;display:inline-flex;align-items:center;gap:12px;border-radius:100px;
+  background:var(--red);color:#fff;border:1px solid var(--red);position:relative;overflow:hidden;
+  transition:color .45s var(--e1),border-color .45s}
+.btn>*{position:relative;z-index:2}
+.btn::before{content:"";position:absolute;inset:0;background:var(--paper);transform:translateY(102%);transition:transform .5s var(--e1);z-index:1;border-radius:inherit}
+.btn:hover{color:var(--ink)}.btn:hover::before{transform:none}
+.btn .ar{transition:transform .4s var(--e1)}.btn:hover .ar{transform:translateX(6px)}
+.btn.ghost{background:rgba(238,233,229,.04);color:var(--paper);border-color:rgba(238,233,229,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn.ghost::before{background:var(--red)}
+.btn.ghost:hover{color:#fff;border-color:var(--red)}
+.h-meta{position:absolute;left:var(--pad);right:var(--pad);bottom:22px;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);
+  opacity:0;transition:opacity 1s var(--e1) 1.3s}
+.loaded .h-meta{opacity:1}
+.h-meta .scr{display:flex;align-items:center;gap:10px}
+.h-meta .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.2}}
+
+/* ===== MARQUEE ===== */
+.mq{overflow:hidden;white-space:nowrap;padding:15px 0;background:var(--red);color:#fff}
+.mq.alt{background:var(--paper);color:var(--ink)}
+.mq .t{display:inline-flex;animation:mq 30s linear infinite;will-change:transform}
+.mq .t span{font-family:var(--disp);font-weight:800;font-size:clamp(1.1rem,2.6vw,1.9rem);text-transform:lowercase;letter-spacing:-.02em;display:inline-flex;align-items:center;gap:34px;padding-right:34px}
+.mq .t span::after{content:"●";font-size:.4em;opacity:.55}
+.mq .t em{font-weight:500}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ===== SECTION SHELL ===== */
+.sec{padding-block:clamp(90px,13vw,190px);position:relative}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:clamp(30px,5vw,54px)}
+.eyebrow .b{width:46px;height:2px;background:var(--red);flex:none}
+.title{font-family:var(--disp);font-weight:800;line-height:.92;letter-spacing:-.04em;font-size:clamp(2.3rem,8vw,6.2rem);text-transform:lowercase}
+.title em{color:var(--red);font-weight:600}
+.light{background:var(--paper);color:var(--ink)}
+.light .eyebrow .kick.mut{color:var(--gray)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s var(--e1),transform .9s var(--e1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ===== CONTRASTE (eles x nós) ===== */
+.versus{display:grid;gap:clamp(34px,6vw,80px)}
+@media(min-width:840px){.versus{grid-template-columns:1fr 1fr}}
+.vcol .vh{font-family:var(--mono);font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;margin-bottom:22px}
+.vcol.them .vh{color:var(--stone)}
+.vcol.us .vh{color:var(--red)}
+.vcol .w{font-family:var(--serif);font-style:italic;font-size:clamp(1.7rem,5.4vw,3.1rem);line-height:1.22;display:block}
+.vcol.them .w{color:#5c5654;position:relative;width:fit-content}
+.vcol.them .w::after{content:"";position:absolute;left:0;top:54%;height:2px;width:0;background:var(--red);transition:width .8s var(--e2)}
+.vcol.them .w.cut::after{width:100%}
+.vcol.us .w{color:var(--paper);opacity:0;transform:translateX(-18px);transition:.8s var(--e1)}
+.vcol.us .w.in{opacity:1;transform:none}
+.vcol.us .w b{color:var(--red);font-weight:600}
+
+/* ===== MANIFESTO scroll-highlight ===== */
+.mani{max-width:22ch;font-family:var(--disp);font-weight:800;letter-spacing:-.035em;font-size:clamp(1.9rem,6.4vw,4.6rem);line-height:1.14;text-transform:none}
+.mani .wd{color:rgba(238,233,229,.16);transition:color .45s var(--e1)}
+.mani .wd.on{color:var(--paper)}
+.mani .wd.hot{font-family:var(--serif);font-style:italic;font-weight:600}
+.mani .wd.hot.on{color:var(--red)}
+.mani-meta{margin-top:clamp(36px,6vw,64px);display:flex;gap:16px;align-items:center;font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+.mani-meta .b{width:46px;height:1px;background:var(--gray)}
+
+/* ===== É FAZ FALA ===== */
+.trio{display:grid;gap:18px}
+@media(min-width:840px){.trio{grid-template-columns:repeat(3,1fr)}}
+.tcard{position:relative;padding:clamp(28px,4vw,44px);border-radius:22px;overflow:hidden;
+  background:rgba(238,233,229,.035);
+  border:1px solid var(--line);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:transform .6s var(--e1),background .5s,border-color .5s}
+.tcard::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 0%,rgba(229,43,32,.14),transparent 70%);opacity:0;transition:opacity .6s}
+.tcard:hover{transform:translateY(-8px);border-color:rgba(229,43,32,.4)}
+.tcard:hover::before{opacity:1}
+.tcard .big{font-family:var(--disp);font-weight:800;font-size:clamp(3rem,9vw,4.6rem);line-height:.9;letter-spacing:-.04em;margin-bottom:20px}
+.tcard:hover .big{color:var(--red)}
+.tcard .big{transition:color .5s}
+.tcard p{font-family:var(--serif);font-style:italic;color:#bdb7b2;font-size:.98rem;line-height:1.6}
+.tcard .n{position:absolute;top:22px;right:26px;font-family:var(--mono);font-size:.64rem;color:var(--stone);letter-spacing:.2em}
+
+/* ===== SERVIÇOS ===== */
+.acc{border-top:1px solid var(--line-dark)}
+.it{border-bottom:1px solid var(--line-dark)}
+.it .hd{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:26px 0;text-align:left;transition:padding .5s var(--e1)}
+.it .num{font-family:var(--mono);font-size:.78rem;color:var(--red);font-weight:700}
+.it .nm{font-family:var(--disp);font-weight:800;font-size:clamp(1.55rem,6vw,3.4rem);line-height:1;text-transform:lowercase;letter-spacing:-.03em;transition:transform .5s var(--e1),color .4s}
+.it .pl{width:38px;height:38px;flex:none;border:1px solid var(--line-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.05rem;transition:.5s var(--e1)}
+.it:hover .nm{transform:translateX(10px);color:var(--red)}
+.it.open .pl{background:var(--red);border-color:var(--red);color:#fff;transform:rotate(45deg)}
+.it .bd{max-height:0;overflow:hidden;transition:max-height .65s var(--e2)}
+.it .bdi{padding:0 0 30px;display:grid;gap:14px;max-width:64ch;color:#413c3b}
+.it .bdi .tag{font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.it .bdi p em{color:var(--ink);font-weight:600}
+@media(min-width:840px){.it .hd{gap:30px;padding:34px 0}}
+
+/* ===== QUALIFICAÇÃO (filtro) ===== */
+.filter{display:grid;gap:16px;margin-top:clamp(30px,5vw,56px)}
+@media(min-width:840px){.filter{grid-template-columns:1fr 1fr;gap:22px}}
+.fcard{position:relative;padding:clamp(26px,4vw,42px);border-radius:22px;overflow:hidden;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.fcard.no{background:rgba(238,233,229,.03);border:1px solid var(--line)}
+.fcard.yes{background:linear-gradient(160deg,rgba(229,43,32,.16),rgba(111,20,24,.1));border:1px solid rgba(229,43,32,.45);box-shadow:0 20px 60px rgba(229,43,32,.12)}
+.fcard .fh{font-family:var(--disp);font-weight:800;font-size:clamp(1.3rem,3.6vw,1.9rem);letter-spacing:-.03em;text-transform:lowercase;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.fcard.no .fh{color:var(--stone)}
+.fcard.yes .fh{color:var(--paper)}
+.fcard ul{list-style:none;display:grid;gap:13px}
+.fcard li{display:flex;gap:13px;align-items:flex-start;font-family:var(--serif);font-size:.99rem;line-height:1.55}
+.fcard.no li{color:#8b8582;font-style:italic}
+.fcard.yes li{color:#e8e2dd}
+.fcard li .ic{flex:none;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;margin-top:3px}
+.fcard.no li .ic{border:1px solid #57514f;color:#57514f}
+.fcard.yes li .ic{background:var(--red);color:#fff}
+.fcard.yes li em{color:var(--red)}
+
+/* ===== FORM (jornada) ===== */
+.form-sec{position:relative;overflow:hidden}
+.form-sec::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(70% 55% at 80% 20%,rgba(229,43,32,.14),transparent 60%),
+  radial-gradient(60% 50% at 15% 85%,rgba(111,20,24,.28),transparent 65%)}
+.formbox{position:relative;max-width:820px;margin:clamp(34px,6vw,60px) auto 0;
+  border-radius:28px;padding:clamp(24px,5vw,56px);
+  background:rgba(26,23,25,.5);
+  border:1px solid var(--line);
+  backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);
+  box-shadow:0 30px 90px rgba(0,0,0,.5)}
+.fprog{display:flex;align-items:center;gap:14px;margin-bottom:clamp(26px,4vw,40px)}
+.fprog .bar{flex:1;height:4px;border-radius:10px;background:rgba(238,233,229,.1);overflow:hidden}
+.fprog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--wine),var(--red));border-radius:inherit;transition:width .7s var(--e1)}
+.fprog .st{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;color:var(--stone);white-space:nowrap}
+.fprog .st b{color:var(--red);font-weight:700}
+.step{display:none;animation:stepin .7s var(--e1)}
+.step.on{display:block}
+@keyframes stepin{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.step .q{font-family:var(--disp);font-weight:800;font-size:clamp(1.5rem,5vw,2.5rem);letter-spacing:-.03em;line-height:1.08;margin-bottom:8px}
+.step .q em{color:var(--red);font-weight:600}
+.step .hint{font-family:var(--serif);font-style:italic;color:var(--stone);font-size:.95rem;margin-bottom:26px}
+.field{width:100%;background:rgba(238,233,229,.05);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;font-family:var(--disp);font-size:1.05rem;color:var(--paper);outline:none;
+  transition:border-color .3s,background .3s}
+.field:focus{border-color:var(--red);background:rgba(238,233,229,.08)}
+.field::placeholder{color:#6b6664}
+textarea.field{min-height:110px;resize:vertical;line-height:1.5}
+.opts{display:grid;gap:10px}
+@media(min-width:640px){.opts.two{grid-template-columns:1fr 1fr}}
+.opt{display:flex;align-items:center;gap:14px;text-align:left;padding:17px 19px;border-radius:14px;
+  background:rgba(238,233,229,.04);border:1px solid var(--line);
+  font-family:var(--disp);font-size:.98rem;color:#d9d3ce;
+  transition:border-color .3s,background .3s,transform .3s var(--e1)}
+.opt .k{flex:none;width:26px;height:26px;border-radius:8px;border:1px solid var(--gray);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.62rem;color:var(--stone);transition:.3s}
+.opt:hover{border-color:rgba(229,43,32,.5);transform:translateX(4px)}
+.opt.sel{background:rgba(229,43,32,.14);border-color:var(--red);color:var(--paper)}
+.opt.sel .k{background:var(--red);border-color:var(--red);color:#fff}
+.fnav{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:30px}
+.fback{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);display:inline-flex;gap:8px;align-items:center;padding:10px 0;transition:color .3s}
+.fback:hover{color:var(--paper)}
+.fback[disabled]{opacity:0;pointer-events:none}
+.reward{margin-top:22px;min-height:24px;font-family:var(--serif);font-style:italic;font-size:.92rem;color:var(--red);opacity:0;transform:translateY(8px);transition:.5s var(--e1)}
+.reward.show{opacity:1;transform:none}
+/* final */
+.done-box{text-align:center;padding:clamp(10px,3vw,20px) 0}
+.stamp{width:110px;height:110px;margin:0 auto 26px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-weight:800;color:#fff;font-size:.85rem;letter-spacing:.04em;text-transform:lowercase;
+  transform:scale(0) rotate(-14deg);box-shadow:0 0 0 0 rgba(229,43,32,.5)}
+.done .stamp{animation:stamp .7s var(--e1) .2s forwards,ripple 1.6s var(--e1) .9s}
+@keyframes stamp{60%{transform:scale(1.15) rotate(4deg)}100%{transform:scale(1) rotate(-6deg)}}
+@keyframes ripple{from{box-shadow:0 0 0 0 rgba(229,43,32,.5)}to{box-shadow:0 0 0 60px rgba(229,43,32,0)}}
+.done-box h3{font-family:var(--disp);font-weight:800;font-size:clamp(1.8rem,6vw,3rem);letter-spacing:-.035em;text-transform:lowercase;margin-bottom:12px}
+.done-box h3 em{color:var(--red);font-weight:600}
+.done-box p{font-family:var(--serif);font-style:italic;color:var(--stone);max-width:42ch;margin:0 auto 26px}
+.recap{max-width:480px;margin:0 auto 30px;text-align:left;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.recap .r{display:flex;justify-content:space-between;gap:14px;padding:13px 18px;font-size:.85rem}
+.recap .r+.r{border-top:1px solid var(--line)}
+.recap .r .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);padding-top:3px}
+.recap .r .v{font-family:var(--serif);font-style:italic;color:var(--paper);text-align:right}
+
+/* ===== BIG QUOTE ===== */
+.bigq{text-align:center}
+.bigq .t{font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,5.5vw,3.4rem);line-height:1.3;max-width:26ch;margin:0 auto}
+.bigq .t b{color:var(--red);font-weight:600}
+
+/* ===== FOOTER ===== */
+footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60px,9vw,110px) 0 34px}
+.fgrid{display:grid;gap:40px;margin-bottom:clamp(50px,8vw,90px)}
+@media(min-width:840px){.fgrid{grid-template-columns:1.4fr 1fr 1fr 1fr}}
+.fgrid .flogo{font-family:var(--disp);font-weight:800;font-size:clamp(2.6rem,8vw,4rem);letter-spacing:-.045em;line-height:.85}
+.fgrid .flogo .net{font-family:var(--serif);font-style:italic;font-weight:500;font-size:.3em;color:var(--red);display:inline-block;max-width:3ch;line-height:1;margin-left:.15em}
+.fgrid .ftag{margin-top:14px;font-family:var(--serif);font-style:italic;color:var(--stone);font-size:.95rem;max-width:30ch}
+.fcol .h{font-family:var(--mono);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:18px}
+.fcol a,.fcol span{display:block;padding:6px 0;color:#b5afaa;font-size:.92rem;transition:color .3s}
+.fcol a:hover{color:var(--paper)}
+.fbase{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:26px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#6b6664}
+.top{color:var(--stone)}.top:hover{color:var(--red)}
+
+/* ===== EDITORIAL (lede / camadas) ===== */
+.lede{font-family:var(--serif);font-size:clamp(1rem,1.9vw,1.22rem);line-height:1.7;color:#d5cfca;max-width:66ch}
+.lede strong{font-weight:600;color:var(--paper)}
+.layer{margin-top:clamp(56px,9vw,110px)}
+.layer-kick{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+.layer-kick b{color:var(--red);font-weight:700}
+
+/* ===== BURACOS ===== */
+.holes{margin-top:clamp(26px,4vw,44px);border-top:1px solid var(--line)}
+.hole{position:relative;display:grid;grid-template-columns:auto 1fr;gap:18px;padding:26px 0;border-bottom:1px solid var(--line)}
+.hole::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--red);transition:width .6s var(--e1)}
+.hole:hover::after{width:100%}
+.hole .n{font-family:var(--mono);font-size:.78rem;color:var(--red);font-weight:700;padding-top:6px}
+.hole h4{font-family:var(--disp);font-weight:800;font-size:clamp(1.1rem,2.8vw,1.5rem);letter-spacing:-.03em;line-height:1.15;text-transform:lowercase;margin-bottom:8px;transition:color .35s}
+.hole:hover h4{color:var(--red)}
+.hole p{font-family:var(--serif);color:#bdb7b2;font-size:.99rem;line-height:1.65;max-width:66ch}
+.hole p strong{color:var(--paper);font-weight:600}
+.hole .pull{font-family:var(--serif);font-style:italic;color:var(--paper);font-size:clamp(1.05rem,2.2vw,1.32rem);line-height:1.5;border-left:2px solid var(--red);padding-left:18px;margin-bottom:12px;max-width:56ch}
+.hole.bgd .n,.hole.bgd h4{color:var(--stone)}
+@media(min-width:760px){.hole{grid-template-columns:70px 1fr;gap:26px;padding:32px 0}}
+
+/* ===== A CONTA ===== */
+.formula-box{margin-top:clamp(26px,4vw,44px);padding:clamp(22px,4vw,44px);border:1px solid var(--line);border-radius:20px;background:var(--ink-2);position:relative;overflow:hidden}
+.formula-box::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 50% -20%,rgba(229,43,32,.1),transparent 65%);pointer-events:none}
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--mono);font-size:clamp(.72rem,1.6vw,.92rem);line-height:1.5}
+.formula .term{padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(238,233,229,.03);white-space:nowrap;transition:border-color .35s,color .35s}
+.formula .term small{display:block;font-size:.72em;color:var(--stone);white-space:normal}
+.formula .term:hover{border-color:var(--red);color:var(--paper)}
+.formula .term.end{border-color:rgba(229,43,32,.55);background:rgba(229,43,32,.1)}
+.formula .arr{color:var(--red);font-weight:700}
+.formula-note{margin-top:22px;font-family:var(--serif);color:#bdb7b2;font-size:.99rem;line-height:1.65;max-width:66ch}
+.formula-note strong{color:var(--paper);font-weight:600}
+.formula-note .fim{color:var(--red);font-style:italic;font-weight:600}
+
+/* ===== FUNIL — a conta, viva ===== */
+.formula-box .formula{display:none}
+.fun-stage{position:relative;margin-top:6px}
+#fun-svg{width:100%;height:auto;display:block}
+#fun-svg text{font-family:var(--mono);text-transform:uppercase}
+#fun-svg .fun-lb{fill:#9B9593;font-size:10.5px;letter-spacing:.18em}
+#fun-svg .fun-glb{fill:#9B9593;font-size:10px;letter-spacing:.18em}
+#fun-svg .fun-v{fill:var(--paper);font-weight:700;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+#fun-svg .fun-v.red{fill:var(--red)}
+.fun-wall{stroke:#9B9593;stroke-opacity:.25;stroke-width:1.5;fill:none;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.5s var(--e2) .2s}
+.fun-stage.go .fun-wall{stroke-dashoffset:0}
+.fun-plat{opacity:0;transform:translateY(14px);transition:opacity .8s var(--e1),transform .8s var(--e1)}
+.fun-stage.go .fun-plat{opacity:1;transform:none}
+.fun-plat:hover .fun-lb,.fun-plat:hover .fun-v{fill:var(--red)}
+.fun-platline{stroke:#EEE9E5;stroke-opacity:.3;stroke-width:2}
+.fun-platline.base{stroke:var(--red);stroke-opacity:.8;stroke-width:2.5}
+.fun-platred{stroke:var(--red);stroke-width:2;transform:scaleX(0);transform-origin:left;transform-box:fill-box;transition:transform .6s var(--e1)}
+.fun-plat:hover .fun-platred{transform:scaleX(1)}
+.fun-gate{stroke:#9B9593;stroke-opacity:.35;stroke-width:1.2;stroke-dasharray:2 5}
+#fun-cacg{transform-box:fill-box;transform-origin:center}
+#fun-cacg.pulse{animation:funPulse .5s var(--e1)}
+@keyframes funPulse{40%{transform:scale(1.08)}}
+.fun-hud{display:none}
+@media(max-width:639px){
+  #fun-svg .fun-lb,#fun-svg .fun-glb,#fun-svg .fun-vtx{display:none}
+  .fun-hud{display:flex}
+}
+@media (prefers-reduced-motion:reduce){
+  .formula-box .formula{display:flex;margin-bottom:26px}
+  .fun-wall{stroke-dashoffset:0}
+  .fun-plat{opacity:1;transform:none}
+}
+
+/* ===== SPARKLINE — sorte vs método ===== */
+.spark-box{margin-top:clamp(28px,4vw,44px)}
+#spark{width:100%;max-width:820px;height:auto}
+#spark text{font-family:var(--mono);text-transform:uppercase}
+.sp-m{fill:#6b6664;font-size:9px;letter-spacing:.12em}
+.sp-lab{font-size:10.5px;letter-spacing:.2em}
+.sp-lab.sorte{fill:var(--stone);transition:opacity .6s}
+.sp-lab.metodo{fill:var(--red);font-weight:700;opacity:0;transition:opacity .6s 1.5s}
+.spark-box.in .sp-lab.sorte{opacity:.35;text-decoration:line-through}
+.spark-box.in .sp-lab.metodo{opacity:1}
+.sp-bar{fill:#4B4645;transform:scaleY(var(--s));transform-origin:bottom;transform-box:fill-box;transition:transform 1.2s var(--e1),fill 1.2s}
+.spark-box.in .sp-bar{transform:scaleY(1);fill:rgba(238,233,229,.72)}
+.sp-line{stroke:var(--red);stroke-width:2;fill:none;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.3s var(--e1) 1.4s}
+.spark-box.in .sp-line{stroke-dashoffset:0}
+.sp-cap{margin-top:10px;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+
+/* ===== SUSTENTAÇÃO FANTASMA ===== */
+.phantom{margin-top:clamp(24px,4vw,40px);max-width:820px}
+#ph-svg{width:100%;height:auto}
+#ph-svg text{font-family:var(--mono);text-transform:uppercase}
+.ph-lb{fill:var(--stone);font-size:10px;letter-spacing:.22em;font-weight:700}
+.ph-viga{fill:rgba(238,233,229,.85)}
+.ph-ground{stroke:rgba(238,233,229,.3);stroke-width:1.5}
+#ph-beam{transform-box:fill-box;transform-origin:center;transform:rotate(.7deg);animation:phtremble 4s ease-in-out infinite alternate}
+@keyframes phtremble{from{transform:rotate(.5deg) translateY(0)}to{transform:rotate(.9deg) translateY(1.5px)}}
+.ph-col rect{fill:none;stroke:#9B9593;stroke-opacity:.45;stroke-width:1.5;stroke-dasharray:5 6}
+.ph-col .q{fill:#6b6664;font-size:13px;font-weight:700}
+.ph-col .cl{fill:var(--stone);font-size:9px;letter-spacing:.16em}
+.ph-col.on .cl{fill:var(--red)}
+.ph-col.flash rect{animation:phflash .9s var(--e1)}
+@keyframes phflash{30%{stroke:#E52B20;stroke-opacity:1}100%{stroke:#9B9593;stroke-opacity:.45}}
+.ph-cap{margin-top:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+
+/* ===== A VIRADA (desejo) ===== */
+.enemy{font-family:var(--serif);font-size:clamp(1.25rem,3.2vw,2rem);line-height:1.5;max-width:34ch;color:#d5cfca}
+.enemy em{color:var(--red)}
+.enemy strong{color:var(--paper);font-weight:600}
+.scene{margin-top:clamp(48px,8vw,90px);display:grid;gap:clamp(30px,5vw,60px)}
+@media(min-width:960px){.scene{grid-template-columns:.9fr 1.1fr}}
+.scene .imagine{font-family:var(--disp);font-weight:800;font-size:clamp(1.8rem,5vw,3.4rem);letter-spacing:-.04em;line-height:1;text-transform:lowercase;position:sticky;top:110px}
+.scene .imagine em{font-weight:600}
+.scene-body p{font-family:var(--serif);font-size:clamp(1rem,1.9vw,1.18rem);line-height:1.75;color:#cfc9c4}
+.scene-body p+p{margin-top:1.2em}
+.scene-body strong{color:var(--paper);font-weight:600}
+.scene-final{margin-top:1.6em!important;font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,2.4vw,1.5rem)!important;color:var(--paper)!important;border-left:2px solid var(--red);padding-left:20px}
+.scene-final b{color:var(--red);font-weight:600}
+
+/* ===== PAINEL VIVO ===== */
+.panel{margin-bottom:clamp(28px,4vw,44px);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  background:rgba(20,17,18,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.45)}
+.p-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.p-live{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);white-space:nowrap}
+.p-live .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:7px;animation:blink 1.6s ease-in-out infinite}
+.p-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+@media(min-width:640px){.p-kpis{grid-template-columns:repeat(4,1fr)}}
+.p-kpi{background:var(--ink-2);padding:14px 16px}
+.p-kpi .k{font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:4px}
+.p-kpi .v{font-family:var(--mono);font-weight:700;font-size:clamp(.92rem,2vw,1.12rem);color:var(--paper);font-variant-numeric:tabular-nums;transition:color .8s var(--e1)}
+.p-kpi .v.good{color:var(--green)}
+.p-kpi .v .tr{font-size:.62em;color:var(--stone);transition:color .4s}
+.p-kpi .v .tr.up{color:var(--green)}
+.p-kpi .v .tr.bad{color:var(--red)}
+#p-chart{display:block;width:100%;height:auto;background:var(--ink-2)}
+#p-chart .pc-grid{stroke:rgba(238,233,229,.07);stroke-width:1}
+#p-chart .pc-t{font-family:var(--mono);font-size:9px;fill:var(--stone);letter-spacing:.18em;text-transform:uppercase}
+#p-chart .pc-line{stroke:url(#growGrad);stroke-width:2;fill:none;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s var(--e1) .3s}
+.panel.in #p-chart .pc-line{stroke-dashoffset:0}
+#p-chart .pc-area{fill:url(#pcg);opacity:0;transition:opacity 1s 1.1s}
+.panel.in #p-chart .pc-area{opacity:1}
+.p-feed{border-top:1px solid var(--line);padding:10px 18px 14px;min-height:122px}
+.p-feed .row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:#b5afaa;border-bottom:1px dashed rgba(238,233,229,.07);opacity:0;transform:translateY(-6px);transition:.5s var(--e1)}
+.p-feed .row.show{opacity:1;transform:none}
+.p-feed .row .ok{color:var(--red);font-weight:700}
+.p-cap{padding:10px 18px;font-family:var(--mono);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:#6b6664;border-top:1px solid var(--line)}
+
+/* ===== CASES ===== */
+.case-box{margin-top:clamp(30px,5vw,56px);padding:clamp(24px,4.5vw,52px);border:1px solid rgba(229,43,32,.35);border-radius:26px;background:linear-gradient(150deg,rgba(229,43,32,.07),rgba(111,20,24,.05));position:relative;overflow:hidden}
+.case-box::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 85% 0%,rgba(229,43,32,.1),transparent 60%);pointer-events:none}
+.case-box>*{position:relative}
+.case-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.case-tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+.case-h{font-family:var(--disp);font-weight:800;font-size:clamp(1.6rem,4.6vw,3rem);letter-spacing:-.035em;line-height:1.05;text-transform:lowercase;margin-bottom:18px;max-width:24ch}
+.case-box .formula{margin-top:14px}
+.results.four{margin-top:clamp(30px,5vw,48px)}
+@media(min-width:840px){.results.four{grid-template-columns:repeat(4,1fr)}}
+.case-next{margin-top:clamp(26px,4vw,40px);font-family:var(--serif);font-style:italic;color:#d5cfca;border-left:2px solid var(--red);padding-left:18px;max-width:60ch}
+.case-next b{color:var(--red);font-weight:600;font-style:normal}
+
+/* ===== AÇÃO (cards de confiança) ===== */
+.action-grid{display:grid;gap:16px;margin:clamp(30px,5vw,56px) 0}
+@media(min-width:900px){.action-grid{grid-template-columns:1fr 1fr}}
+.acard{padding:clamp(24px,4vw,42px);border:1px solid var(--line);border-radius:22px;background:rgba(238,233,229,.025);transition:border-color .5s,transform .6s var(--e1)}
+.acard:hover{border-color:rgba(229,43,32,.4);transform:translateY(-6px)}
+.acard .ah{font-family:var(--disp);font-weight:800;font-size:clamp(1.2rem,2.8vw,1.6rem);letter-spacing:-.03em;text-transform:lowercase;margin-bottom:14px}
+.acard p{font-family:var(--serif);color:#c6c0bb;font-size:.99rem;line-height:1.7;text-align:left}
+.acard p strong{color:var(--paper);font-weight:600}
+
+/* ===== HERO — fantasmas no escuro (spotlight) ===== */
+.h-ghosts{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.95;
+  -webkit-mask-image:radial-gradient(circle 210px at var(--mx,72%) var(--my,30%),#000 0%,rgba(0,0,0,.4) 55%,transparent 78%);
+          mask-image:radial-gradient(circle 210px at var(--mx,72%) var(--my,30%),#000 0%,rgba(0,0,0,.4) 55%,transparent 78%)}
+.h-ghosts span{position:absolute;font-family:var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--stone);white-space:nowrap}
+.h-ghosts span b{color:var(--red);font-weight:700}
+
+/* ===== O MOTOR ===== */
+.motor-stage{margin-top:clamp(40px,7vw,84px)}
+.motor-wrap{position:relative;border:1px solid var(--line);border-radius:24px;background:
+  radial-gradient(80% 80% at 50% 45%,rgba(111,20,24,.16),transparent 70%),var(--ink);
+  overflow:hidden;padding:clamp(14px,2.5vw,26px)}
+@media(min-width:1000px){.motor-wrap{padding:clamp(24px,3vw,44px)}}
+.motor-wrap::before{content:"";position:absolute;inset:0;background-image:
+  linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:44px 44px;opacity:.25;pointer-events:none}
+#motor{width:100%;height:auto;max-height:82vh;margin:0 auto;position:relative;z-index:1}
+#motor text{font-family:var(--mono);text-transform:uppercase}
+#motor .node-lb{fill:var(--paper);font-size:11.5px;letter-spacing:.14em;font-weight:700}
+#motor .node-sb{fill:#9B9593;font-size:8.5px;letter-spacing:.1em}
+#motor .flow-lb{fill:#9B9593;font-size:9.5px;letter-spacing:.18em}
+#motor .core-lb{fill:#fff;font-size:10px;letter-spacing:.2em;font-weight:700}
+.motor-hud{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:6px;padding:14px clamp(4px,1vw,10px) 4px;border-top:1px solid var(--line)}
+.hud-item{font-family:var(--mono);min-width:88px}
+.hud-item .k{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);display:block;margin-bottom:3px}
+.hud-item .v{font-size:clamp(.98rem,2.4vw,1.3rem);font-weight:700;color:var(--paper);font-variant-numeric:tabular-nums}
+.hud-item .v.down{color:var(--red)}
+.hud-item .v .tr{font-size:.6em;vertical-align:middle;opacity:.8}
+.motor-cap{margin-top:14px;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);text-align:center}
+.motor-cap b{color:var(--red)}
+
+/* ===== RESULTADOS (contadores) ===== */
+.results{display:grid;gap:14px;margin-top:clamp(44px,7vw,80px)}
+@media(min-width:840px){.results{grid-template-columns:repeat(3,1fr)}}
+.res{padding:clamp(22px,3.5vw,36px);border:1px solid var(--line);border-radius:20px;background:rgba(238,233,229,.03)}
+.res .v{font-family:var(--disp);font-weight:800;font-size:clamp(2.1rem,5.5vw,3.3rem);letter-spacing:-.04em;line-height:1;color:var(--paper)}
+.res .v .count{font-variant-numeric:tabular-nums}
+.res .v em{color:var(--red);font-weight:600;font-size:.75em}
+.res .l{margin-top:10px;font-family:var(--serif);font-style:italic;color:var(--stone);font-size:.95rem;line-height:1.55}
+
+/* ===== SELOS ===== */
+.selos{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+.selo{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--red);
+  border:1.5px solid var(--red);border-radius:6px;padding:8px 14px;opacity:0;transform:scale(1.8) rotate(-6deg)}
+.bigq .in .selo{animation:carimbo .55s var(--e1) forwards}
+.bigq .in .selo:nth-child(1){animation-delay:.4s;--rot:-3deg}
+.bigq .in .selo:nth-child(2){animation-delay:.7s;--rot:2deg}
+.bigq .in .selo:nth-child(3){animation-delay:1s;--rot:-2deg}
+@keyframes carimbo{60%{opacity:1;transform:scale(.94) rotate(var(--rot,-3deg))}100%{opacity:1;transform:scale(1) rotate(var(--rot,-3deg))}}
+
+/* ===== TILT 3D (trio) ===== */
+.trio{perspective:1000px}
+.tcard{transform-style:preserve-3d;will-change:transform}
+
+/* ===== MAGNETIC CTA ===== */
+.btn{transition:color .45s var(--e1),border-color .45s,transform .35s var(--e1)}
+
+/* ===== FIM DO ESCURO (CTA clareia no scroll) ===== */
+.form-sec::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,transparent 30%,rgba(229,43,32,calc(.2*var(--dawn,0))) 100%),
+    radial-gradient(80% 60% at 50% 112%,rgba(238,233,229,calc(.12*var(--dawn,0))),transparent 70%)}
+.form-sec .wrap{position:relative;z-index:1}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+  .h-ghosts{-webkit-mask-image:none;mask-image:none;opacity:.14}
+  .selo{opacity:1!important;transform:none!important;animation:none!important}
+  .form-sec::after{display:none}
+  .sp-bar{transform:scaleY(1)!important;fill:rgba(238,233,229,.72)!important}
+  .sp-line{stroke-dashoffset:0!important}
+  .sp-lab.metodo{opacity:1!important}
+  #ph-beam{animation:none!important;transform:rotate(.7deg)}
+  .ph-col .cl{fill:var(--red)}
+  .p-feed .row{opacity:1!important;transform:none!important}
+  #p-chart .pc-line{stroke-dashoffset:0!important}
+  #p-chart .pc-area{opacity:1!important}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader" aria-hidden="true">
+  <div class="word"><span>mova.</span></div>
+  <div class="sub">o ponto de partida.</div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="prog" id="prog" aria-hidden="true"></div>
+
+<!-- CHECKPOINT -->
+<div class="checkpoint" id="cp" aria-hidden="true">
+  <div class="ring">
+    <svg viewBox="0 0 32 32"><circle class="bg" cx="16" cy="16" r="13"/><circle class="fg" id="cpring" cx="16" cy="16" r="13"/></svg>
+    <div class="pct" id="cppct">0</div>
+  </div>
+  <div class="lbl" id="cplbl"><b>início</b> · continue</div>
+</div>
+
+<!-- HEADER -->
+<header id="hd">
+  <nav class="nav">
+    <a class="logo" href="#topo">amov<span class="net">Net work</span></a>
+    <div class="menu">
+      <a href="#escuro">o escuro</a>
+      <a href="#motor-sec">o motor</a>
+      <a href="#virada">a virada</a>
+      <a href="#cases">cases</a>
+      <a href="#servicos">serviços</a>
+    </div>
+    <a class="cta-mini" href="#vamo">vamo →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="topo">
+  <div class="bg"><div class="street"></div></div>
+  <div class="h-ghosts" id="ghosts" aria-hidden="true">
+    <span style="top:12%;left:6%;font-size:.74rem">cpl — R$ <b>?</b></span>
+    <span style="top:9%;left:42%;font-size:.62rem;transform:rotate(-3deg)">quanto custou seu último cliente<b>?</b></span>
+    <span style="top:20%;right:7%;font-size:.82rem">cac — <b>?</b></span>
+    <span style="top:30%;left:15%;font-size:.6rem">de onde veio a última venda<b>?</b></span>
+    <span style="top:38%;right:19%;font-size:.66rem;transform:rotate(2deg)">roi — <b>?</b></span>
+    <span style="top:26%;left:56%;font-size:.74rem">cpc — R$ <b>?</b></span>
+    <span style="top:46%;left:7%;font-size:.62rem">o mês que vem se repete<b>?</b></span>
+    <span style="top:44%;right:5%;font-size:.6rem;transform:rotate(-2deg)">quantos leads viraram reunião<b>?</b></span>
+  </div>
+  <div class="wrap inner">
+    <div class="h-kick"><span class="kick">amov network · são josé do rio preto</span></div>
+    <h1 class="hl">
+      <span class="row"><span>o problema não é</span></span>
+      <span class="row"><span>vender pouco.</span></span>
+      <span class="row"><span>é vender <em>no escuro.</em></span></span>
+    </h1>
+    <p class="hsub">Sem um método de aquisição, todo mês vira aposta — você não sabe de onde vem o próximo cliente, quanto ele custou, nem se o mês que vem se repete. <em>Não é falta de esforço. É falta de engenharia.</em></p>
+    <div class="hact">
+      <a class="btn" href="#vamo"><span>iniciar movimento</span><span class="ar">→</span></a>
+      <a class="btn ghost" href="#escuro"><span>ver a conta</span></a>
+    </div>
+  </div>
+  <div class="h-meta">
+    <span class="scr"><span class="dot"></span> role. cada passo conta.</span>
+    <span>rio preto · sp — brasil</span>
+  </div>
+</section>
+
+<!-- 01 — O ESCURO (atenção) -->
+<section class="sec" id="escuro">
+  <div class="wrap">
+    <div class="eyebrow rv"><span class="b"></span><span class="kick">01 — o escuro</span></div>
+    <h2 class="title rv d1">rio preto tem<br>muita agência.<br><em>nenhuma mostra</em><br><em>a conta.</em></h2>
+
+    <!-- camada 1 — o ponto exposto -->
+    <div class="layer">
+      <div class="rv">
+        <div class="layer-kick"><b>camada 1</b><span>o ponto de atenção, exposto</span></div>
+        <p class="lede">A maioria dos negócios não tem um problema de venda. Tem um problema de <strong>origem</strong>. A demanda chega em surtos: um mês bom, dois fracos, uma campanha que rendeu, um indicado que apareceu. Nada disso é método — <strong>é sorte com roupa de estratégia</strong>. E o que depende de sorte não dá para planejar, escalar nem defender.</p>
+      </div>
+      <div class="spark-box rv d2">
+        <svg id="spark" viewBox="0 0 760 210" role="img" aria-label="Gráfico de doze meses: barras erráticas rotuladas sorte se transformam em uma curva estável e crescente rotulada método">
+          <text class="sp-lab sorte" x="18" y="20">sorte</text>
+          <text class="sp-lab metodo" x="102" y="20">método</text>
+          <rect class="sp-bar" x="18"  y="138" width="36" height="40"  style="--s:.95;transition-delay:0s"/>
+          <rect class="sp-bar" x="81"  y="128" width="36" height="50"  style="--s:.22;transition-delay:.06s"/>
+          <rect class="sp-bar" x="144" y="120" width="36" height="58"  style="--s:.42;transition-delay:.12s"/>
+          <rect class="sp-bar" x="207" y="110" width="36" height="68"  style="--s:1.28;transition-delay:.18s"/>
+          <rect class="sp-bar" x="270" y="102" width="36" height="76"  style="--s:.30;transition-delay:.24s"/>
+          <rect class="sp-bar" x="333" y="92"  width="36" height="86"  style="--s:.52;transition-delay:.3s"/>
+          <rect class="sp-bar" x="396" y="84"  width="36" height="94"  style="--s:1.12;transition-delay:.36s"/>
+          <rect class="sp-bar" x="459" y="74"  width="36" height="104" style="--s:.20;transition-delay:.42s"/>
+          <rect class="sp-bar" x="522" y="66"  width="36" height="112" style="--s:.66;transition-delay:.48s"/>
+          <rect class="sp-bar" x="585" y="56"  width="36" height="122" style="--s:.34;transition-delay:.54s"/>
+          <rect class="sp-bar" x="648" y="48"  width="36" height="130" style="--s:1.02;transition-delay:.6s"/>
+          <rect class="sp-bar" x="711" y="38"  width="36" height="140" style="--s:.28;transition-delay:.66s"/>
+          <polyline class="sp-line" pathLength="1" points="36,138 99,128 162,120 225,110 288,102 351,92 414,84 477,74 540,66 603,56 666,48 729,38"/>
+          <g>
+            <text class="sp-m" x="36" y="196" text-anchor="middle">jan</text>
+            <text class="sp-m" x="162" y="196" text-anchor="middle">mar</text>
+            <text class="sp-m" x="288" y="196" text-anchor="middle">mai</text>
+            <text class="sp-m" x="414" y="196" text-anchor="middle">jul</text>
+            <text class="sp-m" x="540" y="196" text-anchor="middle">set</text>
+            <text class="sp-m" x="666" y="196" text-anchor="middle">nov</text>
+          </g>
+        </svg>
+        <div class="sp-cap">12 meses · a mesma verba — o que muda é o sistema</div>
+      </div>
+    </div>
+
+    <!-- camada 2 — os buracos -->
+    <div class="layer">
+      <div class="rv">
+        <div class="layer-kick"><b>camada 2</b><span>os buracos de negócio</span></div>
+        <p class="lede">Quando a aquisição não é um sistema, o negócio anda com buracos por baixo do tapete:</p>
+      </div>
+      <div class="phantom rv d1" aria-hidden="true">
+        <svg id="ph-svg" viewBox="0 0 760 240">
+          <g id="ph-beam">
+            <rect class="ph-viga" x="40" y="52" width="680" height="14" rx="3"/>
+            <text class="ph-lb" x="44" y="40">crescimento</text>
+          </g>
+          <line class="ph-ground" x1="24" y1="208" x2="736" y2="208"/>
+          <g class="ph-col"><rect x="105" y="74" width="46" height="132" rx="3"/><text class="q" x="128" y="146" text-anchor="middle">?</text><text class="cl" x="128" y="228" text-anchor="middle">método</text></g>
+          <g class="ph-col"><rect x="273" y="74" width="46" height="132" rx="3"/><text class="q" x="296" y="146" text-anchor="middle">?</text><text class="cl" x="296" y="228" text-anchor="middle">métricas</text></g>
+          <g class="ph-col"><rect x="441" y="74" width="46" height="132" rx="3"/><text class="q" x="464" y="146" text-anchor="middle">?</text><text class="cl" x="464" y="228" text-anchor="middle">caixa</text></g>
+          <g class="ph-col"><rect x="609" y="74" width="46" height="132" rx="3"/><text class="q" x="632" y="146" text-anchor="middle">?</text><text class="cl" x="632" y="228" text-anchor="middle">ativo</text></g>
+        </svg>
+        <div class="ph-cap">crescendo em cima do que não existe</div>
+      </div>
+      <div class="holes">
+        <div class="hole rv">
+          <span class="n">/01</span>
+          <div>
+            <h4>não há método de captação.</h4>
+            <p>Todo mês recomeça do zero: "de onde vou tirar cliente dessa vez?" Sem processo, o volume sobe e desce sozinho, e você nunca sabe o que esperar.</p>
+          </div>
+        </div>
+        <div class="hole rv d1">
+          <span class="n">/02</span>
+          <div>
+            <h4>não há metrificação do funil.</h4>
+            <p>Quanto custa o clique? Quantos leads o investimento gerou? Quantos viraram reunião? Quantos fecharam? Se essas respostas não estão na ponta da língua, <strong>você está investindo às cegas</strong>.</p>
+          </div>
+        </div>
+        <div class="hole rv d2">
+          <span class="n">/03</span>
+          <div>
+            <h4>não há previsibilidade de caixa.</h4>
+            <p>Sem prever quantos clientes entram, é impossível prever faturamento, planejar contratação ou assumir compromisso com segurança. <strong>O negócio cresce no susto.</strong></p>
+          </div>
+        </div>
+        <div class="hole bgd rv d3">
+          <span class="n">/–</span>
+          <div>
+            <h4>(pano de fundo)</h4>
+            <p class="pull">"Se você precisa consultar o seu comercial para saber como ele está, alguma coisa tem de errado."</p>
+            <p>O ativo tem que ser seu — <strong>vivo, medido, no seu painel</strong>. Não na mão de quem atende.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- camada 3 — a conta -->
+    <div class="layer">
+      <div class="rv">
+        <div class="layer-kick"><b>camada 3</b><span>a conta que ninguém te mostra</span></div>
+        <p class="lede">Aquisição é matemática, não sorte. A cadeia é sempre esta:</p>
+      </div>
+      <div class="formula-box rv d1">
+        <div class="formula" role="img" aria-label="Investimento, CPC custo por clique, CPL custo por lead, conversão em reunião, taxa de fechamento, CAC custo por venda">
+          <span class="term">Investimento</span><span class="arr">→</span>
+          <span class="term">CPC<small>custo por clique</small></span><span class="arr">→</span>
+          <span class="term">CPL<small>custo por lead</small></span><span class="arr">→</span>
+          <span class="term">conversão<small>em reunião</small></span><span class="arr">→</span>
+          <span class="term">taxa<small>de fechamento</small></span><span class="arr">→</span>
+          <span class="term end">CAC<small>custo por venda</small></span>
+        </div>
+        <div class="fun-stage" id="fun-stage">
+          <svg id="fun-svg" viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Funil animado da conta de aquisição: R$ 5.000 de investimento com CPC de R$ 2,50 geram 2.000 cliques; com 8% de conversão da landing page viram 160 leads a R$ 31,25 cada; com 25% de conversão em reunião viram 40 reuniões; com 10% de fechamento viram 4 vendas — um CAC de R$ 1.250. O dinheiro afunila e o custo unitário sobe a cada etapa.">
+            <polyline class="fun-wall" pathLength="1" points="70,70 154,190 253,310 321,430 374,550"/>
+            <polyline class="fun-wall" pathLength="1" points="830,70 746,190 647,310 579,430 526,550"/>
+            <g class="fun-g" id="fun-g1">
+              <line class="fun-gate" x1="204" y1="250" x2="424" y2="250"/>
+              <line class="fun-gate" x1="476" y1="250" x2="697" y2="250"/>
+              <text class="fun-glb" x="450" y="240" text-anchor="middle">conversão da landing page — 8%</text>
+            </g>
+            <g class="fun-g" id="fun-g2">
+              <line class="fun-gate" x1="287" y1="370" x2="424" y2="370"/>
+              <line class="fun-gate" x1="476" y1="370" x2="613" y2="370"/>
+              <text class="fun-glb" x="450" y="360" text-anchor="middle">conversão em reunião — 25%</text>
+            </g>
+            <g class="fun-g" id="fun-g3">
+              <line class="fun-gate" x1="348" y1="490" x2="424" y2="490"/>
+              <line class="fun-gate" x1="476" y1="490" x2="553" y2="490"/>
+              <text class="fun-glb" x="450" y="480" text-anchor="middle">taxa de fechamento — 10%</text>
+            </g>
+            <g class="fun-plat">
+              <line class="fun-platline" x1="70" y1="70" x2="830" y2="70"/>
+              <line class="fun-platred" x1="70" y1="70" x2="830" y2="70"/>
+              <text class="fun-lb fun-vtx" x="74" y="56">investimento</text>
+              <text class="fun-lb fun-vtx" x="826" y="56" text-anchor="end">R$ <tspan class="fun-v" id="fun-v-inv" font-size="12">5.000</tspan> /mês</text>
+            </g>
+            <g class="fun-plat" style="transition-delay:.12s">
+              <line class="fun-platline" x1="154" y1="190" x2="746" y2="190"/>
+              <line class="fun-platred" x1="154" y1="190" x2="746" y2="190"/>
+              <text class="fun-lb fun-vtx" x="158" y="176">cliques — <tspan class="fun-v" id="fun-v-cliques">2.000</tspan></text>
+              <text class="fun-lb fun-vtx" x="742" y="176" text-anchor="end">cpc R$ <tspan class="fun-v" id="fun-v-cpc" font-size="13">2,50</tspan></text>
+            </g>
+            <g class="fun-plat" style="transition-delay:.24s">
+              <line class="fun-platline" x1="253" y1="310" x2="647" y2="310"/>
+              <line class="fun-platred" x1="253" y1="310" x2="647" y2="310"/>
+              <text class="fun-lb fun-vtx" x="257" y="296">leads — <tspan class="fun-v" id="fun-v-leads">160</tspan></text>
+              <text class="fun-lb fun-vtx" x="643" y="296" text-anchor="end">cpl R$ <tspan class="fun-v" id="fun-v-cpl" font-size="15">31,25</tspan></text>
+            </g>
+            <g class="fun-plat" style="transition-delay:.36s">
+              <line class="fun-platline" x1="321" y1="430" x2="579" y2="430"/>
+              <line class="fun-platred" x1="321" y1="430" x2="579" y2="430"/>
+              <text class="fun-lb fun-vtx" x="325" y="416">reuniões — <tspan class="fun-v" id="fun-v-visitas">40</tspan></text>
+            </g>
+            <g class="fun-plat" style="transition-delay:.48s">
+              <line class="fun-platline base" id="fun-base" x1="374" y1="550" x2="526" y2="550"/>
+              <text class="fun-lb fun-vtx" x="450" y="536" text-anchor="middle">vendas — <tspan class="fun-v" id="fun-v-vendas">4</tspan></text>
+              <g id="fun-cacg">
+                <text class="fun-glb fun-vtx" x="450" y="592" text-anchor="middle">cac — custo por venda</text>
+                <text class="fun-lb fun-vtx" x="450" y="620" text-anchor="middle">R$ <tspan class="fun-v red" id="fun-v-cac" font-size="21">1.250</tspan></text>
+              </g>
+            </g>
+            <g id="fun-particles"></g>
+          </svg>
+          <div class="motor-hud fun-hud" aria-hidden="true">
+            <div class="hud-item"><span class="k">investe</span><span class="v">R$ <span id="fun-h-inv">5.000</span></span></div>
+            <div class="hud-item"><span class="k">cpc</span><span class="v">R$ <span id="fun-h-cpc">2,50</span></span></div>
+            <div class="hud-item"><span class="k">cliques</span><span class="v" id="fun-h-cliques">2.000</span></div>
+            <div class="hud-item"><span class="k">leads · cpl</span><span class="v"><span id="fun-h-leads">160</span> · R$ <span id="fun-h-cpl">31,25</span></span></div>
+            <div class="hud-item"><span class="k">reuniões</span><span class="v" id="fun-h-visitas">40</span></div>
+            <div class="hud-item"><span class="k">vendas · cac</span><span class="v down"><span id="fun-h-vendas">4</span> · R$ <span id="fun-h-cac">1.250</span></span></div>
+          </div>
+        </div>
+        <p class="formula-note">Quem não enxerga cada número dessa linha não consegue baixar custo nem aumentar retorno. Repete o mesmo gasto todo mês esperando um resultado diferente. <span class="fim">Fim do escuro começa aqui: medir.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- O MOTOR -->
+<section class="sec" id="motor-sec" style="background:var(--ink-2)">
+  <div class="wrap">
+    <div class="eyebrow rv"><span class="b"></span><span class="kick">02 — o motor</span></div>
+    <h2 class="title rv d1">a engenharia<br><em>da previsibilidade.</em></h2>
+    <div class="layer" style="margin-top:clamp(36px,6vw,64px)">
+      <div class="rv d1">
+        <div class="layer-kick"><b>o mecanismo</b><span>da dor</span></div>
+        <p class="lede">A raiz não é o anúncio caro nem o canal fraco. A raiz é a <strong>ausência de um motor</strong>. Sem um sistema que capta, mede e melhora sozinho, a aquisição nem chega a virar aluguel: você paga, gera o lead — e não capta um contato ativo. <strong>Capta um contato só, que nasce e morre no mesmo dia.</strong> Sem propósito, sem histórico, sem dono.</p>
+      </div>
+      <div class="rv d2" style="margin-top:26px">
+        <div class="layer-kick"><b>o mecanismo</b><span>da solução</span></div>
+        <p class="lede">Instalamos um <strong>motor de aquisição previsível</strong> dentro da sua operação. Cada campanha ensina a próxima: a inteligência lê o que converte, corta o que não converte e reinveste no que traz o cliente certo. O custo cai. A qualidade sobe. <em>Em ciclo.</em></p>
+      </div>
+    </div>
+
+    <div class="motor-stage rv">
+      <div class="motor-wrap" id="motorWrap" aria-label="Animação: motor de aquisição autorretroalimentado — leads brutos entram, o núcleo processa, clientes saem e parte do resultado retroalimenta o ciclo captação, dados, aprendizagem, otimização">
+        <svg id="motor" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#E52B20" stop-opacity=".9"/>
+              <stop offset="55%" stop-color="#E52B20" stop-opacity=".22"/>
+              <stop offset="100%" stop-color="#E52B20" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <path id="pIn"  d="M 30,300 C 120,300 190,300 255,300" fill="none" stroke="#4B4645" stroke-width="1.5" stroke-dasharray="3 7"/>
+          <path id="pOut" d="M 645,300 C 720,300 790,300 870,300" fill="none" stroke="#4B4645" stroke-width="1.5" stroke-dasharray="3 7"/>
+          <path id="pFb"  d="M 762,312 C 800,470 560,560 452,478 C 420,452 430,410 450,386" fill="none" stroke="#6F1418" stroke-width="1.5" stroke-dasharray="2 6"/>
+          <circle id="loopTrack" cx="450" cy="300" r="175" fill="none" stroke="#9B9593" stroke-opacity=".28" stroke-width="1.5"/>
+          <circle id="loopGlow"  cx="450" cy="300" r="175" fill="none" stroke="#E52B20" stroke-opacity="0"  stroke-width="2"/>
+          <g stroke="#4B4645" stroke-opacity=".5" stroke-width="1" stroke-dasharray="1 5">
+            <line x1="285" y1="300" x2="404" y2="300"/>
+            <line x1="450" y1="135" x2="450" y2="254"/>
+            <line x1="615" y1="300" x2="496" y2="300"/>
+            <line x1="450" y1="465" x2="450" y2="346"/>
+          </g>
+          <circle id="coreHalo" cx="450" cy="300" r="86" fill="url(#coreGlow)" opacity=".55"/>
+          <circle id="coreRing" cx="450" cy="300" r="52" fill="none" stroke="#E52B20" stroke-opacity=".5" stroke-width="1"/>
+          <circle id="core" cx="450" cy="300" r="38" fill="#E52B20"/>
+          <text class="core-lb" x="450" y="297" text-anchor="middle">motor</text>
+          <text class="core-lb" x="450" y="310" text-anchor="middle" font-size="8" opacity=".85">ia dirigida</text>
+          <g id="nodes">
+            <g class="node">
+              <circle cx="275" cy="300" r="9" fill="#1A1719" stroke="#EEE9E5" stroke-width="1.5"/>
+              <text class="node-lb" x="258" y="279" text-anchor="end">captação</text>
+              <text class="node-sb" x="258" y="292" text-anchor="end">demanda entra</text>
+            </g>
+            <g class="node">
+              <circle cx="450" cy="125" r="9" fill="#1A1719" stroke="#EEE9E5" stroke-width="1.5"/>
+              <text class="node-lb" x="450" y="100" text-anchor="middle">dados</text>
+              <text class="node-sb" x="450" y="112" text-anchor="middle">cada clique medido</text>
+            </g>
+            <g class="node">
+              <circle cx="625" cy="300" r="9" fill="#1A1719" stroke="#EEE9E5" stroke-width="1.5"/>
+              <text class="node-lb" x="643" y="279">aprendizagem (ia)</text>
+              <text class="node-sb" x="643" y="292">lê o que converte</text>
+            </g>
+            <g class="node">
+              <circle cx="450" cy="475" r="9" fill="#1A1719" stroke="#EEE9E5" stroke-width="1.5"/>
+              <text class="node-lb" x="450" y="507" text-anchor="middle">otimização</text>
+              <text class="node-sb" x="450" y="519" text-anchor="middle">corta o que não converte</text>
+            </g>
+          </g>
+          <text class="flow-lb" x="30" y="283">leads brutos</text>
+          <text class="flow-lb" x="870" y="283" text-anchor="end">clientes</text>
+          <text class="flow-lb" x="700" y="560" text-anchor="middle">retroalimentação</text>
+          <g id="particles"></g>
+        </svg>
+        <div class="motor-hud" aria-live="off">
+          <div class="hud-item"><span class="k">ciclo</span><span class="v" id="hudCiclo">00</span></div>
+          <div class="hud-item"><span class="k">custo por lead</span><span class="v down" id="hudCpl">R$ 52,00 <span class="tr">▼</span></span></div>
+          <div class="hud-item"><span class="k">qualidade do lead</span><span class="v" id="hudQual">58% <span class="tr">▲</span></span></div>
+          <div class="hud-item"><span class="k">clientes</span><span class="v" id="hudCli">0</span></div>
+        </div>
+        <div class="motor-cap">cada volta ensina a próxima — <b>o custo cai, a qualidade sobe</b></div>
+      </div>
+    </div>
+
+    <div class="rv" style="margin-top:clamp(48px,8vw,90px)">
+      <div class="layer-kick"><b>na prática</b><span>quem já passou pelo processo</span></div>
+    </div>
+    <div class="case-box rv d1" id="cases">
+      <div class="case-top">
+        <span class="kick">case — solut consultoria</span>
+        <span class="case-tag">investimentos &amp; advocacia</span>
+      </div>
+      <h3 class="case-h">do zero a <em>R$ 20 milhões</em> negociados, num nicho fora do radar.</h3>
+      <p class="lede">A Solut atua onde a maioria não enxerga: intermediação de rescisão contratual de consórcios, terrenos e cotas de multipropriedade — e corretagem de compra e venda de cotas. O nicho foi detectado pelos profissionais da Amov, que executaram todo o processo, do primeiro lead à estrutura comercial.</p>
+
+      <div class="layer-kick" style="margin-top:clamp(28px,4vw,40px)"><b>o processo</b><span>na ordem em que foi desenhado</span></div>
+      <div class="formula" role="img" aria-label="Motor de Vendas, geração de vendas e resultados, automação do processo, integração da marca, identidade visual e geração de confiança">
+        <span class="term">Motor de Vendas</span><span class="arr">→</span>
+        <span class="term">vendas &amp; resultados</span><span class="arr">→</span>
+        <span class="term">automação<small>do processo</small></span><span class="arr">→</span>
+        <span class="term">integração<small>da marca</small></span><span class="arr">→</span>
+        <span class="term end">identidade visual<small>e geração de confiança</small></span>
+      </div>
+
+      <div class="results four">
+        <div class="res rv"><div class="v">R$ 1,92</div><div class="l">custo por lead qualificado.</div></div>
+        <div class="res rv d1"><div class="v"><span class="count" data-to="20">0</span><em>+</em></div><div class="l">parâmetros de qualificação por lead — nome, idade, CPF, valor. Leads ultra qualificados.</div></div>
+        <div class="res rv d2"><div class="v">2 <em>→</em> <span class="count" data-to="8">0</span></div><div class="l">colaboradores na operação.</div></div>
+        <div class="res rv d3"><div class="v">+<span class="count" data-to="20">0</span><em>%</em></div><div class="l">de crescimento médio de faturamento ao mês.</div></div>
+      </div>
+
+      <p class="case-next"><b>Próximo movimento:</b> tornar-se um fundo de investimento que negocia cotas de consórcio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 — A VIRADA (desejo) -->
+<section class="sec" id="virada">
+  <div class="wrap">
+    <div class="eyebrow rv"><span class="b"></span><span class="kick">03 — a virada</span></div>
+    <div class="rv d1">
+      <div class="layer-kick"><b>o inimigo</b><span>em comum</span></div>
+      <p class="enemy">O inimigo é <em>o improviso</em>. É acordar todo mês sem saber de onde vem o próximo cliente. É crescer no susto, sem base para planejar. É investir sem enxergar retorno. Enquanto a aquisição for aposta, <strong>você nunca é dono do próprio crescimento — é passageiro dele</strong>.</p>
+    </div>
+    <div class="scene">
+      <div class="rv"><h3 class="imagine">imagine<br><em>a virada:</em></h3></div>
+      <div class="scene-body rv d2">
+        <div class="panel rv" id="painel" aria-label="Cenário ilustrativo de um painel de métricas de aquisição">
+          <div class="p-head"><span class="kick">painel — seu negócio</span><span class="p-live"><span class="dot"></span>ao vivo</span></div>
+          <div class="p-kpis">
+            <div class="p-kpi"><span class="k">cpl</span><span class="v" id="pk-cpl">R$ 27,90 <span class="tr">▼</span></span></div>
+            <div class="p-kpi"><span class="k">cac</span><span class="v" id="pk-cac">R$ 1.086 <span class="tr">▼</span></span></div>
+            <div class="p-kpi"><span class="k">reuniões no mês</span><span class="v" id="pk-vis">46 <span class="tr">▲</span></span></div>
+            <div class="p-kpi"><span class="k">previsão do tri</span><span class="v" id="pk-tri">no alvo <span class="tr">▲</span></span></div>
+          </div>
+          <svg id="p-chart" viewBox="0 0 640 150" aria-hidden="true">
+            <defs>
+              <linearGradient id="growGrad" x1="20" y1="0" x2="620" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#E52B20"/>
+                <stop offset=".55" stop-color="#9B9593"/>
+                <stop offset="1" stop-color="#4E9B6B"/>
+              </linearGradient>
+              <linearGradient id="pcg" x1="20" y1="0" x2="620" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#E52B20" stop-opacity=".16"/>
+                <stop offset=".55" stop-color="#9B9593" stop-opacity=".1"/>
+                <stop offset="1" stop-color="#4E9B6B" stop-opacity=".16"/>
+              </linearGradient>
+            </defs>
+            <line class="pc-grid" x1="20" y1="45" x2="620" y2="45"/>
+            <line class="pc-grid" x1="20" y1="80" x2="620" y2="80"/>
+            <line class="pc-grid" x1="20" y1="115" x2="620" y2="115"/>
+            <path class="pc-area" d="M20,118 L45,115 L70,116 L95,110 L120,106 L145,108 L170,101 L195,96 L220,98 L245,91 L270,86 L295,88 L320,81 L345,76 L370,78 L395,71 L420,66 L445,68 L470,61 L495,56 L520,58 L545,51 L570,46 L595,48 L620,41 L620,142 L20,142 Z"/>
+            <polyline class="pc-line" pathLength="1" points="20,118 45,115 70,116 95,110 120,106 145,108 170,101 195,96 220,98 245,91 270,86 295,88 320,81 345,76 370,78 395,71 420,66 445,68 470,61 495,56 520,58 545,51 570,46 595,48 620,41"/>
+            <text class="pc-t" x="20" y="26">resultado — crescendo</text>
+          </svg>
+          <div class="p-feed" id="pfeed" aria-hidden="true"></div>
+          <div class="p-cap">cenário ilustrativo — no seu painel, os números serão os seus</div>
+        </div>
+        <p>Você abre um painel e sabe, em segundos, quanto custou cada lead e cada venda deste mês. O anúncio deixa de ser aposta e vira alavanca que você regula. A aquisição tem fonte constante — não depende de uma indicação ou de um mês de sorte. <strong>Você projeta o próximo trimestre com a segurança de quem enxerga o número.</strong></p>
+        <p>O comercial recebe leads qualificados e segue um processo que você desenha e audita. O caixa fica previsível. A marca que antes competia por preço passa a ser lembrada pelo nome. E você dorme sabendo que o motor está rodando, aprendendo e ficando mais barato a cada mês.</p>
+        <p class="scene-final">Essa é a diferença entre <b>alugar demanda</b> e <b>construir patrimônio</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="sec light" id="servicos">
+  <div class="wrap">
+    <div class="eyebrow rv"><span class="b"></span><span class="kick">04 — o que fazemos</span></div>
+    <h2 class="title rv d1">nada de pacote.<br><em>diagnóstico primeiro.</em></h2>
+    <div style="height:clamp(30px,5vw,60px)"></div>
+    <div class="acc rv">
+      <div class="it">
+        <button class="hd" aria-expanded="false"><span class="num">/01</span><span class="nm">diagnóstico</span><span class="pl">+</span></button>
+        <div class="bd"><div class="bdi">
+          <span class="tag">raiz · dado · problema real</span>
+          <p>Antes de propor qualquer coisa, mapeamos o que trava o seu resultado. Dados, operação e o problema <em>de verdade</em> — não o sintoma. É daqui que tudo parte. <em>Sempre.</em></p>
+        </div></div>
+      </div>
+      <div class="it">
+        <button class="hd" aria-expanded="false"><span class="num">/02</span><span class="nm">marca &amp; branding</span><span class="pl">+</span></button>
+        <div class="bd"><div class="bdi">
+          <span class="tag">permanente · denso · deixa marca</span>
+          <p>Posicionamento, identidade e narrativa que <em>ficam</em>. Não construímos o bonito da semana. Construímos o que permanece quando o barulho passa.</p>
+        </div></div>
+      </div>
+      <div class="it">
+        <button class="hd" aria-expanded="false"><span class="num">/03</span><span class="nm">growth</span><span class="pl">+</span></button>
+        <div class="bd"><div class="bdi">
+          <span class="tag">operação · resultado · movimento</span>
+          <p>Performar novos números: aquisição, mídia, dados e otimização contínua. <em>Arriscar para ganhar</em> — com método, não com aposta.</p>
+        </div></div>
+      </div>
+      <div class="it">
+        <button class="hd" aria-expanded="false"><span class="num">/04</span><span class="nm">conteúdo</span><span class="pl">+</span></button>
+        <div class="bd"><div class="bdi">
+          <span class="tag">voz · peso · propósito</span>
+          <p>Conteúdo com peso, na voz da marca, com intenção. <em>Frases curtas. Peso em cada palavra.</em> Nada de volume vazio para alimentar algoritmo.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTRO / QUALIFICAÇÃO -->
+<section class="sec" id="filtro">
+  <div class="wrap">
+    <div class="eyebrow rv"><span class="b"></span><span class="kick">05 — isso não é pra todo mundo</span></div>
+    <h2 class="title rv d1">antes de continuar,<br><em>seja honesto.</em></h2>
+    <div class="filter">
+      <div class="fcard no rv">
+        <div class="fh">não é pra você, se…</div>
+        <ul>
+          <li><span class="ic">✕</span>Quer milagre em 7 dias e viral de segunda-feira.</li>
+          <li><span class="ic">✕</span>Prefere pacote fechado a entender o próprio problema.</li>
+          <li><span class="ic">✕</span>Troca de agência a cada 3 meses atrás de promessa nova.</li>
+          <li><span class="ic">✕</span>Mede sucesso em curtida, não em caixa.</li>
+        </ul>
+      </div>
+      <div class="fcard yes rv d2">
+        <div class="fh">é pra você, se…</div>
+        <ul>
+          <li><span class="ic">✓</span>Pensa em <em>legado</em> — quer construir o que permanece.</li>
+          <li><span class="ic">✓</span>Quer finalmente <em>saber o que está fazendo</em> — e por quê.</li>
+          <li><span class="ic">✓</span>Aceita <em>arriscar para ganhar</em>, com diagnóstico na mesa.</li>
+          <li><span class="ic">✓</span>Procura um <em>parceiro</em> de verdade, não mais um fornecedor.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG QUOTE -->
+<section class="sec light bigq">
+  <div class="wrap rv">
+    <p class="t">"Pode ficar tranquilo. Não estamos fazendo nada de novo. <b>Apenas o que somos os melhores."</b></p>
+    <div class="selos" aria-hidden="true">
+      <span class="selo">medido ✓</span>
+      <span class="selo">previsível ✓</span>
+      <span class="selo">auditável ✓</span>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULÁRIO -->
+<section class="sec form-sec" id="vamo">
+  <div class="wrap">
+    <div class="eyebrow rv"><span class="b"></span><span class="kick">06 — vamo</span></div>
+    <h2 class="title rv d1" style="text-align:center;max-width:14ch;margin-inline:auto">seu movimento<br><em>começa aqui.</em></h2>
+    <p class="rv d2" style="text-align:center;font-family:var(--serif);font-style:italic;color:var(--stone);max-width:44ch;margin:18px auto 0">Seis passos. Menos de dois minutos. Você chega na conversa já sabendo — e a gente também.</p>
+
+    <div class="action-grid">
+      <div class="acard rv">
+        <h4 class="ah">o que essa conversa realmente é</h4>
+        <p>Você não vai entrar em mais uma call de vendas. Vai conversar com quem já chegou no resultado que você busca — e te pega pela mão para te levar até lá. Sem script de fechamento. <strong>Um diagnóstico do seu funil, na mesa, com os números reais.</strong></p>
+      </div>
+      <div class="acard rv d1">
+        <h4 class="ah">por que confiar em quem vai te levar</h4>
+        <p>Não somos freelancers nem uma agência que vive de vender serviço. <strong>Temos os nossos próprios negócios.</strong> Falamos a língua de quem paga folha: carga tributária, custo de anúncio, CAC, margem, EBITDA, capacidade de endividamento. Não é teoria de slide; é o nosso dia a dia. <strong>É esse olhar de dono que aplicamos no seu negócio.</strong></p>
+      </div>
+    </div>
+
+    <div class="formbox rv d2" id="fbox">
+      <div class="fprog">
+        <span class="st"><b id="fstep">01</b>/06</span>
+        <div class="bar"><i id="fbar"></i></div>
+        <span class="st" id="fpct">0%</span>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step on" data-step="1">
+        <div class="q">Qual é o <em>seu nome?</em></div>
+        <div class="hint">Só o nome. Sem formalidade.</div>
+        <input class="field" type="text" id="f-nome" placeholder="Seu nome" autocomplete="name">
+        <div class="reward" id="rw1">Perfeito. Vamos ao contexto.</div>
+        <div class="fnav">
+          <button class="fback" disabled>← voltar</button>
+          <button class="btn fnext"><span>continuar</span><span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" data-step="2">
+        <div class="q">Qual é o <em>seu negócio?</em></div>
+        <div class="hint">Empresa e segmento. Uma linha resolve.</div>
+        <input class="field" type="text" id="f-negocio" placeholder="Ex.: Clínica Raiz — saúde e estética">
+        <div class="reward" id="rw2">Anotado. Contexto é metade do diagnóstico.</div>
+        <div class="fnav">
+          <button class="fback">← voltar</button>
+          <button class="btn fnext"><span>continuar</span><span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" data-step="3">
+        <div class="q">Em que <em>momento</em> o negócio está?</div>
+        <div class="hint">Sem resposta certa. Só a real.</div>
+        <div class="opts" data-group="momento">
+          <button class="opt"><span class="k">A</span>Começando — preciso de raiz e direção.</button>
+          <button class="opt"><span class="k">B</span>Rodando, mas estagnado. Preciso me mover.</button>
+          <button class="opt"><span class="k">C</span>Crescendo — quero escalar com método.</button>
+          <button class="opt"><span class="k">D</span>Consolidado — penso em legado e marca.</button>
+        </div>
+        <div class="reward" id="rw3">Entendido. Cada momento pede um caminho diferente.</div>
+        <div class="fnav">
+          <button class="fback">← voltar</button>
+          <button class="btn fnext"><span>continuar</span><span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" data-step="4">
+        <div class="q">Qual é o <em>principal desafio</em> hoje?</div>
+        <div class="hint">O problema real — não o sintoma.</div>
+        <div class="opts two" data-group="desafio">
+          <button class="opt"><span class="k">A</span>Marca fraca — ninguém lembra de mim.</button>
+          <button class="opt"><span class="k">B</span>Vendas — o número não se move.</button>
+          <button class="opt"><span class="k">C</span>Já invisto, mas sem clareza do retorno.</button>
+          <button class="opt"><span class="k">D</span>Tudo junto — preciso de um diagnóstico.</button>
+        </div>
+        <div class="reward" id="rw4">Você acabou de fazer o que 90% não faz: nomear o problema.</div>
+        <div class="fnav">
+          <button class="fback">← voltar</button>
+          <button class="btn fnext"><span>continuar</span><span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step" data-step="5">
+        <div class="q">Quanto você <em>investe</em> em marketing por mês?</div>
+        <div class="hint">Sem julgamento. Isso calibra a conversa.</div>
+        <div class="opts two" data-group="investimento">
+          <button class="opt"><span class="k">A</span>Ainda não invisto de forma estruturada.</button>
+          <button class="opt"><span class="k">B</span>Até R$ 3 mil</button>
+          <button class="opt"><span class="k">C</span>R$ 3 mil — R$ 10 mil</button>
+          <button class="opt"><span class="k">D</span>Acima de R$ 10 mil</button>
+        </div>
+        <div class="reward" id="rw5">Última etapa. Você já chega na conversa com contexto.</div>
+        <div class="fnav">
+          <button class="fback">← voltar</button>
+          <button class="btn fnext"><span>continuar</span><span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step" data-step="6">
+        <div class="q">Qual é o seu <em>contato?</em></div>
+        <div class="hint">WhatsApp ou e-mail. A resposta vem rápido — e vem de gente.</div>
+        <input class="field" type="text" id="f-contato" placeholder="(17) 9 9999-9999 ou voce@empresa.com" autocomplete="tel" style="margin-bottom:12px">
+        <textarea class="field" id="f-obs" placeholder="Quer adiantar algo? (opcional)"></textarea>
+        <div class="reward" id="rw6"></div>
+        <div class="fnav">
+          <button class="fback">← voltar</button>
+          <button class="btn fnext" id="fsend"><span>iniciar movimento</span><span class="ar">→</span></button>
+        </div>
+      </div>
+
+      <!-- DONE -->
+      <div class="step" data-step="7">
+        <div class="done-box">
+          <div class="stamp">mova!</div>
+          <h3>movimento <em>iniciado.</em></h3>
+          <p>Recebemos o seu contexto. Nada de resposta automática — quem lê é quem resolve. Falamos com você em breve.</p>
+          <div class="recap" id="recap"></div>
+          <span class="kick">amov network · rio preto — sp</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="flogo">amov<span class="net">Net work</span></div>
+        <p class="ftag">Onde existe clareza. Onde alguém finalmente sabe o que está fazendo.</p>
+      </div>
+      <div class="fcol">
+        <div class="h">navegar</div>
+        <a href="#escuro">O escuro</a>
+        <a href="#motor-sec">O motor</a>
+        <a href="#virada">A virada</a>
+        <a href="#vamo">Vamo</a>
+      </div>
+      <div class="fcol">
+        <div class="h">serviços</div>
+        <span>Diagnóstico</span>
+        <span>Marca &amp; Branding</span>
+        <span>Growth</span>
+        <span>Conteúdo</span>
+      </div>
+      <div class="fcol">
+        <div class="h">contato</div>
+        <a href="mailto:contato@amov.network">contato@amov.network</a>
+        <a href="https://wa.me/5517996272486" target="_blank" rel="noopener">+55 17 99627-2486</a>
+        <a href="#">@amov.network</a>
+        <span>São José do Rio Preto · SP</span>
+      </div>
+    </div>
+    <div class="fbase">
+      <span>© <span id="yr"></span> amov network · cnpj 45.799.852/0001-29</span>
+      <span>quietos. densos. permanentes.</span>
+      <a class="top" href="#topo">voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+
+/* ===== LOADER ===== */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{ $('#loader').classList.add('done'); document.body.classList.add('loaded'); },1100);
+});
+setTimeout(()=>{ $('#loader').classList.add('done'); document.body.classList.add('loaded'); },3000); // fallback
+
+/* ===== YEAR / MARQUEE DUP ===== */
+$('#yr').textContent=new Date().getFullYear();
+['mq1','mq2'].forEach(id=>{const t=document.getElementById(id); if(t)t.innerHTML+=t.innerHTML;});
+
+/* ===== HEADER ===== */
+const hd=$('#hd');
+const onScrollHd=()=>hd.classList.toggle('sh',scrollY>40);
+addEventListener('scroll',onScrollHd,{passive:true}); onScrollHd();
+
+/* ===== PROGRESS + CHECKPOINT ===== */
+const prog=$('#prog'), cp=$('#cp'), cpring=$('#cpring'), cppct=$('#cppct'), cplbl=$('#cplbl');
+const CIRC=81.7;
+const secs=[
+  ['topo','início'],['escuro','o escuro'],
+  ['motor-sec','o motor'],['cases','case — solut'],['virada','a virada'],
+  ['servicos','serviços'],['filtro','é pra você?'],['vamo','vamo']
+];
+let curSec='';
+function updProg(){
+  const h=document.documentElement;
+  const p=Math.min(1,scrollY/(h.scrollHeight-innerHeight));
+  prog.style.transform=`scaleX(${p})`;
+  cpring.style.strokeDashoffset=CIRC*(1-p);
+  cppct.textContent=Math.round(p*100);
+  cp.classList.toggle('show',scrollY>innerHeight*.5 && p<.985);
+  // section label
+  let name='início';
+  for(const [id,label] of secs){
+    const el=document.getElementById(id);
+    if(el && el.getBoundingClientRect().top<innerHeight*.5) name=label;
+  }
+  if(name!==curSec){
+    curSec=name;
+    cplbl.innerHTML=`<b>${name}</b> · continue`;
+    cp.classList.remove('pulse'); void cp.offsetWidth; cp.classList.add('pulse');
+  }
+}
+addEventListener('scroll',updProg,{passive:true}); updProg();
+
+/* ===== REVEALS ===== */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+}),{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* ===== VERSUS ===== */
+const ioThem=new IntersectionObserver(es=>es.forEach((e)=>{
+  if(!e.isIntersecting)return;
+  $$('.vcol.them .w').forEach((w,i)=>setTimeout(()=>w.classList.add('cut'),300+i*220));
+  $$('.vcol.us .w').forEach((w,i)=>setTimeout(()=>w.classList.add('in'),900+i*220));
+  ioThem.disconnect();
+}),{threshold:.4});
+const vs=$('.versus'); if(vs)ioThem.observe(vs);
+
+/* ===== MANIFESTO WORD HIGHLIGHT ===== */
+const mani=$('#mani');
+if(mani){
+  const parts=[];
+  mani.childNodes.forEach(n=>{
+    if(n.nodeType===3){n.textContent.split(/\s+/).filter(Boolean).forEach(w=>parts.push([w,false]));}
+    else if(n.nodeName==='I'){n.textContent.split(/\s+/).filter(Boolean).forEach(w=>parts.push([w,true]));}
+  });
+  mani.innerHTML=parts.map(([w,hot])=>`<span class="wd${hot?' hot':''}">${w}</span>`).join(' ');
+  const wds=$$('.wd',mani);
+  function maniScroll(){
+    const r=mani.getBoundingClientRect();
+    const p=Math.min(1,Math.max(0,(innerHeight*.82-r.top)/(r.height+innerHeight*.35)));
+    const n=Math.floor(p*wds.length*1.15);
+    wds.forEach((w,i)=>w.classList.toggle('on',i<n));
+  }
+  addEventListener('scroll',maniScroll,{passive:true}); maniScroll();
+}
+
+/* ===== ACCORDION ===== */
+$$('.it').forEach(it=>{
+  const hd=$('.hd',it), bd=$('.bd',it);
+  hd.addEventListener('click',()=>{
+    const open=it.classList.contains('open');
+    $$('.it.open').forEach(o=>{o.classList.remove('open');$('.bd',o).style.maxHeight=0;$('.hd',o).setAttribute('aria-expanded','false');});
+    if(!open){it.classList.add('open');bd.style.maxHeight=bd.scrollHeight+'px';hd.setAttribute('aria-expanded','true');}
+  });
+});
+
+/* ===== FORM JOURNEY ===== */
+const steps=$$('.step'), fbar=$('#fbar'), fstep=$('#fstep'), fpct=$('#fpct'), fbox=$('#fbox');
+const TOTAL=6;
+let cur=1;
+const data={nome:'',negocio:'',momento:'',desafio:'',investimento:'',contato:'',obs:''};
+
+function showStep(n){
+  cur=n;
+  steps.forEach(s=>s.classList.toggle('on',+s.dataset.step===n));
+  const done=Math.min(n-1,TOTAL);
+  fbar.style.width=(done/TOTAL*100)+'%';
+  fpct.textContent=Math.round(done/TOTAL*100)+'%';
+  fstep.textContent=String(Math.min(n,TOTAL)).padStart(2,'0');
+  if(n===7){
+    fbox.classList.add('done');
+    fbar.style.width='100%';fpct.textContent='100%';
+    buildRecap();
+  }
+  const r=fbox.getBoundingClientRect();
+  if(r.top<0||r.top>innerHeight*.4) fbox.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function reward(n){
+  const el=document.getElementById('rw'+n);
+  if(el&&el.textContent.trim())el.classList.add('show');
+}
+
+function shake(el){
+  el.style.borderColor='var(--red)';
+  el.animate([{transform:'translateX(0)'},{transform:'translateX(-7px)'},{transform:'translateX(7px)'},{transform:'translateX(0)'}],{duration:300});
+  setTimeout(()=>el.style.borderColor='',1200);
+}
+
+function validate(n){
+  if(n===1){const v=$('#f-nome').value.trim();if(!v){shake($('#f-nome'));return false;}data.nome=v;}
+  if(n===2){const v=$('#f-negocio').value.trim();if(!v){shake($('#f-negocio'));return false;}data.negocio=v;}
+  if(n===3||n===4||n===5){
+    const g={3:'momento',4:'desafio',5:'investimento'}[n];
+    const sel=$(`.opts[data-group="${g}"] .opt.sel`);
+    if(!sel){shake($(`.opts[data-group="${g}"]`));return false;}
+    data[g]=sel.textContent.replace(/^[A-D]/,'').trim();
+  }
+  if(n===6){
+    const v=$('#f-contato').value.trim();
+    if(v.length<6){shake($('#f-contato'));return false;}
+    data.contato=v;data.obs=$('#f-obs').value.trim();
+  }
+  return true;
+}
+
+$$('.fnext').forEach(b=>b.addEventListener('click',async()=>{
+  if(!validate(cur))return;
+  reward(cur);
+  if(cur===6){ /* envia o lead antes da tela final */
+    const lbl=b.querySelector('span');
+    b.disabled=true; if(lbl)lbl.textContent='enviando…';
+    try{
+      await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({...data,origem:'institucional'})});
+    }catch(e){ console.warn('lead não enviado (offline/local):',e); }
+    b.disabled=false; if(lbl)lbl.textContent='iniciar movimento';
+    showStep(7); return;
+  }
+  setTimeout(()=>showStep(cur+1),650);
+}));
+$$('.fback').forEach(b=>b.addEventListener('click',()=>{if(cur>1)showStep(cur-1);}));
+
+/* options select */
+$$('.opts').forEach(g=>$$('.opt',g).forEach(o=>o.addEventListener('click',()=>{
+  $$('.opt',g).forEach(x=>x.classList.remove('sel'));
+  o.classList.add('sel');
+  o.animate([{transform:'scale(1)'},{transform:'scale(1.03)'},{transform:'scale(1)'}],{duration:280,easing:'cubic-bezier(.16,1,.3,1)'});
+})));
+
+/* enter avança em inputs de texto */
+$$('.field').forEach(f=>f.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&f.tagName!=='TEXTAREA'){e.preventDefault();$('.step.on .fnext')?.click();}
+}));
+
+function buildRecap(){
+  const rows=[
+    ['quem','nome'],['negócio','negocio'],['momento','momento'],
+    ['trava','desafio'],['investimento','investimento'],['contato','contato']
+  ];
+  $('#recap').innerHTML=rows
+    .filter(([,k])=>data[k])
+    .map(([l,k])=>`<div class="r"><span class="k">${l}</span><span class="v">${data[k].replace(/</g,'&lt;')}</span></div>`)
+    .join('');
+  /* Destino do lead: conectar aqui (fetch/CRM/WhatsApp). Por ora, log local. */
+  console.log('AMOV LEAD →',JSON.stringify(data,null,2));
+}
+
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ===== SPOTLIGHT — o hero esconde números no escuro ===== */
+(function(){
+const gh=$('#ghosts'); if(!gh||REDUCED)return;
+const hero=$('.hero');
+let tx=72,ty=30,gx=72,gy=30,manual=0;
+hero.addEventListener('pointermove',e=>{
+  const r=hero.getBoundingClientRect();
+  tx=(e.clientX-r.left)/r.width*100; ty=(e.clientY-r.top)/r.height*100;
+  manual=performance.now();
+},{passive:true});
+(function sweep(now){
+  requestAnimationFrame(sweep);
+  if(document.hidden)return;
+  const t=now/1000;
+  if(now-manual>2600){ tx=50+38*Math.sin(t*.33); ty=32+20*Math.sin(t*.21+1.7); }
+  gx+=(tx-gx)*.07; gy+=(ty-gy)*.07;
+  gh.style.setProperty('--mx',gx.toFixed(2)+'%');
+  gh.style.setProperty('--my',gy.toFixed(2)+'%');
+})(0);
+})();
+
+/* ===== O MOTOR — ciclo autorretroalimentado ===== */
+(function(){
+const svg=$('#motor'); if(!svg)return;
+const layer=$('#particles');
+const CX=450,CY=300,R=175,NS='http://www.w3.org/2000/svg';
+const pIn=$('#pIn'),pOut=$('#pOut'),pFb=$('#pFb');
+const loopGlow=$('#loopGlow'),loopTrack=$('#loopTrack');
+const core=$('#core'),coreRing=$('#coreRing'),coreHalo=$('#coreHalo');
+const nodes=$$('#nodes .node circle');
+const hud={ciclo:$('#hudCiclo'),cpl:$('#hudCpl'),qual:$('#hudQual'),cli:$('#hudCli')};
+const st={cpl:52,qual:58,ciclos:0,clientes:0,strength:0,speed:.35,targetSpeed:.35,pulse:0,t:0};
+const fmt=v=>'R$ '+v.toFixed(2).replace('.',',');
+function hudUpd(){
+  hud.ciclo.textContent=String(st.ciclos).padStart(2,'0');
+  hud.cpl.innerHTML=fmt(st.cpl)+' <span class="tr">▼</span>';
+  hud.qual.innerHTML=Math.round(st.qual)+'% <span class="tr">▲</span>';
+  hud.cli.textContent=st.clientes;
+}
+function learn(f){
+  st.cpl=Math.max(19.4,st.cpl*(1-.045*f));
+  st.qual=Math.min(94,st.qual+1.4*f);
+  st.strength=Math.min(1,st.strength+.07*f);
+  st.targetSpeed=.55+st.strength*.55;
+  loopGlow.setAttribute('stroke-opacity',(st.strength*.8).toFixed(2));
+  loopTrack.setAttribute('stroke-width',(1.5+st.strength).toFixed(2));
+  hudUpd();
+}
+const lenIn=pIn.getTotalLength(),lenOut=pOut.getTotalLength(),lenFb=pFb.getTotalLength();
+const parts=[];
+function dot(r,fill,op){const c=document.createElementNS(NS,'circle');
+  c.setAttribute('r',r);c.setAttribute('fill',fill);c.setAttribute('opacity',op);
+  layer.appendChild(c);return c;}
+function spawnIn(){ if(parts.filter(p=>p.mode!=='dead').length>34)return;
+  parts.push({el:dot(2.6,'#9B9593',.85),mode:'in',t:0,v:.38+Math.random()*.14}); }
+function toLoop(p){ p.mode='loop';p.ang=Math.PI;p.v=.5+Math.random()*.22;
+  p.marker=!parts.some(q=>q.marker&&q.mode==='loop');
+  p.el.setAttribute('fill','#EEE9E5');p.el.setAttribute('r',2.8);p.el.setAttribute('opacity',.9); }
+function toOut(p){ p.mode='out';p.t=0;p.v=.34+Math.random()*.1;p.marker=false;
+  p.el.setAttribute('fill','#E52B20');p.el.setAttribute('r',3.4); }
+function toFb(p){ p.mode='fb';p.t=0;p.v=.3+Math.random()*.08;
+  p.el.setAttribute('fill','#E52B20');p.el.setAttribute('opacity',.8); }
+function kill(p){ p.mode='dead';p.el.remove(); }
+function nodeBlip(i){ const n=nodes[i]; if(!n)return;
+  n.setAttribute('stroke','#E52B20'); setTimeout(()=>n.setAttribute('stroke','#EEE9E5'),260); }
+const HALF=Math.PI/2, sector=a=>Math.floor((a-Math.PI)/HALF);
+let active=false,last=0,acc=0;
+function frame(now){
+  requestAnimationFrame(frame);
+  if(document.hidden)return;
+  const dt=Math.min(.05,(now-last)/1000)||.016; last=now; st.t+=dt;
+  const tgt=active?st.targetSpeed:.12;
+  st.speed+=(tgt-st.speed)*Math.min(1,dt*1.6);
+  st.pulse=Math.max(0,st.pulse-dt*1.4);
+  const breath=Math.sin(st.t*2.1)*2.2, boost=st.pulse*9;
+  core.setAttribute('r',38+breath*.6+boost);
+  coreRing.setAttribute('r',52+breath+boost*1.3);
+  coreHalo.setAttribute('opacity',(.45+st.pulse*.5+Math.sin(st.t*2.1)*.06).toFixed(2));
+  if(active){ acc+=dt; if(acc>.7){acc=0;spawnIn();} }
+  for(const p of parts){
+    if(p.mode==='dead')continue;
+    if(p.mode==='in'){
+      p.t+=dt*p.v*(st.speed/.6+.4);
+      if(p.t>=1){toLoop(p);nodeBlip(0);continue;}
+      const pt=pIn.getPointAtLength(p.t*lenIn);
+      p.el.setAttribute('cx',pt.x);p.el.setAttribute('cy',pt.y);
+    }else if(p.mode==='loop'){
+      const prev=p.ang; p.ang+=dt*p.v*st.speed*2.2;
+      for(let m=sector(prev)+1;m<=sector(p.ang);m++){
+        const ni=((m%4)+4)%4; nodeBlip(ni);
+        if(ni===2&&Math.random()<.3){toOut(p);break;}
+        if(ni===0&&p.marker){st.ciclos++;learn(.6);}
+      }
+      if(p.mode!=='loop')continue;
+      p.el.setAttribute('cx',CX+R*Math.cos(p.ang));
+      p.el.setAttribute('cy',CY+R*Math.sin(p.ang));
+    }else if(p.mode==='out'){
+      p.t+=dt*p.v*(st.speed/.6+.4);
+      if(p.t>=.52&&!p.branched){p.branched=true;if(Math.random()<.45){toFb(p);continue;}}
+      if(p.t>=1){st.clientes++;hudUpd();kill(p);continue;}
+      const pt=pOut.getPointAtLength(p.t*lenOut);
+      p.el.setAttribute('cx',pt.x);p.el.setAttribute('cy',pt.y);
+    }else if(p.mode==='fb'){
+      p.t+=dt*p.v*(st.speed/.6+.4);
+      if(p.t>=1){st.pulse=1;learn(1);kill(p);continue;}
+      const pt=pFb.getPointAtLength(p.t*lenFb);
+      p.el.setAttribute('cx',pt.x);p.el.setAttribute('cy',pt.y);
+    }
+  }
+  for(let i=parts.length-1;i>=0;i--)if(parts[i].mode==='dead')parts.splice(i,1);
+}
+if(REDUCED){
+  st.ciclos=12;st.cpl=19.4;st.qual=94;st.clientes=87;st.strength=1;
+  loopGlow.setAttribute('stroke-opacity','.7');loopTrack.setAttribute('stroke-width','2.5');
+  hudUpd();
+}else{
+  hudUpd();
+  new IntersectionObserver(es=>es.forEach(e=>active=e.isIntersecting),{threshold:.25}).observe($('#motorWrap'));
+  for(let i=0;i<7;i++){parts.push({el:dot(2.8,'#EEE9E5',.9),mode:'loop',ang:Math.PI+i*(2*Math.PI/7),v:.5+Math.random()*.22,marker:i===0});}
+  requestAnimationFrame(t=>{last=t;requestAnimationFrame(frame);});
+}
+})();
+
+/* ===== CONTADORES — resultados que já vivemos ===== */
+(function(){
+const cs=$$('.count'); if(!cs.length)return;
+const io2=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return; io2.unobserve(e.target);
+  const el=e.target,to=+el.dataset.to;
+  if(REDUCED||to===0){el.textContent=to;return;}
+  const t0=performance.now(),DUR=1400;
+  (function tick(n){
+    const k=Math.min(1,(n-t0)/DUR);
+    el.textContent=Math.round(to*(1-Math.pow(1-k,3)));
+    if(k<1)requestAnimationFrame(tick);
+  })(t0);
+}),{threshold:.5});
+cs.forEach(c=>io2.observe(c));
+})();
+
+/* ===== MAGNETIC CTA (inédita) ===== */
+(function(){
+if(REDUCED||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+$$('.btn').forEach(b=>{
+  b.addEventListener('pointermove',e=>{
+    const r=b.getBoundingClientRect();
+    const dx=e.clientX-(r.left+r.width/2), dy=e.clientY-(r.top+r.height/2);
+    b.style.transform=`translate(${(dx*.18).toFixed(1)}px,${(dy*.22).toFixed(1)}px)`;
+  });
+  b.addEventListener('pointerleave',()=>{b.style.transform='';});
+});
+})();
+
+/* ===== TILT 3D — é. faz. fala. (inédita) ===== */
+(function(){
+if(REDUCED||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+$$('.tcard').forEach(c=>{
+  c.addEventListener('pointermove',e=>{
+    const r=c.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+    c.style.transform=`translateY(-8px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*7).toFixed(2)}deg)`;
+  });
+  c.addEventListener('pointerleave',()=>{c.style.transform='';});
+});
+})();
+
+/* ============================================================
+   O FUNIL — a conta que ninguém te mostra, viva
+   investimento → cliques → leads → reuniões → vendas
+   ============================================================ */
+(function(){
+const stage=$('#fun-stage'); if(!stage)return;
+
+/* cada valor deriva do anterior */
+const FUNIL_CFG={investimento:5000,cpc:2.5,convLP:.08,convReuniao:.25,fechamento:.10};
+const D=(c=>{const cliques=c.investimento/c.cpc, leads=cliques*c.convLP,
+  reunioes=leads*c.convReuniao, vendas=reunioes*c.fechamento;
+  return {inv:c.investimento,cpc:c.cpc,cliques,leads,cpl:c.investimento/leads,
+          reunioes,vendas,cac:c.investimento/vendas};})(FUNIL_CFG);
+
+const int=v=>Math.round(v).toLocaleString('pt-BR');
+const dec=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const OUTS=[
+  ['fun-v-inv','fun-h-inv',D.inv,int],['fun-v-cpc','fun-h-cpc',D.cpc,dec],
+  ['fun-v-cliques','fun-h-cliques',D.cliques,int],['fun-v-leads','fun-h-leads',D.leads,int],
+  ['fun-v-cpl','fun-h-cpl',D.cpl,dec],['fun-v-visitas','fun-h-visitas',D.reunioes,int],
+  ['fun-v-vendas','fun-h-vendas',D.vendas,int],['fun-v-cac','fun-h-cac',D.cac,int]
+];
+function writeVals(k){
+  for(const [a,b,v,f]of OUTS){const s=f(v*k);
+    const ea=document.getElementById(a), eb=document.getElementById(b);
+    if(ea)ea.textContent=s; if(eb)eb.textContent=s;}
+}
+
+if(REDUCED){ stage.classList.add('go'); writeVals(1); }
+else{
+let entered=false, funActive=false;
+function countUp(){
+  const t0=performance.now(), DUR=1600;
+  (function tick(now){
+    const k=Math.min(1,(now-t0)/DUR), e=1-Math.pow(1-k,3);
+    writeVals(e);
+    if(k<1)requestAnimationFrame(tick);
+  })(t0);
+}
+const ioF=new IntersectionObserver(es=>es.forEach(e=>{
+  funActive=e.isIntersecting;
+  if(e.isIntersecting&&!entered){ entered=true; stage.classList.add('go'); writeVals(0); countUp(); }
+}),{threshold:.3});
+ioF.observe(stage);
+
+const YS=[70,190,310,430,550], HW=[380,296,197,129,76];
+function hw(y){
+  if(y<=YS[0])return HW[0];
+  for(let i=1;i<YS.length;i++)if(y<=YS[i]){
+    const t=(y-YS[i-1])/(YS[i]-YS[i-1]);
+    return HW[i-1]+(HW[i]-HW[i-1])*t;
+  }
+  return HW[4];
+}
+const GATES=[{y:250,rate:.45,el:$('#fun-g1'),lastB:0},
+             {y:370,rate:.50,el:$('#fun-g2'),lastB:0},
+             {y:490,rate:.45,el:$('#fun-g3'),lastB:0}];
+function gateBlip(g,now){
+  if(now-g.lastB<220)return; g.lastB=now;
+  $$('.fun-gate',g.el).forEach(l=>{l.style.stroke='#E52B20';l.style.strokeOpacity='.9';});
+  setTimeout(()=>$$('.fun-gate',g.el).forEach(l=>{l.style.stroke='';l.style.strokeOpacity='';}),260);
+}
+const cacg=$('#fun-cacg'), base=$('#fun-base');
+function salePulse(){
+  cacg.classList.remove('pulse'); void cacg.getBBox; cacg.classList.add('pulse');
+  base.style.strokeWidth='4';
+  setTimeout(()=>base.style.strokeWidth='',300);
+}
+
+const NSf='http://www.w3.org/2000/svg', pl=$('#fun-particles');
+const pool=[];
+for(let i=0;i<26;i++){
+  const t=document.createElementNS(NSf,'text');
+  t.textContent='R$'; t.setAttribute('font-size','9'); t.setAttribute('text-anchor','middle');
+  t.setAttribute('opacity','0'); pl.appendChild(t);
+  pool.push({el:t,free:true});
+}
+function spawn(){
+  const p=pool.find(q=>q.free); if(!p)return;
+  p.free=false; p.state='alive'; p.u=(Math.random()*2-1)*.82;
+  p.y=46; p.vy=52+Math.random()*26; p.vx=0; p.o=.85; p.gate=0; p.branched=false;
+  p.el.setAttribute('fill','#EEE9E5');
+}
+function recycle(p){ p.free=true; p.el.setAttribute('opacity','0'); }
+
+let lastF=0, accF=0;
+function funFrame(now){
+  requestAnimationFrame(funFrame);
+  if(document.hidden||!entered)return;
+  const dt=Math.min(.05,(now-lastF)/1000)||.016; lastF=now;
+  if(funActive){ accF+=dt; if(accF>.34){ accF=0; spawn(); } }
+  for(const p of pool){
+    if(p.free)continue;
+    const prevY=p.y;
+    if(p.state==='alive'){
+      p.y+=p.vy*dt;
+      for(let i=p.gate;i<GATES.length;i++){
+        const g=GATES[i];
+        if(prevY<g.y&&p.y>=g.y){
+          p.gate=i+1; gateBlip(g,now);
+          if(Math.random()>g.rate){
+            p.state='lost'; p.vx=(p.u>=0?1:-1)*(120+Math.random()*60);
+            p.el.setAttribute('fill','#4B4645');
+          }
+          break;
+        }
+      }
+      if(p.state==='alive'&&p.y>=544){
+        p.state='won'; p.el.setAttribute('fill','#E52B20'); p.o=1; salePulse();
+      }
+    }
+    else if(p.state==='lost'){ p.y+=p.vy*dt*.4; p.o-=dt*1.5; }
+    else if(p.state==='won'){ p.y+=p.vy*dt*.18; p.o-=dt*1.3; }
+    if(p.o<=0){ recycle(p); continue; }
+    const x=(p.state==='lost')
+      ? (+p.el.getAttribute('x')||450)+p.vx*dt
+      : 450+p.u*Math.max(6,hw(p.y)-26);
+    p.el.setAttribute('x',x); p.el.setAttribute('y',p.y);
+    p.el.setAttribute('opacity',p.o.toFixed(2));
+  }
+}
+requestAnimationFrame(t=>{lastF=t;requestAnimationFrame(funFrame);});
+}
+})();
+
+/* ===== SUSTENTAÇÃO FANTASMA — buraco revelado acende a coluna ===== */
+(function(){
+const cols=$$('.ph-col'); if(!cols.length||REDUCED)return;
+const holes=$$('.holes .hole');
+const ioP=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const i=holes.indexOf(e.target), c=cols[i];
+  if(c){ c.classList.add('on','flash'); }
+  ioP.unobserve(e.target);
+}),{threshold:.4});
+holes.forEach(h=>ioP.observe(h));
+})();
+
+/* ===== PAINEL VIVO — o cenário do desejo funcionando ===== */
+(function(){
+const feed=$('#pfeed'); if(!feed)return;
+const ROWS=[
+  ['lead #247 · anúncio','qualificado ✓'],
+  ['reunião agendada','qui · 14h'],
+  ['lead #248 · instagram','em atendimento'],
+  ['proposta enviada','follow em 48h'],
+  ['venda registrada ✓','cac atualizado'],
+  ['lead #249 · google','qualificado ✓'],
+  ['relatório semanal','enviado ✓']
+];
+function rowEl([a,b]){
+  const d=document.createElement('div');d.className='row';
+  d.innerHTML=`<span>${a}</span><span class="${/✓/.test(b)?'ok':''}">${b}</span>`;
+  return d;
+}
+const kv={cpl:$('#pk-cpl'),cac:$('#pk-cac'),vis:$('#pk-vis'),tri:$('#pk-tri')};
+const line=$('#p-chart .pc-line'),area=$('#p-chart .pc-area');
+
+if(REDUCED){
+  ROWS.slice(0,4).forEach(r=>{const e=rowEl(r);e.classList.add('show');feed.appendChild(e);});
+  Object.values(kv).forEach(e=>e&&e.classList.add('good')); /* estado final: verde */
+}else{
+  let pActive=false,idx=0;
+  new IntersectionObserver(es=>es.forEach(e=>pActive=e.isIntersecting),{threshold:.2}).observe($('#painel'));
+
+  /* feed de negociações */
+  setInterval(()=>{
+    if(!pActive||document.hidden)return;
+    const e=rowEl(ROWS[idx%ROWS.length]); idx++;
+    feed.prepend(e);
+    requestAnimationFrame(()=>e.classList.add('show'));
+    while(feed.children.length>4)feed.lastChild.remove();
+  },2300);
+
+  /* gráfico vivo: nasce baixo e vermelho; cresce sutil, tropeços menores */
+  const N=25,X0=20,DX=25,BASE=142;
+  let vals=[.14,.17,.16];
+  function draw(){
+    const pts=vals.map((v,i)=>(X0+i*DX)+','+(132-v*100).toFixed(1)).join(' ');
+    line.setAttribute('points',pts);
+    const lastX=X0+(vals.length-1)*DX;
+    area.setAttribute('d','M'+pts.split(' ').join(' L')+` L${lastX},${BASE} L${X0},${BASE} Z`);
+  }
+  draw();
+
+  /* kpis: melhoram na direção certa; tropeço eventual, sempre menor */
+  let c=27.9,cac=1086,v=46,health=0;
+  const setV=(el,txt,dir)=>{el.innerHTML=txt+` <span class="tr ${dir}">${dir==='bad'?(el===kv.vis?'▼':'▲'):(el===kv.vis||el===kv.tri?'▲':'▼')}</span>`;};
+  setV(kv.cpl,'R$ 27,90','up');setV(kv.cac,'R$ 1.086','up');setV(kv.vis,'46','up');setV(kv.tri,'no alvo','up');
+
+  setInterval(()=>{
+    if(!pActive||document.hidden)return;
+    /* ponto novo na curva */
+    const dip=Math.random()<.22;
+    let nv=vals[vals.length-1]+(dip?-(.015+Math.random()*.02):(.03+Math.random()*.045));
+    nv=Math.max(.05,Math.min(.95,nv));
+    vals.push(nv); if(vals.length>N)vals.shift();
+    draw();
+    /* kpis acompanham */
+    const setback=Math.random()<.15;
+    if(setback){
+      c=Math.min(29.5,c+.12+Math.random()*.2);
+      cac=Math.min(1120,cac+2+Math.random()*4);
+      setV(kv.cpl,'R$ '+c.toFixed(2).replace('.',','),'bad');
+      setV(kv.cac,'R$ '+Math.round(cac).toLocaleString('pt-BR'),'bad');
+    }else{
+      c=Math.max(22.4,c-(.1+Math.random()*.2));
+      cac=Math.max(940,cac-(2+Math.random()*6));
+      if(Math.random()<.5)v++;
+      setV(kv.cpl,'R$ '+c.toFixed(2).replace('.',','),'up');
+      setV(kv.cac,'R$ '+Math.round(cac).toLocaleString('pt-BR'),'up');
+      setV(kv.vis,String(v),'up');
+      health++;
+    }
+    /* após alguns ciclos saudáveis, as métricas assumem o verde — sem alarde */
+    if(health===5)Object.values(kv).forEach(e=>e&&e.classList.add('good'));
+  },1600);
+}
+})();
+
+/* ===== FIM DO ESCURO — a CTA clareia no scroll (inédita) ===== */
+(function(){
+const vamo=$('#vamo'); if(!vamo||REDUCED)return;
+function dawn(){
+  const r=vamo.getBoundingClientRect();
+  const p=Math.min(1,Math.max(0,(innerHeight-r.top)/(r.height*.9)));
+  vamo.style.setProperty('--dawn',p.toFixed(3));
+}
+addEventListener('scroll',dawn,{passive:true}); dawn();
+})();
+})();
+</script>
+</body>
+</html>
