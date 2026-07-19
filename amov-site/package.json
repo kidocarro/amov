@@ -2,8 +2,9 @@
   "name": "amov-site",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Amov Network — site institucional + landing imobiliárias",
   "dependencies": {
-    "@vercel/postgres": "^0.10.0"
+    "pg": "^8.13.1"
   }
 }
