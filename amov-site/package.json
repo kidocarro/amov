@@ -4,6 +4,7 @@
   "private": true,
   "description": "Amov Network — site institucional + landing imobiliárias",
   "dependencies": {
-    "@vercel/postgres": "^0.10.0"
+    "@vercel/postgres": "^0.10.0",
+    "@vercel/speed-insights": "^2.0.0"
   }
 }
