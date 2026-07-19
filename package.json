@@ -1,0 +1,10 @@
+{
+  "name": "amov-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Amov Network — site institucional + landing imobiliárias",
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
