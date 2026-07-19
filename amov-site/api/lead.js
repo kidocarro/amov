@@ -1,8 +1,13 @@
 // api/lead.js — grava leads no Supabase (Postgres) usando a POSTGRES_URL
 import pg from 'pg';
 
+// remove o sslmode da URL para a nossa config de SSL valer
+const cs = (process.env.POSTGRES_URL || '')
+  .replace(/([?&])sslmode=[^&]*&?/, '$1')
+  .replace(/[?&]$/, '');
+
 const pool = new pg.Pool({
-  connectionString: process.env.POSTGRES_URL,
+  connectionString: cs,
   ssl: { rejectUnauthorized: false },
   max: 1
 });
@@ -28,7 +33,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'method not allowed' });
   }
   try {
-    await ready;
+    await ready.catch(() => {});
     const b = req.body || {};
     const nome = clip(b.nome);
     const contato = clip(b.contato);
