@@ -6,6 +6,17 @@
 <title>Amov Network — Captação previsível para imobiliárias · Rio Preto</title>
 <meta name="description" content="A sua imobiliária não vende pouco. Ela vende no escuro. A Amov instala um motor de captação previsível e de alta potência dentro da sua imobiliária.">
 <meta name="theme-color" content="#1A1719">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Amov Network — captação previsível para imobiliárias">
+<meta property="og:description" content="A sua imobiliária não vende pouco. Ela vende no escuro. Instalamos um motor de captação previsível dentro da sua operação.">
+<meta property="og:url" content="https://amov.network/imobiliarias">
+<meta property="og:image" content="https://amov.network/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amov.network/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.cdnfonts.com/css/tasa-orbiter-display" rel="stylesheet">
@@ -138,8 +149,8 @@ header.sh .nav{padding-block:12px}
 .lede+.lede{margin-top:1.1em}
 .lede strong{font-weight:600;color:var(--paper)}
 .layer{margin-top:clamp(56px,9vw,110px)}
-.layer-kick{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
-.layer-kick b{color:var(--red);font-weight:700}
+.layer-kick{display:block;margin-bottom:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);line-height:1.8}
+.layer-kick b{color:var(--red);font-weight:700;margin-right:12px}
 
 /* reveal */
 .rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--e1),transform .9s var(--e1)}
@@ -448,6 +459,20 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
 .recap .r .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);padding-top:3px}
 .recap .r .v{font-family:var(--serif);font-style:italic;color:var(--paper);text-align:right}
 
+/* ===== MOBILE — legibilidade das visualizações (<640px) ===== */
+@media(max-width:639px){
+  .h-ghosts{display:none}
+  #motor .node-lb{font-size:22px}
+  #motor .core-lb{font-size:20px}
+  #motor .node-sb,#motor .flow-lb,#motor text[font-size="8"]{display:none}
+  #spark .sp-lab{font-size:20px}
+  #spark .sp-m{font-size:15px}
+  #spark .sp-m:nth-of-type(even){display:none}
+  #ph-svg .cl{font-size:17px}
+  #ph-svg .q{font-size:22px}
+  #ph-svg .ph-lb{font-size:16px}
+}
+
 /* ===== REDUCED — novas peças ===== */
 @media (prefers-reduced-motion:reduce){
   .h-ghosts{-webkit-mask-image:none;mask-image:none;opacity:.14}
@@ -539,7 +564,7 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
 
     <!-- camada 1 -->
     <div class="rv d1">
-      <div class="layer-kick"><b>camada 1</b><span>o ponto de atenção, exposto</span></div>
+      <div class="layer-kick"><b>o padrão</b><span>todo mês, a mesma história</span></div>
       <p class="lede">A maioria das imobiliárias não tem um problema de venda. Tem um problema de <strong>origem</strong>. A demanda chega em surtos: um mês bom, dois fracos, um portal que rendeu, um indicado que apareceu. Nada disso é método — <strong>é sorte com roupa de estratégia</strong>. E o que depende de sorte não dá para planejar, escalar nem defender.</p>
     </div>
 
@@ -576,7 +601,7 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
     <!-- camada 2 -->
     <div class="layer">
       <div class="rv">
-        <div class="layer-kick"><b>camada 2</b><span>os buracos de negócio (a justificativa)</span></div>
+        <div class="layer-kick"><b>os buracos</b><span>o que o crescimento esconde</span></div>
         <p class="lede">Quando a captação não é um sistema, o negócio anda com buracos por baixo do tapete:</p>
       </div>
       <div class="phantom rv d1" aria-hidden="true">
@@ -629,7 +654,7 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
     <!-- camada 3 -->
     <div class="layer">
       <div class="rv">
-        <div class="layer-kick"><b>camada 3</b><span>a conta que ninguém te mostra</span></div>
+        <div class="layer-kick"><b>a conta</b><span>que ninguém te mostra</span></div>
         <p class="lede">Captação é matemática, não sorte. A cadeia é sempre esta:</p>
       </div>
       <div class="formula-box rv d1">
@@ -723,7 +748,7 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
     <div class="eyebrow rv"><span class="b"></span><span class="kick">02 — interesse</span></div>
 
     <div class="rv d1">
-      <div class="layer-kick"><b>o mecanismo</b><span>da dor</span></div>
+      <div class="layer-kick"><b>a raiz</b><span>do problema</span></div>
       <p class="lede">A raiz não é o anúncio caro nem o portal fraco. A raiz é a <strong>ausência de um motor</strong>. Sem um sistema que capta, mede e melhora sozinho, a captação nem chega a virar aluguel: você paga, gera o lead — e não capta um contato ativo. <strong>Capta um contato só, que nasce e morre no mesmo dia.</strong> Sem propósito, sem histórico, sem dono.</p>
     </div>
 
@@ -823,7 +848,7 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
     <div class="mech-grid">
       <!-- mecanismo da solução -->
       <div class="rv">
-        <div class="layer-kick"><b>o mecanismo</b><span>da solução</span></div>
+        <div class="layer-kick"><b>como resolvemos</b></div>
         <p class="lede">A Amov instala um <strong>motor de captação previsível e de alta potência</strong> dentro da sua imobiliária:</p>
         <div class="credencial">Não é IA genérica. É <em>IA dirigida</em> por um time de publicidade que sabe o que comunicar, com funis de automação criados por quem <strong>já negociou mais de 20 milhões em um ano</strong> e levou uma operação de dois atendentes no WhatsApp a um time estruturado.</div>
       </div>
