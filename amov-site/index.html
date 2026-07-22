@@ -6,6 +6,17 @@
 <title>Amov Network — Não estamos fazendo nada de novo.</title>
 <meta name="description" content="O mercado de marketing é barulho. Nós somos o ponto de partida para se movimentar. Amov Network — São José do Rio Preto.">
 <meta name="theme-color" content="#1A1719">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Amov Network — a engenharia da previsibilidade">
+<meta property="og:description" content="O problema não é vender pouco. É vender no escuro. Instalamos um motor de aquisição previsível dentro da sua operação.">
+<meta property="og:url" content="https://amov.network/">
+<meta property="og:image" content="https://amov.network/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amov.network/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.cdnfonts.com/css/tasa-orbiter-display" rel="stylesheet">
@@ -250,6 +261,7 @@ header.sh .nav{padding-block:12px}
 .fcard.no li{color:#8b8582;font-style:italic}
 .fcard.yes li{color:#e8e2dd}
 .fcard li .ic{flex:none;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;margin-top:3px}
+.fcard li .tx{flex:1;min-width:0}
 .fcard.no li .ic{border:1px solid #57514f;color:#57514f}
 .fcard.yes li .ic{background:var(--red);color:#fff}
 .fcard.yes li em{color:var(--red)}
@@ -338,8 +350,8 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
 .lede{font-family:var(--serif);font-size:clamp(1rem,1.9vw,1.22rem);line-height:1.7;color:#d5cfca;max-width:66ch}
 .lede strong{font-weight:600;color:var(--paper)}
 .layer{margin-top:clamp(56px,9vw,110px)}
-.layer-kick{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
-.layer-kick b{color:var(--red);font-weight:700}
+.layer-kick{display:block;margin-bottom:20px;font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone);line-height:1.8}
+.layer-kick b{color:var(--red);font-weight:700;margin-right:12px}
 
 /* ===== BURACOS ===== */
 .holes{margin-top:clamp(26px,4vw,44px);border-top:1px solid var(--line)}
@@ -483,6 +495,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
 .case-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
 .case-tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
 .case-h{font-family:var(--disp);font-weight:800;font-size:clamp(1.6rem,4.6vw,3rem);letter-spacing:-.035em;line-height:1.05;text-transform:lowercase;margin-bottom:18px;max-width:24ch}
+.case-h em{text-transform:none}
 .case-box .formula{margin-top:14px}
 .results.four{margin-top:clamp(30px,5vw,48px)}
 @media(min-width:840px){.results.four{grid-template-columns:repeat(4,1fr)}}
@@ -561,6 +574,24 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
     linear-gradient(180deg,transparent 30%,rgba(229,43,32,calc(.2*var(--dawn,0))) 100%),
     radial-gradient(80% 60% at 50% 112%,rgba(238,233,229,calc(.12*var(--dawn,0))),transparent 70%)}
 .form-sec .wrap{position:relative;z-index:1}
+
+/* ===== MOBILE — legibilidade das visualizações (<640px) ===== */
+@media(max-width:639px){
+  /* hero: sem fantasmas — não há zona livre; spotlight é assinatura do desktop */
+  .h-ghosts{display:none}
+  /* motor: rótulos dos nós legíveis; secundários fora; HUD assume os números */
+  #motor .node-lb{font-size:22px}
+  #motor .core-lb{font-size:20px}
+  #motor .node-sb,#motor .flow-lb,#motor text[font-size="8"]{display:none}
+  /* sparkline: sorte/método legíveis; meses alternados */
+  #spark .sp-lab{font-size:20px}
+  #spark .sp-m{font-size:15px}
+  #spark .sp-m:nth-of-type(even){display:none}
+  /* sustentação fantasma: colunas nomeadas em tamanho real */
+  #ph-svg .cl{font-size:17px}
+  #ph-svg .q{font-size:22px}
+  #ph-svg .ph-lb{font-size:16px}
+}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -655,7 +686,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
     <!-- camada 1 — o ponto exposto -->
     <div class="layer">
       <div class="rv">
-        <div class="layer-kick"><b>camada 1</b><span>o ponto de atenção, exposto</span></div>
+        <div class="layer-kick"><b>o padrão</b><span>todo mês, a mesma história</span></div>
         <p class="lede">A maioria dos negócios não tem um problema de venda. Tem um problema de <strong>origem</strong>. A demanda chega em surtos: um mês bom, dois fracos, uma campanha que rendeu, um indicado que apareceu. Nada disso é método — <strong>é sorte com roupa de estratégia</strong>. E o que depende de sorte não dá para planejar, escalar nem defender.</p>
       </div>
       <div class="spark-box rv d2">
@@ -691,7 +722,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
     <!-- camada 2 — os buracos -->
     <div class="layer">
       <div class="rv">
-        <div class="layer-kick"><b>camada 2</b><span>os buracos de negócio</span></div>
+        <div class="layer-kick"><b>os buracos</b><span>o que o crescimento esconde</span></div>
         <p class="lede">Quando a aquisição não é um sistema, o negócio anda com buracos por baixo do tapete:</p>
       </div>
       <div class="phantom rv d1" aria-hidden="true">
@@ -744,7 +775,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
     <!-- camada 3 — a conta -->
     <div class="layer">
       <div class="rv">
-        <div class="layer-kick"><b>camada 3</b><span>a conta que ninguém te mostra</span></div>
+        <div class="layer-kick"><b>a conta</b><span>que ninguém te mostra</span></div>
         <p class="lede">Aquisição é matemática, não sorte. A cadeia é sempre esta:</p>
       </div>
       <div class="formula-box rv d1">
@@ -830,11 +861,11 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
     <h2 class="title rv d1">a engenharia<br><em>da previsibilidade.</em></h2>
     <div class="layer" style="margin-top:clamp(36px,6vw,64px)">
       <div class="rv d1">
-        <div class="layer-kick"><b>o mecanismo</b><span>da dor</span></div>
+        <div class="layer-kick"><b>a raiz</b><span>do problema</span></div>
         <p class="lede">A raiz não é o anúncio caro nem o canal fraco. A raiz é a <strong>ausência de um motor</strong>. Sem um sistema que capta, mede e melhora sozinho, a aquisição nem chega a virar aluguel: você paga, gera o lead — e não capta um contato ativo. <strong>Capta um contato só, que nasce e morre no mesmo dia.</strong> Sem propósito, sem histórico, sem dono.</p>
       </div>
       <div class="rv d2" style="margin-top:26px">
-        <div class="layer-kick"><b>o mecanismo</b><span>da solução</span></div>
+        <div class="layer-kick"><b>como resolvemos</b></div>
         <p class="lede">Instalamos um <strong>motor de aquisição previsível</strong> dentro da sua operação. Cada campanha ensina a próxima: a inteligência lê o que converte, corta o que não converte e reinveste no que traz o cliente certo. O custo cai. A qualidade sobe. <em>Em ciclo.</em></p>
       </div>
     </div>
@@ -913,7 +944,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
       <h3 class="case-h">do zero a <em>R$ 20 milhões</em> negociados, num nicho fora do radar.</h3>
       <p class="lede">A Solut atua onde a maioria não enxerga: intermediação de rescisão contratual de consórcios, terrenos e cotas de multipropriedade — e corretagem de compra e venda de cotas. O nicho foi detectado pelos profissionais da Amov, que executaram todo o processo, do primeiro lead à estrutura comercial.</p>
 
-      <div class="layer-kick" style="margin-top:clamp(28px,4vw,40px)"><b>o processo</b><span>na ordem em que foi desenhado</span></div>
+      <div class="layer-kick" style="margin-top:clamp(28px,4vw,40px)"><b>o caminho</b><span>do lead à marca</span></div>
       <div class="formula" role="img" aria-label="Motor de Vendas, geração de vendas e resultados, automação do processo, integração da marca, identidade visual e geração de confiança">
         <span class="term">Motor de Vendas</span><span class="arr">→</span>
         <span class="term">vendas &amp; resultados</span><span class="arr">→</span>
@@ -1032,19 +1063,19 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
       <div class="fcard no rv">
         <div class="fh">não é pra você, se…</div>
         <ul>
-          <li><span class="ic">✕</span>Quer milagre em 7 dias e viral de segunda-feira.</li>
-          <li><span class="ic">✕</span>Prefere pacote fechado a entender o próprio problema.</li>
-          <li><span class="ic">✕</span>Troca de agência a cada 3 meses atrás de promessa nova.</li>
-          <li><span class="ic">✕</span>Mede sucesso em curtida, não em caixa.</li>
+          <li><span class="ic">✕</span><span class="tx">Quer milagre em 7 dias e viral de segunda-feira.</span></li>
+          <li><span class="ic">✕</span><span class="tx">Prefere pacote fechado a entender o próprio problema.</span></li>
+          <li><span class="ic">✕</span><span class="tx">Troca de agência a cada 3 meses atrás de promessa nova.</span></li>
+          <li><span class="ic">✕</span><span class="tx">Mede sucesso em curtida, não em caixa.</span></li>
         </ul>
       </div>
       <div class="fcard yes rv d2">
         <div class="fh">é pra você, se…</div>
         <ul>
-          <li><span class="ic">✓</span>Pensa em <em>legado</em> — quer construir o que permanece.</li>
-          <li><span class="ic">✓</span>Quer finalmente <em>saber o que está fazendo</em> — e por quê.</li>
-          <li><span class="ic">✓</span>Aceita <em>arriscar para ganhar</em>, com diagnóstico na mesa.</li>
-          <li><span class="ic">✓</span>Procura um <em>parceiro</em> de verdade, não mais um fornecedor.</li>
+          <li><span class="ic">✓</span><span class="tx">Pensa em <em>legado</em> — quer construir o que permanece.</span></li>
+          <li><span class="ic">✓</span><span class="tx">Quer finalmente <em>saber o que está fazendo</em> — e por quê.</span></li>
+          <li><span class="ic">✓</span><span class="tx">Aceita <em>arriscar para ganhar</em>, com diagnóstico na mesa.</span></li>
+          <li><span class="ic">✓</span><span class="tx">Procura um <em>parceiro</em> de verdade, não mais um fornecedor.</span></li>
         </ul>
       </div>
     </div>
@@ -1216,7 +1247,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
         <div class="h">contato</div>
         <a href="mailto:contato@amov.network">contato@amov.network</a>
         <a href="https://wa.me/5517996272486" target="_blank" rel="noopener">+55 17 99627-2486</a>
-        <a href="#">@amov.network</a>
+        <a href="https://www.instagram.com/amov.network/" target="_blank" rel="noopener">@amov.network</a>
         <span>São José do Rio Preto · SP</span>
       </div>
     </div>
