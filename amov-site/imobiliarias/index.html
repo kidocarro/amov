@@ -497,6 +497,7 @@ textarea.field{min-height:110px;resize:vertical;line-height:1.5}
   #loader{display:none}
 }
 </style>
+<script src="/js/atribuicao.js" defer></script>
 </head>
 <body>
 
@@ -1549,7 +1550,7 @@ $$('.fnext').forEach(b=>b.addEventListener('click',async()=>{
     b.disabled=true; if(lbl)lbl.textContent='enviando…';
     try{
       await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({...data,origem:'imobiliarias'})});
+        body:JSON.stringify({...data,origem:'imobiliarias',atribuicao:window.AmovAtribuicao?AmovAtribuicao.get():null})});
     }catch(e){ console.warn('lead não enviado (offline/local):',e); }
     b.disabled=false; if(lbl)lbl.textContent='iniciar diagnóstico';
     showStep(7); return;

@@ -1,68 +1,111 @@
 # Amov Network — Site
 
-Site institucional + landing de imobiliárias. HTML/CSS/JS vanilla, arquivo único por página, com captura de leads via função serverless.
+Site institucional, landings (imobiliárias, médicos) e o formulário de parceiros (`/parceiros`).
+HTML/CSS/JS vanilla, um arquivo por página, com captura de leads e da **origem** de cada um
+(UTMs, campanha, conjunto, anúncio, click IDs) no Supabase **GRAY Desert**, o banco que a
+integração da Vercel criou no projeto `amov`.
 
 ## Estrutura
 
 ```
 amov-site/
-├── index.html                → https://seu-dominio.com/          (institucional)
-├── imobiliarias/index.html   → https://seu-dominio.com/imobiliarias
-├── api/lead.js               → POST /api/lead (grava lead no Vercel Postgres)
-├── package.json              → dependência @vercel/postgres
-└── .gitignore
+├── index.html                  → /              (institucional)
+├── imobiliarias/index.html     → /imobiliarias
+├── medicos/index.html          → /medicos
+├── parceiros/index.html        → /parceiros     (Tabela do Parceiro, 4 etapas)
+├── js/atribuicao.js            → guarda a origem do visitante (1º e último toque)
+├── api/lead.js                 → POST /api/lead      (landings)
+├── api/parceiro.js             → POST /api/parceiro  (/parceiros)
+├── api/_lib/                   → conexão, migrações, segurança, atribuição (não vira rota)
+├── supabase/migrations/*.sql   → schema do banco (tabelas, RLS, rate limit, views)
+├── scripts/migrate.mjs         → aplica as migrações pela linha de comando
+└── vercel.json                 → cabeçalhos de segurança, anti-iframe, bloqueio de arquivos internos
 ```
 
-## Deploy (GitHub + Vercel) — passo a passo
+## Banco (Supabase GRAY Desert)
 
-### 1. Subir para o GitHub
+As funções usam as variáveis que a integração Supabase da Vercel já injeta no projeto
+(`POSTGRES_URL`, `POSTGRES_URL_NON_POOLING`…). Não precisa configurar nada.
 
-```bash
-cd amov-site
-git init
-git add .
-git commit -m "amov site v1"
-# crie o repositório vazio em github.com/new (ex.: amov-site), depois:
-git remote add origin https://github.com/SEU-USUARIO/amov-site.git
-git branch -M main
-git push -u origin main
+**As tabelas são criadas sozinhas.** Na primeira requisição após o deploy, a função aplica
+as migrações pendentes de `supabase/migrations/` e registra em `private.schema_migrations`.
+Também dá para aplicar antes:
+
+- **SQL Editor do Supabase:** cole o conteúdo de `supabase/migrations/20261104000000_leads_parceiros_origem.sql` e rode (é idempotente).
+- **Linha de comando:** `vercel env pull .env.local` e depois `node --env-file=.env.local scripts/migrate.mjs`.
+
+### Tabelas
+
+| Tabela | O que guarda |
+|---|---|
+| `leads` | Leads das landings (a tabela que já existia, com colunas novas: página, sessão, geo, status, hash do IP) |
+| `parceiros` | Um cadastro por CPF/CNPJ. Reenvio com o mesmo documento atualiza os dados e soma `total_envios` |
+| `parceiro_tabelas` | Cada envio do `/parceiros` = uma tabela versionada, com `protocolo`, condições e aceites |
+| `parceiro_servicos` | Serviços de cada tabela: faixa de valor, valor ao cliente (+20%, calculado), prazo, escopo, especificações |
+| `origens` | **De onde veio cada envio**: um registro de primeiro toque e outro de último toque |
+
+Colunas de `origens`: `canal` (classificado: `meta_ads`, `google_ads`, `tiktok_ads`, `organico_busca`,
+`social`, `referencia`, `email`, `whatsapp`, `direto`…), `utm_source`, `utm_medium`, `utm_campaign`,
+`utm_term`, `utm_content`, `utm_id`, `campaign_id`, `campaign_name`, `adset_id`, `adset_name`, `ad_id`,
+`ad_name`, `placement`, `site_source_name`, `gclid`, `gbraid`, `wbraid`, `gad_source`, `gad_campaignid`,
+`fbclid`, `ttclid`, `msclkid`, `li_fat_id`, cookies `_fbp`/`_fbc`/`_ga`, `referrer`, `landing_page`,
+`capturado_em` e `params` (todos os parâmetros da URL em JSON).
+
+### Views prontas
+
+```sql
+select * from vw_leads_origem order by criado_em desc;      -- lead + origem (último e primeiro toque)
+select * from vw_parceiros_origem order by criado_em desc;  -- envios de parceiros + origem
+select * from vw_origem_resumo order by envios desc;        -- envios por canal / campanha / conjunto / anúncio
 ```
 
-### 2. Conectar na Vercel
+## Como montar os links dos anúncios
 
-1. [vercel.com/new](https://vercel.com/new) → **Import** o repositório `amov-site`.
-2. Framework preset: **Other** (é estático + api). Build command: vazio. Output: raiz.
-3. **Deploy**. O site sobe; o formulário ainda não grava (falta o banco).
+O `js/atribuicao.js` lê qualquer parâmetro da URL. Para ter campanha, conjunto e anúncio separados:
 
-### 3. Criar o banco (Vercel Postgres)
+**Meta Ads** (campo "Parâmetros de URL" do anúncio):
 
-1. No projeto na Vercel → aba **Storage** → **Create Database** → **Postgres** (Neon).
-2. Conecte ao projeto quando perguntado. As variáveis de ambiente
-   (`POSTGRES_URL` etc.) são injetadas automaticamente — o `api/lead.js` as usa
-   sem configuração extra.
-3. **Redeploy** (Deployments → ⋯ → Redeploy) para a função enxergar as variáveis.
+```
+utm_source={{site_source_name}}&utm_medium=paid_social&utm_campaign={{campaign.name}}&utm_term={{adset.name}}&utm_content={{ad.name}}&campaign_id={{campaign.id}}&adset_id={{adset.id}}&adset_name={{adset.name}}&ad_id={{ad.id}}&ad_name={{ad.name}}&placement={{placement}}
+```
 
-A tabela `leads` é criada automaticamente no primeiro envio (idempotente):
-`id, nome, negocio, momento, desafio, investimento, contato, obs, origem, criado_em`.
+**Google Ads** (modelo de acompanhamento ou sufixo do URL final). O `gclid` é capturado sozinho:
 
-### 4. Ver os leads
+```
+utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}&utm_content={creative}&campaign_id={campaignid}&adset_id={adgroupid}&ad_id={creative}&placement={placement}
+```
 
-- Vercel → Storage → seu Postgres → **Data** → tabela `leads`; ou
-- Query no painel: `SELECT * FROM leads ORDER BY criado_em DESC;`
+Também são aceitos os apelidos `utm_adset` (→ `adset_name`) e `utm_ad` (→ `ad_name`).
 
-## Como o formulário envia
+**Primeiro e último toque:** a primeira visita fica guardada por 90 dias. O último toque é
+substituído só quando a pessoa volta por campanha ou por link externo. Uma visita direta
+depois de um anúncio não apaga a campanha.
 
-Ambas as páginas fazem `POST /api/lead` com JSON
-`{nome, negocio, momento, desafio, investimento, contato, obs, origem}` —
-`origem` = `institucional` ou `imobiliarias`. Em ambiente local/file:// o envio
-falha silenciosamente (console.warn) e a jornada do usuário segue normal.
+## Segurança
 
-## Domínio
+- **RLS ligado** em todas as tabelas, sem nenhuma policy, e privilégios de `anon`/`authenticated`
+  revogados. A chave pública do Supabase (Data API) não lê nem grava nada. Só as funções da
+  Vercel gravam, pelo servidor.
+- **Rate limit** no Postgres (`private.rate_limit_ok`): `/api/lead` aceita 5 envios a cada 10 min
+  por IP (300/h no total) e `/api/parceiro` 5 por hora por IP (150/h no total). Acima disso, responde 429.
+- **Proteção contra iframe:** `X-Frame-Options: DENY` e `Content-Security-Policy: frame-ancestors 'none'`
+  em todas as páginas, além de `nosniff`, `Referrer-Policy`, `Permissions-Policy` e `COOP`.
+- **Só aceita envio do próprio site** (checagem de `Origin`), só JSON, com limite de tamanho, validação no
+  servidor e honeypot contra robôs no `/parceiros`.
+- **LGPD:** o IP nunca é guardado. Só um hash com sal (defina `IP_HASH_SALT` na Vercel para um sal próprio).
+- `/supabase`, `/scripts`, `README.md` e `package.json` não ficam acessíveis pelo site.
 
-Vercel → Settings → Domains → adicionar `amov.network` e seguir as instruções
-de DNS do registrador.
+Opcional: no painel da Vercel → Firewall dá para criar uma regra de rate limit para `/api/*`
+como camada extra, antes de a requisição chegar à função.
 
-## Manutenção
+## Como os formulários enviam
 
-- Edite os HTML, commit, push — a Vercel redeploya sozinha.
-- Cópia de trabalho/backups ficam fora deste repo (pasta AMOV.NETWORK).
+- Landings: `POST /api/lead` com `{nome, negocio, momento, desafio, investimento, contato, obs, origem, atribuicao}`.
+  `origem` = `institucional`, `imobiliarias` ou `medicos`.
+- Parceiros: `POST /api/parceiro` com `{parceiro, servicos[], condicoes, aceites, atribuicao}`. A resposta
+  traz o `protocolo` exibido na tela final.
+
+## Deploy
+
+Commit e push na `main`: a Vercel redeploya sozinha (Root Directory = `amov-site`).
+Domínio `amov.network` já configurado no projeto.

@@ -1,9 +1,12 @@
 {
   "name": "amov-site",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "Amov Network — site institucional + landing imobiliárias",
+  "description": "Amov Network — site institucional, landings, /parceiros e captura de leads com atribuição (Supabase)",
+  "scripts": {
+    "db:migrate": "node scripts/migrate.mjs"
+  },
   "dependencies": {
     "pg": "^8.13.1"
   }
