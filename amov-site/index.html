@@ -609,6 +609,7 @@ footer{background:var(--ink-2);border-top:1px solid var(--line);padding:clamp(60
   #p-chart .pc-area{opacity:1!important}
 }
 </style>
+<script src="/js/atribuicao.js" defer></script>
 </head>
 <body>
 
@@ -1411,7 +1412,7 @@ $$('.fnext').forEach(b=>b.addEventListener('click',async()=>{
     b.disabled=true; if(lbl)lbl.textContent='enviando…';
     try{
       await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({...data,origem:'institucional'})});
+        body:JSON.stringify({...data,origem:'institucional',atribuicao:window.AmovAtribuicao?AmovAtribuicao.get():null})});
     }catch(e){ console.warn('lead não enviado (offline/local):',e); }
     b.disabled=false; if(lbl)lbl.textContent='iniciar movimento';
     showStep(7); return;

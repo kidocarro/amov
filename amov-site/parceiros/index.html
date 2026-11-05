@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabela do Parceiro Amov</title>
+<meta name="description" content="Cadastre seus serviços e sua faixa de valores para a rede de parceiros Amov Network.">
+<meta name="theme-color" content="#1A1719">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Amov Network — seja parceiro">
+<meta property="og:description" content="Cadastre seus serviços e sua faixa de valores para a rede de parceiros Amov Network.">
+<meta property="og:url" content="https://amov.network/parceiros">
+<meta property="og:image" content="https://amov.network/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://amov.network/og.png">
+<script src="/js/atribuicao.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400;500;600;700;800&family=Gelasio:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens — DS Amov Network ===== */
+:root{
+  --red:#e52b20; --red-hover:#c9281f; --red-tint:#fce6e4; --carmim:#6f1418;
+  --black:#1a1719; --black-7:#4b4645; --gray:#9b9593; --gray-40:#cdc7c4;
+  --off:#eee9e5; --off-dim:#d9d4d0; --white:#ffffff;
+  --display:"TASA Orbiter", system-ui, sans-serif;
+  --accent:"Gelasio", Georgia, serif;
+  --m:24px; --max:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip} /* balões de ajuda escondidos não podem alargar a página no celular */
+body{background:var(--off);color:var(--black);font-family:var(--display);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+em,.it{font-family:var(--accent);font-style:italic;font-weight:700;letter-spacing:-.01em}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--m)}
+.label{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+
+/* ===== Topo ===== */
+.top{background:var(--black);color:var(--off)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{height:26px;width:auto;display:block}
+.top .label{color:var(--gray);text-align:right}
+
+/* ===== Hero ===== */
+.hero{padding:56px 0 40px;border-bottom:1px solid var(--black)}
+.hero .label{color:var(--red)}
+.hero h1{font-size:clamp(44px,8vw,96px);font-weight:800;line-height:.92;letter-spacing:-.025em;margin:16px 0 28px}
+.hero h1 em{color:var(--red)}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:24px}
+.hero p{font-size:18px;max-width:56ch;color:var(--black-7)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--black)}
+.fact{padding:14px 12px 0 0}
+.fact b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.fact span{font-size:13px;color:var(--black-7)}
+@media(min-width:880px){
+  .hero{padding:88px 0 56px}
+  .hero-grid{grid-template-columns:1.2fr 1fr;gap:64px;align-items:end}
+}
+
+/* ===== Etapas ===== */
+.steps{position:sticky;top:0;z-index:5;background:var(--off);border-bottom:1px solid var(--gray-40)}
+.steps ol{list-style:none;display:grid;grid-template-columns:repeat(4,1fr)}
+.steps li{padding:14px 8px 12px 0;border-top:4px solid var(--gray-40);color:var(--gray);transition:border-color .2s,color .2s}
+.steps li.on{border-color:var(--red);color:var(--black)}
+.steps li.done{border-color:var(--black);color:var(--black)}
+.steps .n{font-size:12px;font-weight:600;letter-spacing:.08em}
+.steps .t{display:none;font-weight:600;font-size:15px;letter-spacing:-.01em}
+@media(min-width:640px){.steps .t{display:block}}
+
+/* ===== Formulário ===== */
+form{padding:48px 0 120px}
+.step{display:none}
+.step.on{display:block;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step-head{margin-bottom:32px;max-width:720px}
+.step-head .label{color:var(--red)}
+.step-head h2{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1;letter-spacing:-.02em;margin:10px 0 12px}
+.step-head p{color:var(--black-7);font-size:17px}
+
+.grid{display:grid;grid-template-columns:1fr;gap:24px 24px}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
+
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.lbrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lb{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.lb .req{color:var(--red)}
+.tip{position:relative;display:inline-flex;flex:none;outline:none}
+.tip-ico{width:20px;height:20px;border:1.5px solid var(--black-7);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--accent);font-style:italic;font-weight:700;font-size:12px;line-height:1;color:var(--black-7);cursor:help;transition:background .15s,color .15s,border-color .15s}
+.tip:hover .tip-ico,.tip:focus-visible .tip-ico,.tip.open .tip-ico{background:var(--red);border-color:var(--red);color:var(--off)}
+.tip-box{position:absolute;z-index:20;top:calc(100% + 10px);left:-10px;width:min(300px,calc(100vw - 32px));background:var(--black);color:var(--off);font-size:14px;font-weight:400;line-height:1.45;letter-spacing:0;padding:12px 14px;border-left:3px solid var(--red);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s,transform .15s,visibility .15s;pointer-events:none}
+.tip-box::before{content:"";position:absolute;top:-6px;left:var(--arrow,14px);width:12px;height:12px;background:var(--black);transform:rotate(45deg)}
+.tip:hover .tip-box,.tip:focus-visible .tip-box,.tip.open .tip-box{opacity:1;visibility:visible;transform:none}
+.field .help{font-size:13px;color:var(--black-7);margin-top:-4px}
+.input,select.input,textarea.input{width:100%;font:inherit;font-size:16px;color:var(--black);background:var(--white);border:1.5px solid var(--black);border-radius:0;padding:13px 14px;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
+textarea.input{min-height:104px;resize:vertical;line-height:1.45}
+.input::placeholder{color:var(--gray)}
+.input:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-tint)}
+.money{position:relative}
+.money span{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--black-7);pointer-events:none}
+.money .input{padding-left:44px}
+
+/* chips (rádio e múltipla escolha) */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 16px;border:1.5px solid var(--black);background:var(--white);font-size:15px;font-weight:500;transition:background .15s,color .15s,border-color .15s;user-select:none}
+.chip input[type=checkbox] + span::before{content:"";width:14px;height:14px;border:1.5px solid currentColor;flex:none}
+.chip input:checked + span{background:var(--black);color:var(--off)}
+.chip input[type=checkbox]:checked + span::before{background:var(--red);border-color:var(--red)}
+.chip input:focus-visible + span{box-shadow:0 0 0 3px var(--red-tint);border-color:var(--red)}
+.chip:hover span{border-color:var(--red)}
+
+.err{display:none;font-size:13px;font-weight:600;color:var(--red)}
+.field.bad .err{display:block}
+.field.bad .input{border-color:var(--red)}
+.field.bad .chip span{border-color:var(--red)}
+
+/* ===== Serviço ===== */
+.svc{background:var(--white);border-top:4px solid var(--black);margin-bottom:24px}
+.svc-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid var(--gray-40);cursor:pointer}
+.svc-head .ttl{display:flex;align-items:baseline;gap:14px;min-width:0}
+.svc-head .num{font-size:32px;font-weight:800;color:var(--red);letter-spacing:-.03em;line-height:1}
+.svc-head .name{font-weight:700;font-size:18px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.svc-head .name.ph{color:var(--gray);font-weight:500}
+.svc-acts{display:flex;gap:8px;flex:none}
+.icon-btn{background:none;border:1.5px solid var(--gray-40);height:36px;padding:0 12px;font-size:13px;font-weight:600;color:var(--black-7)}
+.icon-btn:hover{border-color:var(--red);color:var(--red)}
+.svc-body{padding:24px 20px 28px}
+.svc.closed .svc-body{display:none}
+.svc .grid .input{background:var(--off)}
+.svc .chip span{background:var(--off)}
+.svc .chip input:checked + span{background:var(--black)}
+.block-title{grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-top:12px}
+.block-title::before{content:"";width:12px;height:12px;background:var(--red);flex:none}
+.block-title span{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.block-title::after{content:"";height:1px;background:var(--gray-40);flex:1}
+.extras:empty{display:none}
+.price{grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:0;background:var(--black);color:var(--off)}
+.price div{padding:16px 20px}
+.price div + div{border-top:1px solid var(--black-7)}
+.price .label{color:var(--gray)}
+.price b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:4px}
+.price .cli b{color:var(--off)}
+.price .cli .label{color:var(--red)}
+@media(min-width:720px){.price{grid-template-columns:1fr 1fr}.price div + div{border-top:0;border-left:1px solid var(--black-7)}}
+.add{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;min-height:64px;background:none;border:1.5px dashed var(--black);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.add:hover{border-style:solid;border-color:var(--red);color:var(--red)}
+.add b{font-size:26px;font-weight:500;line-height:1}
+
+/* ===== Aceites ===== */
+.accepts{display:flex;flex-direction:column;gap:12px}
+.accept{display:flex;gap:14px;align-items:flex-start;padding:16px;background:var(--white);border:1.5px solid var(--black);cursor:pointer}
+.accept input{appearance:none;-webkit-appearance:none;width:22px;height:22px;border:1.5px solid var(--black);flex:none;margin-top:1px;cursor:pointer;background:var(--white)}
+.accept input:checked{background:var(--red);border-color:var(--red);box-shadow:inset 0 0 0 4px var(--white)}
+.accept input:focus-visible{outline:3px solid var(--red-tint)}
+.accept span{font-size:15px}
+.field.bad .accept{border-color:var(--red)}
+
+/* ===== Revisão ===== */
+.review{display:grid;gap:24px}
+.rv{background:var(--white);border-top:4px solid var(--black);padding:20px}
+.rv h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.rv h3 button{font-size:13px;font-weight:600;background:none;border:0;color:var(--red);text-decoration:underline}
+.rv dl{display:grid;grid-template-columns:1fr;gap:2px 24px}
+.rv dt{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin-top:10px}
+.rv dd{font-size:15px;white-space:pre-wrap;word-break:break-word}
+@media(min-width:720px){.rv dl{grid-template-columns:220px 1fr}.rv dt{margin-top:0;padding-top:3px}}
+.rv table{width:100%;border-collapse:collapse;font-size:14px}
+.rv th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);padding:8px 8px 8px 0;border-bottom:1.5px solid var(--black)}
+.rv td{padding:10px 8px 10px 0;border-bottom:1px solid var(--gray-40);vertical-align:top}
+.rv td.r{color:var(--red);font-weight:700;white-space:nowrap}
+.tscroll{overflow-x:auto}
+
+/* ===== Navegação inferior ===== */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--black);padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.nav .info{color:var(--gray);font-size:13px;display:none}
+@media(min-width:640px){.nav .info{display:block}}
+.btn{min-height:52px;padding:0 24px;border:1.5px solid var(--off);background:none;color:var(--off);font-weight:700;font-size:16px;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:10px}
+.btn:hover{border-color:var(--red);color:var(--red)}
+.btn.primary{background:var(--red);border-color:var(--red);color:var(--off)}
+.btn.primary:hover{background:var(--red-hover);border-color:var(--red-hover);color:var(--off)}
+.btn[hidden]{display:none}
+.btn:disabled{opacity:.6;cursor:wait}
+.nav .right{display:flex;gap:12px;margin-left:auto}
+
+/* ===== Sucesso ===== */
+.done-screen{display:none;padding:72px 0 120px}
+.done-screen.on{display:block}
+.done-screen h2{font-size:clamp(44px,8vw,96px);font-weight:800;line-height:.92;letter-spacing:-.025em;margin:16px 0 24px}
+.done-screen h2 em{color:var(--red)}
+.done-screen p{font-size:18px;color:var(--black-7);max-width:56ch}
+.code{display:inline-block;margin-top:24px;background:var(--black);color:var(--off);padding:14px 20px;font-weight:700;letter-spacing:.04em}
+.code small{display:block;font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--gray);text-transform:uppercase}
+.note{margin-top:20px;font-size:14px;color:var(--carmim);border-left:3px solid var(--red);padding-left:12px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <svg class="logo" viewBox="0 0 420 85" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Amov Network">
+<path d="M58.1292 12.9658C52.9957 8.33125 45.293 6.01147 35.0212 6.01147C24.7493 6.01147 17.2062 8.14667 11.2995 12.4171C5.39283 16.6924 2.25988 22.7339 1.8957 30.5513H23.4372C23.6168 27.553 24.6395 25.348 26.5053 23.9411C28.3661 22.5343 30.8456 21.8259 33.9336 21.8259C37.3858 21.8259 39.9301 22.669 41.5664 24.3502C43.2028 26.0314 44.0209 28.5059 44.0209 31.7785V33.3051L22.3447 37.6403C18.6181 38.3687 15.096 39.551 11.7785 41.1823C8.46092 42.8187 5.78195 45.0237 3.73655 47.7925C1.69116 50.5662 0.668457 54.1332 0.668457 58.4934C0.668457 64.5847 2.68891 69.4886 6.73481 73.2153C10.7757 76.9419 16.5727 78.8027 24.1157 78.8027C30.8406 78.8027 36.2484 77.2811 40.3392 74.238C42.5841 72.5667 44.3452 70.5113 45.6572 68.0868V77.1664H65.8318V32.7264C65.8318 24.1856 63.2626 17.5954 58.1292 12.9608V12.9658ZM40.6784 61.4268C38.4485 63.4722 35.5649 64.4949 32.0229 64.4949C29.294 64.4949 27.0491 63.8613 25.2731 62.5842C23.5021 61.312 22.6141 59.4063 22.6141 56.8571C22.6141 54.7668 23.2726 53.0856 24.5896 51.8134C25.9067 50.5413 27.7026 49.6333 29.9725 49.0896L44.0109 45.8069V53.315C44.0109 56.6775 42.8984 59.3814 40.6734 61.4268H40.6784Z"/>
+<path d="M168.68 8.87503C164.999 6.96433 160.933 6.01147 156.483 6.01147C150.666 6.01147 145.712 7.5131 141.621 10.5113C138.498 12.8012 136.069 15.7047 134.323 19.2168C134.048 18.6131 133.759 18.0244 133.44 17.4657C131.26 13.6493 128.326 10.7857 124.649 8.88002C120.968 6.96932 116.947 6.01646 112.587 6.01646C106.859 6.01646 102.09 7.51808 98.2738 10.5163C95.4152 12.7613 93.1453 15.5949 91.4591 19.0122V7.64779H70.7407V77.1714H92.5516V38.4585C92.5516 33.6443 93.5294 29.9376 95.4801 27.3485C97.4357 24.7593 100.364 23.4622 104.275 23.4622C107.274 23.4622 109.798 24.4849 111.843 26.5303C113.889 28.5757 114.911 31.5989 114.911 35.5949V77.1714H136.722V38.4585C136.722 33.6443 137.7 29.9376 139.651 27.3485C141.606 24.7593 144.535 23.4622 148.446 23.4622C151.444 23.4622 153.968 24.4849 156.009 26.5303C158.054 28.5757 159.077 31.5989 159.077 35.5949V77.1714H180.888V31.9132C180.888 26.0963 179.775 21.2821 177.55 17.4607C175.32 13.6443 172.367 10.7807 168.69 8.87503H168.68Z"/>
+<path d="M237.795 10.0324C232.297 7.35346 226.001 6.01147 218.917 6.01147C211.833 6.01147 205.672 7.35346 200.175 10.0324C194.677 12.7164 190.357 16.6675 187.224 21.8907C184.091 27.119 182.519 33.4996 182.519 41.0427V44.8591C182.519 52.1327 184.086 58.3088 187.224 63.3974C190.362 68.4859 194.652 72.3273 200.105 74.9164C205.557 77.5056 211.828 78.8027 218.917 78.8027C226.006 78.8027 232.297 77.5056 237.795 74.9164C243.293 72.3273 247.588 68.466 250.676 63.3275C253.764 58.1941 255.311 51.8533 255.311 44.3103V40.4939C255.311 33.0456 253.764 26.7698 250.676 21.6812C247.588 16.5927 243.293 12.7064 237.795 10.0274V10.0324ZM233.23 44.8641C233.23 50.7708 231.868 55.0012 229.139 57.5405C226.411 60.0848 223.003 61.3569 218.917 61.3569C214.832 61.3569 211.419 60.0848 208.695 57.5405C205.972 54.9963 204.605 50.5862 204.605 44.3153V40.4989C204.605 34.5024 205.967 30.1621 208.695 27.4782C211.424 24.7992 214.832 23.4572 218.917 23.4572C223.003 23.4572 226.301 24.8192 229.075 27.548C231.848 30.2769 233.235 34.7718 233.235 41.0427V44.8591L233.23 44.8641Z"/>
+<path d="M305.343 7.64779L289.12 70.2419L272.901 7.64779H250.132L269.354 77.1714H308.341L327.563 7.64779H305.343Z"/>
+<path d="M337.491 41.1574C337.296 41.1574 337.152 41.0427 337.052 40.8132C336.952 40.5837 336.907 40.4041 336.907 40.2794C336.907 39.9002 337.097 39.6907 337.476 39.6408C337.84 39.6059 338.259 39.551 338.733 39.4662C339.202 39.3864 339.616 39.2467 339.97 39.0422C340.324 38.8426 340.504 38.5582 340.504 38.1891V20.5737C340.504 20.0798 340.314 19.6707 339.935 19.3415C339.556 19.0172 339.122 18.7578 338.638 18.5782C338.149 18.3936 337.73 18.2839 337.371 18.2539C337.132 18.229 336.967 18.1841 336.882 18.1093C336.797 18.0344 336.752 17.8698 336.752 17.6204C336.752 17.4956 336.802 17.316 336.897 17.0866C336.992 16.8571 337.142 16.7423 337.336 16.7423H344.939L358.698 33.9287H358.903V19.9252C358.903 19.4313 358.718 19.0771 358.344 18.8576C357.97 18.6381 357.541 18.4934 357.052 18.4186C356.563 18.3437 356.144 18.2889 355.785 18.2539C355.545 18.229 355.381 18.1841 355.296 18.1093C355.211 18.0344 355.166 17.8698 355.166 17.6204C355.166 17.4956 355.216 17.316 355.311 17.0866C355.405 16.8571 355.555 16.7423 355.75 16.7423H363.817C364.011 16.7423 364.156 16.8571 364.256 17.0866C364.35 17.316 364.4 17.4956 364.4 17.6204C364.4 17.9995 364.211 18.209 363.831 18.2589C363.487 18.2938 363.078 18.3587 362.599 18.4485C362.12 18.5383 361.706 18.6929 361.352 18.9124C360.998 19.132 360.818 19.4512 360.818 19.8753V39.2118C360.818 39.4313 360.828 39.6109 360.853 39.7556C360.878 39.9002 360.898 40.1347 360.923 40.4689C360.958 40.9279 360.773 41.2422 360.374 41.4168C359.97 41.5864 359.611 41.6762 359.292 41.6762C358.878 41.6762 358.568 41.5515 358.364 41.2971L342.814 22.0654H342.519V37.9746C342.519 38.4684 342.724 38.8227 343.128 39.0422C343.537 39.2617 344.001 39.4013 344.53 39.4712C345.059 39.541 345.493 39.5959 345.837 39.6458C346.076 39.6707 346.241 39.7156 346.326 39.7855C346.411 39.8553 346.456 40.02 346.456 40.2844C346.456 40.4091 346.406 40.5887 346.311 40.8182C346.216 41.0476 346.066 41.1624 345.872 41.1624H337.476L337.491 41.1574Z"/>
+<path d="M373.485 41.6563C370.322 41.6563 367.982 40.8531 366.475 39.2467C364.969 37.6403 364.216 35.4053 364.216 32.5368C364.216 30.6211 364.635 29.0097 365.473 27.6927C366.311 26.3806 367.418 25.3879 368.795 24.7194C370.172 24.0509 371.654 23.7116 373.25 23.7116C374.926 23.7116 376.288 23.9511 377.336 24.435C378.384 24.9189 379.192 25.5924 379.751 26.4655C380.314 27.3385 380.689 28.3811 380.888 29.5984C380.958 30.0125 381.003 30.4664 381.023 30.9653C381.048 31.4642 381.058 31.9531 381.058 32.437L369.414 32.452C369.414 34.228 369.678 35.6298 370.207 36.6575C370.736 37.6852 371.389 38.4136 372.178 38.8526C372.961 39.2866 373.749 39.5061 374.542 39.5061C375.53 39.5061 376.383 39.3515 377.107 39.0422C377.83 38.7329 378.439 38.2439 378.932 37.5804C378.987 37.5206 379.042 37.4607 379.097 37.3909C379.147 37.321 379.232 37.3011 379.347 37.321L380.14 37.6802C380.254 37.7251 380.314 37.795 380.314 37.8848C380.314 37.9297 380.304 37.9795 380.289 38.0294C380.274 38.0793 380.245 38.1292 380.215 38.1741C379.651 39.1968 378.823 40.0299 377.72 40.6785C376.618 41.327 375.216 41.6513 373.505 41.6513L373.485 41.6563ZM369.464 30.8855L375.914 30.8506C375.914 28.8551 375.68 27.4183 375.216 26.5403C374.752 25.6623 374.078 25.2232 373.195 25.2232C372.562 25.2232 371.983 25.3979 371.449 25.7421C370.916 26.0863 370.476 26.67 370.127 27.4881C369.778 28.3063 369.559 29.4388 369.464 30.8855Z"/>
+<path d="M388.566 41.6712C387.578 41.6712 386.7 41.5415 385.932 41.2821C385.163 41.0227 384.56 40.5787 384.126 39.9401C383.692 39.3016 383.472 38.4285 383.472 37.316V25.8069H381.581C381.457 25.797 381.357 25.7121 381.282 25.5475C381.207 25.3879 381.172 25.2382 381.172 25.0985C381.172 24.6495 381.322 24.3951 381.621 24.3253C382.529 24.1756 383.258 23.9361 383.816 23.6019C384.37 23.2676 384.824 22.7638 385.173 22.0903C385.523 21.4168 385.827 20.4939 386.076 19.3365C386.121 19.1519 386.231 19.0072 386.396 18.9075C386.56 18.8027 386.84 18.7528 387.229 18.7528C387.643 18.7528 387.917 18.7977 388.062 18.8925C388.207 18.9823 388.276 19.117 388.276 19.2866V24.0509H392.472C392.612 24.0609 392.711 24.1257 392.781 24.2504C392.851 24.3702 392.886 24.4999 392.886 24.6396C392.886 24.9738 392.836 25.2482 392.731 25.4627C392.627 25.6822 392.512 25.787 392.387 25.787H388.276V35.8643C388.276 36.8371 388.341 37.5804 388.476 38.0943C388.606 38.6031 388.8 38.9524 389.05 39.1419C389.299 39.3315 389.613 39.4263 389.978 39.4263C390.491 39.4263 391 39.3515 391.499 39.2018C391.998 39.0521 392.457 38.8576 392.886 38.6181C393.036 38.5283 393.17 38.5682 393.29 38.7378C393.41 38.9075 393.49 39.107 393.53 39.3215C393.569 39.541 393.55 39.6757 393.47 39.7356C393.205 40.02 392.791 40.3093 392.223 40.6036C391.654 40.898 391.045 41.1474 390.392 41.352C389.738 41.5565 389.129 41.6613 388.571 41.6613L388.566 41.6712Z"/>
+<path d="M343.497 67.7326L337.974 53.32C337.7 52.7114 337.386 52.3223 337.037 52.1527C336.687 51.978 336.298 51.8733 335.874 51.8234C335.635 51.7984 335.47 51.7535 335.385 51.6787C335.301 51.6039 335.256 51.4393 335.256 51.1898C335.256 51.0651 335.306 50.9154 335.41 50.7408C335.515 50.5662 335.66 50.4814 335.839 50.4814H344.714C344.909 50.4814 345.054 50.5662 345.153 50.7408C345.253 50.9154 345.298 51.0601 345.298 51.1898C345.298 51.5889 345.108 51.8034 344.729 51.8284C344.215 51.8633 343.776 51.9282 343.412 52.018C343.053 52.1078 342.868 52.2973 342.868 52.5867L346.396 62.4794L349.992 50.681H353.19L357.595 62.2749L360.983 52.6266C360.983 52.432 360.873 52.2824 360.658 52.1726C360.439 52.0629 360.155 51.988 359.805 51.9381C359.456 51.8932 359.077 51.8583 358.678 51.8334C358.299 51.8084 358.109 51.5989 358.109 51.1948C358.109 51.0701 358.159 50.9204 358.254 50.7458C358.349 50.5712 358.498 50.4864 358.693 50.4864H364.869C365.064 50.4864 365.208 50.5712 365.308 50.7458C365.408 50.9204 365.453 51.0651 365.453 51.1948C365.453 51.4492 365.408 51.6089 365.323 51.6837C365.238 51.7585 365.074 51.8084 364.834 51.8284C364.41 51.8733 364.031 51.983 363.697 52.1576C363.362 52.3273 363.063 52.7214 362.804 53.325L357.491 67.7376H354.792L350.287 55.9541L346.45 67.7376H343.492L343.497 67.7326Z"/>
+<path d="M364.595 59.112C364.595 57.2312 364.989 55.6199 365.772 54.2779C366.555 52.9359 367.658 51.9082 369.075 51.1998C370.491 50.4914 372.158 50.1322 374.073 50.1322C375.989 50.1322 377.635 50.4864 379.017 51.1998C380.399 51.9132 381.462 52.9359 382.21 54.2779C382.953 55.6199 383.328 57.2312 383.328 59.112C383.328 60.9928 382.948 62.5992 382.185 63.9361C381.422 65.2731 380.339 66.2958 378.932 67.0042C377.526 67.7176 375.864 68.0718 373.954 68.0718C372.043 68.0718 370.367 67.7176 368.975 67.0042C367.583 66.2958 366.505 65.2681 365.742 63.9361C364.979 62.5992 364.6 60.9928 364.6 59.112H364.595ZM369.928 59.112C369.928 61.4168 370.207 63.2128 370.771 64.5049C371.335 65.797 372.412 66.4405 374.004 66.4405C375.595 66.4405 376.648 65.797 377.186 64.5049C377.725 63.2128 377.995 61.4168 377.995 59.112C377.995 56.8072 377.715 55.0112 377.151 53.7191C376.588 52.427 375.52 51.7835 373.934 51.7835C372.347 51.7835 371.275 52.432 370.736 53.7291C370.197 55.0262 369.928 56.8172 369.928 59.112Z"/>
+<path d="M384.729 67.578C384.535 67.578 384.39 67.4931 384.29 67.3185C384.196 67.1489 384.146 66.9992 384.146 66.8695C384.146 66.4904 384.335 66.2809 384.714 66.231C385.183 66.1861 385.632 66.0913 386.066 65.9566C386.495 65.8169 386.71 65.5824 386.71 65.2532V54.1931C386.71 53.4847 386.56 52.9958 386.261 52.7314C385.962 52.4669 385.612 52.3073 385.213 52.2524C384.814 52.1976 384.455 52.1277 384.146 52.0479C384.031 51.993 383.931 51.9182 383.851 51.8234C383.772 51.7336 383.732 51.5789 383.732 51.3594C383.732 51.2198 383.767 51.0651 383.841 50.8855C383.916 50.7059 384.016 50.6111 384.141 50.6011C385.632 50.5313 386.949 50.4814 388.087 50.4565C389.224 50.4315 390.112 50.4066 390.746 50.3966C390.836 50.3966 390.94 50.4415 391.055 50.5363C391.17 50.6261 391.24 50.8107 391.26 51.0851V54.2679C391.594 53.6044 392.038 52.9558 392.592 52.3223C393.146 51.6937 393.789 51.1699 394.517 50.7558C395.246 50.3417 396.039 50.1372 396.902 50.1372C397.61 50.1372 398.169 50.2819 398.578 50.5662C398.987 50.8556 399.272 51.2198 399.441 51.6588C399.606 52.0978 399.691 52.5667 399.691 53.0606C399.691 53.5994 399.556 54.0833 399.287 54.5074C399.017 54.9314 398.693 55.2706 398.314 55.5251C397.935 55.7795 397.586 55.9042 397.266 55.9042L395.031 52.9958C394.547 52.9958 394.078 53.1704 393.619 53.5096C393.16 53.8538 392.746 54.2928 392.372 54.8366C391.998 55.3754 391.699 55.9341 391.469 56.5029V64.6894C391.469 65.1384 391.634 65.4627 391.958 65.6722C392.282 65.8818 392.687 66.0115 393.16 66.0763C393.634 66.1412 394.093 66.1961 394.527 66.241C394.767 66.2659 394.931 66.3108 395.016 66.3806C395.101 66.4505 395.146 66.6151 395.146 66.8795C395.146 67.0042 395.096 67.1539 395.001 67.3285C394.907 67.5031 394.757 67.5879 394.562 67.5879H384.724L384.729 67.578Z"/>
+<path d="M399.586 67.5779C399.391 67.5779 399.247 67.4931 399.147 67.3185C399.047 67.1489 399.002 66.9992 399.002 66.8695C399.002 66.4904 399.192 66.2809 399.571 66.231C399.995 66.1961 400.394 66.1112 400.768 65.9716C401.142 65.8319 401.327 65.5924 401.327 65.2482V44.6595C401.327 43.9461 401.177 43.4622 400.878 43.2078C400.579 42.9484 400.229 42.7987 399.83 42.7538C399.431 42.7089 399.072 42.644 398.763 42.5642C398.648 42.5093 398.553 42.4345 398.468 42.3397C398.389 42.2499 398.349 42.0953 398.349 41.8758C398.349 41.7361 398.384 41.5764 398.453 41.3919C398.523 41.2073 398.628 41.1125 398.763 41.0975C400.254 41.0077 401.591 40.9479 402.779 40.9229C403.966 40.898 404.874 40.883 405.503 40.873C405.592 40.873 405.702 40.9229 405.827 41.0177C405.952 41.1175 406.016 41.3021 406.016 41.5764V59.3115L412.382 53.0856C412.507 52.9808 412.572 52.886 412.572 52.7912C412.572 52.5617 412.322 52.3771 411.823 52.2325C411.324 52.0878 410.85 52.008 410.406 51.983C410.177 51.9581 410.032 51.8783 409.968 51.7336C409.903 51.5889 409.873 51.4293 409.873 51.2447C409.873 51.12 409.923 50.9603 410.017 50.7658C410.112 50.5712 410.262 50.4714 410.456 50.4714H418.044C418.239 50.4714 418.384 50.5662 418.483 50.7658C418.578 50.9603 418.628 51.12 418.628 51.2447C418.628 51.4492 418.583 51.6288 418.493 51.7685C418.399 51.9132 418.259 51.983 418.064 51.983C417.516 51.983 416.947 52.1127 416.363 52.3722C415.779 52.6316 415.271 52.9259 414.852 53.2602L411.669 56.3233C412.003 56.9519 412.362 57.6253 412.751 58.3337C413.14 59.0471 413.549 59.7605 413.983 60.4739C414.413 61.1923 414.842 61.8907 415.276 62.5742C415.705 63.2577 416.114 63.8962 416.503 64.4899C416.822 64.9738 417.186 65.3729 417.585 65.6922C417.989 66.0115 418.384 66.1911 418.773 66.226C418.967 66.236 419.112 66.2859 419.202 66.3657C419.292 66.4455 419.336 66.6101 419.336 66.8645C419.336 66.9893 419.287 67.1389 419.192 67.3135C419.092 67.4881 418.947 67.573 418.753 67.573H412.597C412.412 67.4333 412.188 67.1389 411.918 66.68C411.649 66.221 411.354 65.6772 411.035 65.0436C410.716 64.4151 410.387 63.7516 410.052 63.0631C409.718 62.3747 409.404 61.7161 409.104 61.0826C408.805 60.449 408.536 59.9202 408.296 59.4812L406.026 61.7012V64.6745C406.026 65.3629 406.211 65.782 406.585 65.9317C406.959 66.0813 407.358 66.1811 407.782 66.226C408.022 66.2509 408.187 66.2958 408.271 66.3657C408.356 66.4355 408.401 66.6001 408.401 66.8645C408.401 66.9893 408.351 67.1389 408.256 67.3135C408.162 67.4881 408.012 67.573 407.817 67.573H399.596L399.586 67.5779Z"/>
+</svg>
+    <span class="label">Rede de parceiros</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="label">Tabela de valores do parceiro</span>
+      <div class="hero-grid">
+        <h1>Seu escopo. Seu <em>valor.</em></h1>
+        <div>
+          <p>Esta tabela será o guia dos preços incluídos nas propostas que a Amov fará aos clientes. O que você informar aqui é o que vai para a mesa. Por isso, preencha com total atenção e cuidado.</p>
+        </div>
+      </div>
+      <div class="facts" style="margin-top:40px">
+        <div class="fact"><b>10 min</b><span>tempo médio</span></div>
+        <div class="fact"><b>Sem limite</b><span>de serviços</span></div>
+        <div class="fact"><b>Guia oficial</b><span>dos preços nas propostas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="steps" aria-label="Etapas">
+    <div class="wrap">
+      <ol>
+        <li data-s="1"><div class="n">01</div><div class="t">Seus dados</div></li>
+        <li data-s="2"><div class="n">02</div><div class="t">Serviços e valores</div></li>
+        <li data-s="3"><div class="n">03</div><div class="t">Condições</div></li>
+        <li data-s="4"><div class="n">04</div><div class="t">Revisar e enviar</div></li>
+      </ol>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <form id="form" novalidate>
+      <div class="hp" aria-hidden="true"><label>Não preencha <input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+      <section class="step" data-step="1">
+        <div class="step-head">
+          <span class="label">Etapa 01</span>
+          <h2>Quem é <em>você.</em></h2>
+          <p>Dados para identificar seu cadastro e saber como você pode ser faturado.</p>
+        </div>
+        <div class="grid" id="partner"></div>
+      </section>
+
+      <section class="step" data-step="2">
+        <div class="step-head">
+          <span class="label">Etapa 02</span>
+          <h2>O que você <em>entrega.</em></h2>
+          <p>Um cartão por serviço. Os valores são o que você recebe — a Amov soma 20% na proposta ao cliente.</p>
+        </div>
+        <div id="services"></div>
+        <button type="button" class="add" id="addSvc"><b>+</b> Adicionar outro serviço</button>
+      </section>
+
+      <section class="step" data-step="3">
+        <div class="step-head">
+          <span class="label">Etapa 03</span>
+          <h2>Regras do <em>jogo.</em></h2>
+          <p>Condições que valem para todos os seus serviços.</p>
+        </div>
+        <div class="grid" id="conditions"></div>
+        <div class="field full" id="acceptsField" style="margin-top:32px">
+          <span class="lb">Para fechar, confirme <span class="req">*</span></span>
+          <div class="accepts" id="accepts"></div>
+          <span class="err">Marque todas as confirmações para continuar.</span>
+        </div>
+      </section>
+
+      <section class="step" data-step="4">
+        <div class="step-head">
+          <span class="label">Etapa 04</span>
+          <h2>Confere e <em>manda.</em></h2>
+          <p>Revise antes de enviar. Depois do envio, mudanças entram como uma nova tabela.</p>
+        </div>
+        <div class="review" id="review"></div>
+      </section>
+    </form>
+
+    <section class="done-screen" id="done">
+      <span class="label" style="color:var(--red)">Tabela recebida</span>
+      <h2>Agora é <em>com a gente.</em></h2>
+      <p>A Amov vai revisar sua tabela e fala com você se precisar de algum ajuste. Quando surgir um projeto da sua área, você já está na mesa. Vamo!</p>
+      <div class="code" id="doneCode" hidden><small>Seu protocolo</small><span></span></div>
+      <p class="note" id="doneNote" hidden></p>
+    </section>
+  </div>
+</main>
+
+<div class="nav" id="nav">
+  <div class="wrap">
+    <button type="button" class="btn" id="back">← Voltar</button>
+    <span class="info" id="navInfo"></span>
+    <div class="right">
+      <button type="button" class="btn primary" id="next">Continuar →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========= CONFIGURAÇÃO =========
+   Envia para a função da Vercel, que grava no Supabase (GRAY Desert):
+   parceiros, parceiro_tabelas, parceiro_servicos e origens.        */
+const ENDPOINT = "/api/parceiro";
+const MARGEM_AMOV = 0.20;
+
+/* ========= CAMPOS ========= */
+const AREAS = ["Audiovisual","Design","Comunicação","Marketing","Criação de conteúdo","Gestão de projetos","Tecnologia","Outra"];
+
+const PARTNER = [
+  {k:"nome", l:"Nome completo do responsável", t:"text", r:1, ac:"name"},
+  {k:"empresa", l:"Empresa ou nome comercial", t:"text", r:1, ac:"organization"},
+  {k:"tipo", l:"Tipo de cadastro", t:"radio", o:["Pessoa física","MEI","Empresa"], r:1},
+  {k:"doc", l:"CPF ou CNPJ", t:"text", r:1, h:"Usamos para reconhecer seu cadastro quando você atualizar a tabela.", im:"numeric"},
+  {k:"cidade", l:"Cidade e estado", t:"text", r:1, p:"Ex.: Uberlândia/MG"},
+  {k:"remoto", l:"Atende de forma remota?", t:"radio", o:["Sim","Não","Depende do serviço"], r:1},
+  {k:"whatsapp", l:"WhatsApp com DDD", t:"tel", r:1, p:"(00) 00000-0000", ac:"tel"},
+  {k:"email", l:"E-mail", t:"email", r:1, ac:"email"},
+  {k:"portfolio", l:"Link do portfólio", t:"url", r:1, p:"https://"},
+  {k:"redes", l:"Instagram ou site", t:"text", p:"@perfil ou site"},
+  {k:"areas", l:"Áreas em que você atua", t:"check", o:AREAS, r:1, full:1},
+  {k:"experiencia", l:"Tempo de experiência", t:"radio", o:["Até 2 anos","2 a 5 anos","5 a 10 anos","Mais de 10 anos"], r:1, full:1},
+  {k:"nf", l:"Você emite nota fiscal?", t:"radio", o:["Sim","Não"], r:1, h:"Se não emite, a Amov pode faturar pelo CNPJ dela quando necessário."},
+  {k:"modelo", l:"Modelo de parceria de interesse", t:"radio", o:["Indicação","Contratação","Os dois"], r:1},
+  {k:"capacidade", l:"Quantos projetos você toca ao mesmo tempo?", t:"number", r:1, p:"Ex.: 3"}
+];
+
+const EXTRAS = {
+  "Audiovisual":[
+    {k:"tipo", l:"Tipo de trabalho", t:"check", o:["Captação","Edição","Motion","Foto","Drone","Outro"], full:1},
+    {k:"duracao", l:"Duração do material final", t:"text", p:"Ex.: até 2 min"},
+    {k:"diarias", l:"Diárias de captação inclusas", t:"text", p:"Ex.: 1 diária de 8h"},
+    {k:"equipe", l:"Equipe inclusa", t:"text", p:"Ex.: diretor + câmera"},
+    {k:"equip", l:"Usa equipamento próprio?", t:"radio", o:["Sim","Não","Parcialmente"]},
+    {k:"roteiro", l:"Roteiro incluso?", t:"radio", o:["Sim","Não"]},
+    {k:"trilha", l:"Trilha e direitos de uso", t:"text"},
+    {k:"formatos", l:"Formatos entregues", t:"text", p:"Ex.: 16:9 e 9:16"}
+  ],
+  "Design":[
+    {k:"peca", l:"Tipo de peça ou projeto", t:"text", p:"Ex.: identidade visual"},
+    {k:"opcoes", l:"Nº de opções iniciais", t:"text"},
+    {k:"abertos", l:"Entrega arquivos abertos?", t:"radio", o:["Sim","Não"]},
+    {k:"manual", l:"Manual ou guia incluso?", t:"radio", o:["Sim","Não"]},
+    {k:"direitos", l:"Direitos de uso", t:"text", full:1}
+  ],
+  "Comunicação":[
+    {k:"tipo", l:"Tipo de trabalho", t:"check", o:["Assessoria de imprensa","Redação","Revisão","Roteiro","Outro"], full:1},
+    {k:"volume", l:"Volume por mês", t:"text", p:"Ex.: 4 releases ou 20 laudas"},
+    {k:"relatorio", l:"Relatório incluso?", t:"radio", o:["Sim","Não"]}
+  ],
+  "Marketing":[
+    {k:"plataformas", l:"Plataformas", t:"check", o:["Meta","Google","TikTok","LinkedIn","Outra"], full:1},
+    {k:"verba", l:"A verba de mídia fica por fora?", t:"radio", o:["Sim","Não"]},
+    {k:"campanhas", l:"Nº de campanhas", t:"text"},
+    {k:"relatorio", l:"Frequência de relatório", t:"text", p:"Ex.: mensal"},
+    {k:"minimo", l:"Contrato mínimo (meses)", t:"text"}
+  ],
+  "Criação de conteúdo":[
+    {k:"redes", l:"Redes atendidas", t:"check", o:["Instagram","TikTok","YouTube","LinkedIn","Outra"], full:1},
+    {k:"formatos", l:"Formatos", t:"check", o:["Reels","Carrossel","Stories","Post estático","Vídeo longo"], full:1},
+    {k:"posts", l:"Nº de posts por mês", t:"text"},
+    {k:"captacao", l:"Captação inclusa?", t:"radio", o:["Sim","Não"]},
+    {k:"legenda", l:"Legenda e publicação inclusas?", t:"radio", o:["Sim","Não"]}
+  ],
+  "Gestão de projetos":[
+    {k:"modalidade", l:"Modalidade", t:"radio", o:["Por hora","Por mês","Por projeto"]},
+    {k:"horas", l:"Horas inclusas", t:"text"},
+    {k:"reunioes", l:"Reuniões inclusas", t:"text"},
+    {k:"ferramentas", l:"Ferramentas que usa", t:"text", p:"Ex.: Notion, ClickUp"}
+  ],
+  "Tecnologia":[
+    {k:"tipo", l:"Tipo", t:"check", o:["Site","Landing page","Sistema","Automação","App","Outro"], full:1},
+    {k:"paginas", l:"Nº de páginas ou telas", t:"text"},
+    {k:"plataforma", l:"Plataforma ou tecnologia", t:"text", p:"Ex.: Webflow, React"},
+    {k:"integracoes", l:"Integrações", t:"text"},
+    {k:"hospedagem", l:"Hospedagem e domínio inclusos?", t:"radio", o:["Sim","Não"]},
+    {k:"suporte", l:"Suporte pós-entrega (dias)", t:"text"}
+  ],
+  "Outra":[
+    {k:"precifica", l:"O que muda o preço deste serviço?", t:"textarea", full:1}
+  ]
+};
+
+const COMMON = [
+  {k:"servico", l:"Nome do serviço", t:"text", r:1, p:"Ex.: Vídeo institucional até 2 min", full:1},
+  {k:"descricao", l:"Descreva em uma frase", t:"text", r:1, full:1},
+  {k:"incluso", l:"O que está incluso", t:"textarea", r:1, h:"Liste os entregáveis. É isso que vai na proposta."},
+  {k:"naoIncluso", l:"O que NÃO está incluso", t:"textarea", r:1, h:"Evita prometer o que você não faz."},
+  {k:"unidade", l:"Unidade de cobrança", t:"radio", o:["Por projeto","Por hora","Por diária","Por mês","Por peça"], r:1, full:1},
+  {k:"min", l:"Valor mínimo", t:"money", r:1},
+  {k:"max", l:"Valor máximo", t:"money", r:1},
+  {k:"criterio", l:"O que leva do mínimo ao máximo?", t:"textarea", r:1, full:1, h:"Ex.: duração, número de peças, urgência, deslocamento."},
+  {k:"prazo", l:"Prazo médio (dias úteis)", t:"number", r:1},
+  {k:"revisoes", l:"Revisões inclusas", t:"number", r:1},
+  {k:"extra", l:"Revisão extra ou hora adicional", t:"money"},
+  {k:"pagamento", l:"Forma de pagamento", t:"radio", o:["100% no início","50% + 50%","100% na entrega","Mensal"], r:1},
+  {k:"custos", l:"Custos que ficam por fora", t:"check", o:["Deslocamento","Equipe extra","Equipamento","Licenças","Banco de imagens","Verba de mídia","Nenhum"], full:1},
+  {k:"requisitos", l:"O que o cliente precisa enviar para começar?", t:"textarea"},
+  {k:"exemplo", l:"Link de um exemplo deste serviço", t:"url", p:"https://"}
+];
+
+const CONDITIONS = [
+  {k:"validade", l:"Por quanto tempo esta tabela vale?", t:"radio", o:["6 meses","12 meses"], r:1},
+  {k:"reajuste", l:"Aviso prévio para reajuste", t:"radio", o:["30 dias","60 dias","90 dias"], r:1},
+  {k:"cancelamento", l:"Política de cancelamento", t:"text", p:"Ex.: sinal não devolvido após o início", full:1},
+  {k:"observacoes", l:"Observações gerais", t:"textarea", full:1}
+];
+
+const ACCEPTS = [
+  "Os valores informados são o que eu recebo pelo serviço. A Amov acrescenta 20% sobre eles na proposta ao cliente.",
+  "Propostas dentro da faixa e do escopo que informei não precisam de nova aprovação minha.",
+  "Pedidos fora do escopo ou acima do valor máximo serão consultados comigo antes.",
+  "Autorizo a Amov a usar meus dados para montar propostas e a apresentar meu portfólio a clientes."
+];
+
+/* ========= DESCRIÇÕES (aparecem no ícone "i") ========= */
+const DESC = {
+  p:{
+    nome:"Quem responde pelo cadastro e conversa com a Amov sobre os projetos.",
+    empresa:"Como você ou sua empresa aparece para o mercado. É esse nome que entra na nossa tabela.",
+    tipo:"Como você está formalizado. Define como o pagamento e a nota serão feitos.",
+    doc:"Documento do cadastro. Se você enviar uma tabela nova no futuro, usamos ele para atualizar seus dados em vez de criar outro cadastro.",
+    cidade:"Onde você está baseado. Importa para serviços presenciais e custos de deslocamento.",
+    remoto:"Se você consegue entregar sem estar fisicamente com o cliente.",
+    whatsapp:"Canal principal para a Amov falar com você sobre propostas e projetos.",
+    email:"Para envio de contratos, briefings e comunicados da rede.",
+    portfolio:"Link com seus melhores trabalhos. Pode ser Behance, Drive, site ou PDF online.",
+    redes:"Onde podemos acompanhar seu trabalho no dia a dia. Opcional.",
+    areas:"Marque todas as áreas em que você presta serviço. Você detalha cada serviço na próxima etapa.",
+    experiencia:"Tempo de atuação profissional na sua área principal.",
+    nf:"Se você emite nota fiscal pelos serviços. Se não emite, a Amov pode faturar pelo CNPJ dela quando necessário.",
+    modelo:"Indicação: você traz clientes para a Amov. Contratação: a Amov contrata você para projetos. Pode escolher os dois.",
+    capacidade:"Quantos projetos você toca em paralelo sem perder qualidade. Ajuda a Amov a não sobrecarregar você."
+  },
+  area:"A área deste serviço. As perguntas de especificação logo abaixo mudam conforme a escolha.",
+  s:{
+    servico:"Nome curto e claro do serviço, do jeito que deve aparecer na proposta ao cliente.",
+    descricao:"Resumo do que o cliente recebe, para alguém que não é da área entender.",
+    incluso:"Tudo o que está dentro do valor. É exatamente o escopo que a Amov vai oferecer ao cliente.",
+    naoIncluso:"O que fica fora do valor. Evita que a proposta prometa algo que você não entrega.",
+    unidade:"Como o valor é cobrado: pelo projeto inteiro, por hora, por dia de trabalho, por mês ou por peça.",
+    min:"O menor valor que você cobra por este serviço. A Amov nunca propõe abaixo dele.",
+    max:"O maior valor para este escopo. Acima disso, a Amov consulta você antes de propor.",
+    criterio:"O que faz o preço sair do mínimo e chegar ao máximo. É o que a Amov usa para escolher o valor certo dentro da sua faixa.",
+    prazo:"Tempo médio de entrega, em dias úteis, contando a partir do início do projeto.",
+    revisoes:"Quantas rodadas de ajuste o cliente tem sem custo extra.",
+    extra:"Quanto custa cada revisão ou hora a mais, além do que já está incluso.",
+    pagamento:"Como você prefere receber por este serviço.",
+    custos:"Despesas que não estão no valor e serão cobradas à parte, se houver.",
+    requisitos:"Materiais e informações que o cliente precisa entregar para você começar.",
+    exemplo:"Um trabalho parecido com este serviço, para mostrar o padrão de entrega."
+  },
+  x:{
+    "Audiovisual":{
+      tipo:"Quais etapas do trabalho audiovisual este serviço cobre.",
+      duracao:"Tempo do vídeo final entregue ao cliente.",
+      diarias:"Quantos dias (e horas) de gravação estão incluídos no valor.",
+      equipe:"Quem trabalha com você no projeto, já incluso no valor.",
+      equip:"Se câmera, luz e áudio são seus ou precisam ser alugados.",
+      roteiro:"Se a criação do roteiro faz parte do serviço.",
+      trilha:"De onde vem a música (licenciada, de banco ou do cliente) e onde o vídeo pode ser usado.",
+      formatos:"Proporções e versões entregues, como horizontal, vertical e cortes curtos."
+    },
+    "Design":{
+      peca:"O que você cria neste serviço, como logo, identidade visual, embalagem ou posts.",
+      opcoes:"Quantas propostas diferentes você apresenta na primeira rodada.",
+      abertos:"Se o cliente recebe os arquivos editáveis, como .ai, .psd ou .fig.",
+      manual:"Se entra um documento com as regras de uso do que foi criado.",
+      direitos:"Onde, por quanto tempo e de que forma o cliente pode usar o material."
+    },
+    "Comunicação":{
+      tipo:"Que tipo de trabalho de comunicação este serviço cobre.",
+      volume:"Quanto é entregue por mês dentro do valor.",
+      relatorio:"Se você entrega relatório de resultados ou de publicações."
+    },
+    "Marketing":{
+      plataformas:"Onde você cria e gerencia as campanhas.",
+      verba:"Se o dinheiro investido em anúncios é pago à parte pelo cliente.",
+      campanhas:"Quantas campanhas ativas estão incluídas no valor.",
+      relatorio:"De quanto em quanto tempo você envia relatório de desempenho.",
+      minimo:"Tempo mínimo de contrato para este serviço."
+    },
+    "Criação de conteúdo":{
+      redes:"Para quais redes você cria conteúdo.",
+      formatos:"Tipos de conteúdo incluídos no serviço.",
+      posts:"Quantidade de publicações por mês incluídas no valor.",
+      captacao:"Se você grava ou fotografa o material, ou se o cliente envia.",
+      legenda:"Se você escreve as legendas e faz a postagem."
+    },
+    "Gestão de projetos":{
+      modalidade:"Como este serviço é contratado.",
+      horas:"Quantas horas de trabalho estão incluídas no valor.",
+      reunioes:"Quantas reuniões com o cliente estão incluídas.",
+      ferramentas:"Softwares de gestão que você usa no dia a dia."
+    },
+    "Tecnologia":{
+      tipo:"O que você desenvolve neste serviço.",
+      paginas:"Tamanho do projeto: quantas páginas ou telas estão no valor.",
+      plataforma:"Ferramenta ou linguagem usada no desenvolvimento.",
+      integracoes:"Sistemas que se conectam ao projeto, como pagamento, CRM ou e-mail.",
+      hospedagem:"Se o custo de servidor e domínio já está no valor.",
+      suporte:"Por quantos dias você corrige problemas após a entrega, sem custo."
+    },
+    "Outra":{
+      precifica:"Explique o que faz o valor subir ou descer, para a Amov orçar com precisão."
+    }
+  },
+  c:{
+    validade:"Por quanto tempo seus valores ficam válidos. Antes de vencer, pedimos uma atualização.",
+    reajuste:"Com quanto tempo de antecedência você avisa a Amov antes de mudar seus valores.",
+    cancelamento:"O que acontece se o cliente desistir no meio do projeto.",
+    observacoes:"Qualquer informação que ajude a Amov a montar propostas melhores com você."
+  }
+};
+PARTNER.forEach(f => f.d = DESC.p[f.k]);
+COMMON.forEach(f => f.d = DESC.s[f.k]);
+CONDITIONS.forEach(f => f.d = DESC.c[f.k]);
+Object.keys(EXTRAS).forEach(a => EXTRAS[a].forEach(f => f.d = (DESC.x[a]||{})[f.k]));
+
+/* ========= HELPERS ========= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let uid = 0;
+const brl = n => n.toLocaleString("pt-BR", {style:"currency", currency:"BRL"});
+function parseMoney(v){
+  if(v == null) return NaN;
+  let s = String(v).replace(/[^\d,.-]/g, "");
+  if(s.includes(",")) s = s.replace(/\./g,"").replace(",",".");
+  else if(/\.\d{3}($|\.)/.test(s)) s = s.replace(/\./g,"");
+  return s === "" ? NaN : Number(s);
+}
+
+function fieldHTML(f, scope){
+  const id = "f" + (++uid);
+  const name = scope + "." + f.k;
+  const req = f.r ? ' <span class="req">*</span>' : "";
+  const help = f.h ? `<span class="help">${esc(f.h)}</span>` : "";
+  const tip = f.d ? `<span class="tip" tabindex="0" role="button" aria-label="O que é: ${esc(f.l)}"><span class="tip-ico" aria-hidden="true">i</span><span class="tip-box" role="tooltip">${esc(f.d)}</span></span>` : "";
+  const cls = "field" + (f.full ? " full" : "");
+  const data = `data-k="${f.k}" data-t="${f.t}" data-label="${esc(f.l)}"${f.r ? ' data-r="1"' : ""}`;
+  let ctrl;
+  if(f.t === "radio" || f.t === "check"){
+    const type = f.t === "radio" ? "radio" : "checkbox";
+    ctrl = `<div class="chips" role="${f.t==='radio'?'radiogroup':'group'}" aria-labelledby="${id}">` +
+      f.o.map(o => `<label class="chip"><input type="${type}" name="${name}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("") + `</div>`;
+    return `<div class="${cls}" ${data}><div class="lbrow"><span class="lb" id="${id}">${esc(f.l)}${req}</span>${tip}</div>${help}${ctrl}<span class="err">Escolha uma opção.</span></div>`;
+  }
+  const ph = f.p ? ` placeholder="${esc(f.p)}"` : "";
+  const ac = f.ac ? ` autocomplete="${f.ac}"` : "";
+  if(f.t === "textarea") ctrl = `<textarea class="input" id="${id}" name="${name}"${ph}></textarea>`;
+  else if(f.t === "money") ctrl = `<div class="money"><span>R$</span><input class="input" id="${id}" name="${name}" inputmode="decimal" placeholder="0,00"></div>`;
+  else {
+    const type = {email:"email", tel:"tel", url:"url", number:"text"}[f.t] || "text";
+    const im = f.t === "number" ? ' inputmode="numeric"' : (f.im ? ` inputmode="${f.im}"` : "");
+    ctrl = `<input class="input" id="${id}" name="${name}" type="${type}"${im}${ph}${ac}>`;
+  }
+  const errMsg = {email:"Digite um e-mail válido.", money:"Digite um valor.", number:"Digite um número.", url:"Digite um link válido."}[f.t] || "Campo obrigatório.";
+  return `<div class="${cls}" ${data}><div class="lbrow"><label class="lb" for="${id}">${esc(f.l)}${req}</label>${tip}</div>${help}${ctrl}<span class="err">${errMsg}</span></div>`;
+}
+
+function readField(el){
+  const t = el.dataset.t;
+  if(t === "radio"){ const c = $("input:checked", el); return c ? c.value : ""; }
+  if(t === "check"){ return $$("input:checked", el).map(i => i.value); }
+  const i = $(".input", el); return i ? i.value.trim() : "";
+}
+
+function validateField(el){
+  const t = el.dataset.t, v = readField(el);
+  let ok = true, msg = null;
+  const empty = Array.isArray(v) ? v.length === 0 : v === "";
+  if(el.dataset.r && empty) ok = false;
+  if(!empty){
+    if(t === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) ok = false;
+    if(t === "money" && !(parseMoney(v) > 0)) ok = false;
+    if(t === "number" && !/^\d+([.,]\d+)?$/.test(v)) ok = false;
+    if(t === "url" && !/^(https?:\/\/)?[^\s.]+\.[^\s]{2,}/i.test(v)) ok = false;
+  }
+  el.classList.toggle("bad", !ok);
+  return ok;
+}
+
+/* ========= RENDER ========= */
+$("#partner").innerHTML = PARTNER.map(f => fieldHTML(f, "p")).join("");
+$("#conditions").innerHTML = CONDITIONS.map(f => fieldHTML(f, "c")).join("");
+$("#accepts").innerHTML = ACCEPTS.map((t,i) => `<label class="accept"><input type="checkbox" name="aceite${i}"><span>${esc(t)}</span></label>`).join("");
+
+let svcCount = 0;
+function addService(open = true){
+  svcCount++;
+  const s = "s" + svcCount;
+  const card = document.createElement("article");
+  card.className = "svc";
+  card.dataset.svc = s;
+  card.innerHTML = `
+    <div class="svc-head">
+      <div class="ttl"><span class="num"></span><span class="name ph">Novo serviço</span></div>
+      <div class="svc-acts">
+        <button type="button" class="icon-btn" data-act="toggle">Recolher</button>
+        <button type="button" class="icon-btn" data-act="remove">Remover</button>
+      </div>
+    </div>
+    <div class="svc-body">
+      <div class="grid">
+        ${fieldHTML({k:"area", l:"Área do serviço", t:"radio", o:AREAS, r:1, full:1, d:DESC.area}, s)}
+        <div class="block-title full extras-title" hidden><span>Especificações da área</span></div>
+        <div class="grid full extras" style="grid-column:1/-1"></div>
+        <div class="block-title full"><span>Escopo</span></div>
+        ${COMMON.slice(0,5).map(f => fieldHTML(f, s)).join("")}
+        <div class="block-title full"><span>Valores — o que você recebe</span></div>
+        ${COMMON.slice(5,8).map(f => fieldHTML(f, s)).join("")}
+        <div class="price" aria-live="polite">
+          <div><span class="label">Sua faixa</span><b class="pv-p">—</b></div>
+          <div class="cli"><span class="label">Ao cliente, com 20% Amov</span><b class="pv-c">—</b></div>
+        </div>
+        <div class="block-title full"><span>Prazo e condições</span></div>
+        ${COMMON.slice(8).map(f => fieldHTML(f, s)).join("")}
+      </div>
+    </div>`;
+  $("#services").appendChild(card);
+
+  // área -> extras
+  $$('[data-k="area"] input', card).forEach(r => r.addEventListener("change", () => {
+    const ex = EXTRAS[r.value] || [];
+    $(".extras", card).innerHTML = ex.map(f => fieldHTML(f, s + ".x")).join("");
+    $(".extras-title", card).hidden = ex.length === 0;
+    $(".extras-title span", card).textContent = "Especificações de " + r.value;
+  }));
+  // nome no cabeçalho
+  const nameIn = $('[data-k="servico"] .input', card);
+  nameIn.addEventListener("input", () => {
+    const n = $(".name", card);
+    n.textContent = nameIn.value.trim() || "Novo serviço";
+    n.classList.toggle("ph", !nameIn.value.trim());
+  });
+  // prévia de preço
+  const minIn = $('[data-k="min"] .input', card), maxIn = $('[data-k="max"] .input', card);
+  const upd = () => {
+    const a = parseMoney(minIn.value), b = parseMoney(maxIn.value);
+    const fmt = (x,y,m) => (isNaN(x) && isNaN(y)) ? "—" : `${isNaN(x)?"…":brl(x*m)} a ${isNaN(y)?"…":brl(y*m)}`;
+    $(".pv-p", card).textContent = fmt(a,b,1);
+    $(".pv-c", card).textContent = fmt(a,b,1+MARGEM_AMOV);
+  };
+  minIn.addEventListener("input", upd); maxIn.addEventListener("input", upd);
+
+  card.addEventListener("click", e => {
+    const act = e.target.closest("[data-act]")?.dataset.act;
+    if(act === "remove"){
+      if($$(".svc").length === 1){ return; }
+      card.remove(); renumber();
+    } else if(act === "toggle" || (e.target.closest(".svc-head") && !act)){
+      card.classList.toggle("closed");
+      $('[data-act="toggle"]', card).textContent = card.classList.contains("closed") ? "Abrir" : "Recolher";
+    }
+  });
+  if(!open) card.classList.add("closed");
+  renumber();
+  return card;
+}
+function renumber(){
+  const cards = $$(".svc");
+  cards.forEach((c,i) => {
+    $(".num", c).textContent = String(i+1).padStart(2,"0");
+    $('[data-act="remove"]', c).hidden = cards.length === 1;
+  });
+}
+$("#addSvc").addEventListener("click", () => {
+  $$(".svc").forEach(c => { c.classList.add("closed"); $('[data-act="toggle"]', c).textContent = "Abrir"; });
+  const c = addService();
+  c.scrollIntoView({behavior:"smooth", block:"start"});
+});
+addService();
+
+/* ========= ETAPAS ========= */
+let step = 1;
+function show(n, noScroll){
+  step = n;
+  $$(".step").forEach(s => s.classList.toggle("on", +s.dataset.step === n));
+  $$(".steps li").forEach(li => {
+    const k = +li.dataset.s;
+    li.classList.toggle("on", k === n);
+    li.classList.toggle("done", k < n);
+  });
+  $("#back").style.visibility = n === 1 ? "hidden" : "visible";
+  $("#next").innerHTML = n === 4 ? "Enviar tabela →" : "Continuar →";
+  $("#navInfo").style.cssText = "";
+  $("#navInfo").textContent = n === 2 ? `${$$(".svc").length} serviço(s)` : `Etapa ${n} de 4`;
+  if(n === 4) buildReview();
+  if(noScroll) return;
+  const top = $(".steps").getBoundingClientRect().top + window.scrollY;
+  window.scrollTo({top: Math.max(0, top - 1), behavior: "smooth"});
+}
+
+function validateStep(n){
+  const sec = $(`.step[data-step="${n}"]`);
+  let ok = true, first = null;
+  $$(".field[data-k]", sec).forEach(f => {
+    if(!validateField(f)){ ok = false; first = first || f; }
+  });
+  if(n === 2){
+    $$(".svc", sec).forEach(card => {
+      const mi = $('[data-k="min"]', card), ma = $('[data-k="max"]', card);
+      const a = parseMoney(readField(mi)), b = parseMoney(readField(ma));
+      if(a > 0 && b > 0 && b < a){
+        ma.classList.add("bad"); $(".err", ma).textContent = "O máximo precisa ser maior que o mínimo.";
+        ok = false; first = first || ma;
+      } else $(".err", ma).textContent = "Digite um valor.";
+      if($(".bad", card)){ card.classList.remove("closed"); $('[data-act="toggle"]', card).textContent = "Recolher"; }
+    });
+  }
+  if(n === 3){
+    const af = $("#acceptsField");
+    const all = $$("#accepts input").every(i => i.checked);
+    af.classList.toggle("bad", !all);
+    if(!all){ ok = false; first = first || af; }
+  }
+  if(first){
+    first.scrollIntoView({behavior:"smooth", block:"center"});
+    const inp = $("input,textarea", first); if(inp) setTimeout(() => inp.focus({preventScroll:true}), 350);
+  }
+  return ok;
+}
+
+// limpa erro ao corrigir
+document.addEventListener("input", e => { const f = e.target.closest(".field.bad"); if(f && f.dataset.k) validateField(f); });
+document.addEventListener("change", e => {
+  const f = e.target.closest(".field.bad"); if(f && f.dataset.k) validateField(f);
+  if(e.target.closest("#accepts") && $$("#accepts input").every(i => i.checked)) $("#acceptsField").classList.remove("bad");
+});
+
+/* ========= COLETA ========= */
+function collect(){
+  const obj = sel => Object.fromEntries($$(".field[data-k]", $(sel)).map(f => [f.dataset.k, readField(f)]));
+  const servicos = $$(".svc").map(card => {
+    const d = {};
+    $$(".svc-body > .grid > .field[data-k]", card).forEach(f => d[f.dataset.k] = readField(f));
+    d.min = parseMoney(d.min); d.max = parseMoney(d.max);
+    d.extra = d.extra ? parseMoney(d.extra) : "";
+    d.especificacoes = $$(".extras .field[data-k]", card)
+      .map(f => [f.dataset.label, readField(f)])
+      .filter(([,v]) => Array.isArray(v) ? v.length : v)
+      .map(([l,v]) => `${l}: ${Array.isArray(v) ? v.join(", ") : v}`);
+    return d;
+  });
+  return {
+    parceiro: obj("#partner"),
+    servicos,
+    condicoes: obj("#conditions"),
+    aceites: ACCEPTS,
+    enviadoEm: new Date().toISOString(),
+    website: $('[name="website"]').value,
+    atribuicao: window.AmovAtribuicao ? AmovAtribuicao.get() : null
+  };
+}
+
+function buildReview(){
+  const d = collect();
+  const val = v => esc(Array.isArray(v) ? v.join(", ") : (v || "—"));
+  const dl = (fields, data) => "<dl>" + fields.map(f => `<dt>${esc(f.l)}</dt><dd>${val(data[f.k])}</dd>`).join("") + "</dl>";
+  const rows = d.servicos.map((s,i) => `<tr>
+      <td>${String(i+1).padStart(2,"0")}</td>
+      <td><b>${esc(s.servico)}</b><br><span style="color:var(--black-7)">${esc(s.area)} · ${esc(s.unidade)}</span></td>
+      <td>${brl(s.min)} a ${brl(s.max)}</td>
+      <td class="r">${brl(s.min*(1+MARGEM_AMOV))} a ${brl(s.max*(1+MARGEM_AMOV))}</td>
+      <td>${esc(s.prazo)} dias</td></tr>`).join("");
+  $("#review").innerHTML = `
+    <div class="rv"><h3>Seus dados <button type="button" data-go="1">Editar</button></h3>${dl(PARTNER, d.parceiro)}</div>
+    <div class="rv"><h3>Serviços (${d.servicos.length}) <button type="button" data-go="2">Editar</button></h3>
+      <div class="tscroll"><table><thead><tr><th>#</th><th>Serviço</th><th>Sua faixa</th><th>Ao cliente (+20%)</th><th>Prazo</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+    <div class="rv"><h3>Condições <button type="button" data-go="3">Editar</button></h3>${dl(CONDITIONS, d.condicoes)}</div>`;
+  $$("#review [data-go]").forEach(b => b.addEventListener("click", () => show(+b.dataset.go)));
+}
+
+/* ========= ENVIO ========= */
+async function send(){
+  const btn = $("#next");
+  btn.disabled = true; btn.textContent = "Enviando…";
+  const payload = collect();
+  let protocolo = "", note = "";
+  try{
+    const res = await fetch(ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)});
+    let resp = {};
+    try{ resp = await res.json(); }catch(e){}
+    if(!res.ok){
+      const msg = res.status === 429 ? "Muitos envios seguidos. Aguarde um pouco e tente de novo."
+        : res.status === 400 ? "Algum campo não passou na conferência. Revise os dados e tente de novo."
+        : "Não conseguimos enviar agora. Tente de novo em instantes.";
+      throw new Error(msg);
+    }
+    protocolo = resp.protocolo || "";
+    try{ localStorage.removeItem("amov-parceiro-rascunho"); }catch(e){}
+    $("#form").style.display = "none"; $(".steps").style.display = "none"; $("#nav").style.display = "none";
+    if(protocolo){ $("#doneCode").hidden = false; $("#doneCode span").textContent = protocolo; }
+    if(note){ $("#doneNote").hidden = false; $("#doneNote").textContent = note; }
+    $("#done").classList.add("on");
+    window.scrollTo({top: $("#done").offsetTop - 40, behavior:"smooth"});
+  } catch(err){
+    btn.disabled = false; btn.textContent = "Tentar de novo →";
+    const msg = (err && err.message && !/fetch|network|load/i.test(err.message)) ? err.message : "Não conseguimos enviar. Verifique sua conexão.";
+    $("#navInfo").textContent = msg; $("#navInfo").style.display = "block"; $("#navInfo").style.color = "var(--red)";
+  }
+}
+
+$("#next").addEventListener("click", () => {
+  if(step < 4){ if(validateStep(step)) show(step + 1); }
+  else send();
+});
+$("#back").addEventListener("click", () => { if(step > 1) show(step - 1); });
+$("#form").addEventListener("submit", e => e.preventDefault());
+$$(".steps li").forEach(li => li.addEventListener("click", () => {
+  const k = +li.dataset.s;
+  if(k < step) show(k);
+}));
+
+/* ========= TOOLTIPS ========= */
+function placeTip(tip){
+  const box = $(".tip-box", tip);
+  box.style.left = "-10px"; box.style.setProperty("--arrow","14px");
+  const r = box.getBoundingClientRect(), over = r.right - (window.innerWidth - 16);
+  if(over > 0){ box.style.left = (-10 - over) + "px"; box.style.setProperty("--arrow", (14 + over) + "px"); }
+}
+document.addEventListener("mouseover", e => { const t = e.target.closest(".tip"); if(t) placeTip(t); });
+document.addEventListener("focusin", e => { const t = e.target.closest(".tip"); if(t) placeTip(t); });
+document.addEventListener("click", e => {
+  const t = e.target.closest(".tip");
+  $$(".tip.open").forEach(o => { if(o !== t) o.classList.remove("open"); });
+  if(t){ e.preventDefault(); t.classList.toggle("open"); placeTip(t); }
+});
+document.addEventListener("keydown", e => { if(e.key === "Escape") $$(".tip.open").forEach(o => { o.classList.remove("open"); o.blur(); }); });
+
+show(1, true);
+</script>
+</body>
+</html>
