@@ -18,6 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://amov.network/og.png">
 <script src="/js/atribuicao.js" defer></script>
+<script src="/js/documento.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400;500;600;700;800&family=Gelasio:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
@@ -333,7 +334,7 @@ const PARTNER = [
   {k:"nome", l:"Nome completo do responsável", t:"text", r:1, ac:"name"},
   {k:"empresa", l:"Empresa ou nome comercial", t:"text", r:1, ac:"organization"},
   {k:"tipo", l:"Tipo de cadastro", t:"radio", o:["Pessoa física","MEI","Empresa"], r:1},
-  {k:"doc", l:"CPF ou CNPJ", t:"text", r:1, h:"Usamos para reconhecer seu cadastro quando você atualizar a tabela.", im:"numeric"},
+  {k:"doc", l:"CPF ou CNPJ", t:"text", r:1, h:"Usamos para reconhecer seu cadastro quando você atualizar a tabela.", p:"000.000.000-00 ou 00.000.000/0000-00"},
   {k:"cidade", l:"Cidade e estado", t:"text", r:1, p:"Ex.: Uberlândia/MG"},
   {k:"remoto", l:"Atende de forma remota?", t:"radio", o:["Sim","Não","Depende do serviço"], r:1},
   {k:"whatsapp", l:"WhatsApp com DDD", t:"tel", r:1, p:"(00) 00000-0000", ac:"tel"},
@@ -588,17 +589,31 @@ function readField(el){
   const i = $(".input", el); return i ? i.value.trim() : "";
 }
 
+/* Mesmas regras do servidor (api/parceiro.js): o que passa aqui, passa lá. */
+const MSG = {
+  doc: "CPF ou CNPJ inválido. Confira os números.",
+  tel: "Digite o WhatsApp com DDD. Ex.: (17) 99999-9999.",
+  servidor: "Confira este campo."
+};
+function setErr(el, msg){
+  const e = $(".err", el); if(!e) return;
+  if(e.dataset.base == null) e.dataset.base = e.textContent;
+  e.textContent = msg || e.dataset.base;
+}
 function validateField(el){
-  const t = el.dataset.t, v = readField(el);
+  const t = el.dataset.t, k = el.dataset.k, v = readField(el);
   let ok = true, msg = null;
   const empty = Array.isArray(v) ? v.length === 0 : v === "";
   if(el.dataset.r && empty) ok = false;
   if(!empty){
     if(t === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) ok = false;
-    if(t === "money" && !(parseMoney(v) > 0)) ok = false;
-    if(t === "number" && !/^\d+([.,]\d+)?$/.test(v)) ok = false;
+    if(t === "money" && !(parseMoney(v) > 0 && parseMoney(v) < 1e10)) ok = false;
+    if(t === "number" && !/^\d{1,4}$/.test(v)) ok = false;
     if(t === "url" && !/^(https?:\/\/)?[^\s.]+\.[^\s]{2,}/i.test(v)) ok = false;
+    if(t === "tel"){ const n = v.replace(/\D/g, "").length; if(n < 10 || n > 13){ ok = false; msg = MSG.tel; } }
+    if(k === "doc" && window.AmovDocumento && !AmovDocumento.analisar(v)){ ok = false; msg = MSG.doc; }
   }
+  setErr(el, msg);
   el.classList.toggle("bad", !ok);
   return ok;
 }
@@ -744,6 +759,14 @@ function validateStep(n){
   return ok;
 }
 
+// campos numéricos (prazo, revisões, capacidade): só dígitos
+document.addEventListener("input", e => {
+  const i = e.target;
+  if(i.matches && i.matches('.field[data-t="number"] .input')){
+    const c = i.value.replace(/\D/g, "").slice(0, 4);
+    if(c !== i.value) i.value = c;
+  }
+});
 // limpa erro ao corrigir
 document.addEventListener("input", e => { const f = e.target.closest(".field.bad"); if(f && f.dataset.k) validateField(f); });
 document.addEventListener("change", e => {
@@ -794,6 +817,39 @@ function buildReview(){
   $$("#review [data-go]").forEach(b => b.addEventListener("click", () => show(+b.dataset.go)));
 }
 
+/* ========= ERROS DEVOLVIDOS PELO SERVIDOR =========
+   O servidor responde 400 com {campos:["parceiro.doc","servicos.0.min",...]}.
+   Leva a pessoa até a etapa e o campo exatos, em vez de um aviso genérico.   */
+function campoServidor(c){
+  const [grupo, a, b] = String(c).split(".");
+  if(grupo === "parceiro") return {step:1, el:$(`#partner .field[data-k="${a}"]`)};
+  if(grupo === "condicoes") return {step:3, el:$(`#conditions .field[data-k="${a}"]`)};
+  if(grupo === "servicos"){
+    const card = $$(".svc")[+a];
+    if(card && b) return {step:2, el:$(`.svc-body > .grid > .field[data-k="${b}"]`, card), card};
+    return {step:2, el:$("#addSvc")};
+  }
+  return null;
+}
+function marcarErrosServidor(campos){
+  const alvos = campos.map(campoServidor).filter(x => x && x.el);
+  if(!alvos.length) return false;
+  alvos.forEach(x => {
+    if(x.el.classList.contains("field") && validateField(x.el)){ x.el.classList.add("bad"); setErr(x.el, MSG.servidor); }
+    if(x.card){ x.card.classList.remove("closed"); $('[data-act="toggle"]', x.card).textContent = "Recolher"; }
+  });
+  const primeiro = alvos.sort((p, q) => p.step - q.step)[0];
+  show(primeiro.step, true);
+  const info = $("#navInfo");
+  info.textContent = alvos.length > 1 ? `Confira os ${alvos.length} campos destacados e continue.` : "Confira o campo destacado e continue.";
+  info.style.display = "block"; info.style.color = "var(--red)";
+  setTimeout(() => {
+    primeiro.el.scrollIntoView({behavior:"smooth", block:"center"});
+    const inp = $("input,textarea", primeiro.el); if(inp) inp.focus({preventScroll:true});
+  }, 60);
+  return true;
+}
+
 /* ========= ENVIO ========= */
 async function send(){
   const btn = $("#next");
@@ -804,6 +860,10 @@ async function send(){
     const res = await fetch(ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)});
     let resp = {};
     try{ resp = await res.json(); }catch(e){}
+    if(res.status === 400 && Array.isArray(resp.campos) && marcarErrosServidor(resp.campos)){
+      btn.disabled = false;
+      return;
+    }
     if(!res.ok){
       const msg = res.status === 429 ? "Muitos envios seguidos. Aguarde um pouco e tente de novo."
         : res.status === 400 ? "Algum campo não passou na conferência. Revise os dados e tente de novo."
