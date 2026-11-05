@@ -8,6 +8,7 @@ import crypto from 'node:crypto';
 import { getPool, garantirSchema } from './_lib/db.js';
 import { clip, clipOuNull, responder, contexto, dentroDoLimite, barrarRequisicao } from './_lib/seguranca.js';
 import { lerAtribuicao, gravarOrigens } from './_lib/atribuicao.js';
+import { analisar as documento } from './_lib/documento.js';
 
 const MARGEM_AMOV = 0.20;
 const MAX_SERVICOS = 40;
@@ -29,14 +30,6 @@ function numero(v) {
 const inteiro = (v) => { const n = Math.round(numero(v)); return Number.isFinite(n) && n >= 0 && n < 100000 ? n : null; };
 const lista = (v, max = 20) => (Array.isArray(v) ? v : v ? [v] : []).slice(0, max).map((x) => clip(x, 120)).filter(Boolean);
 const simNao = (v) => (v === 'Sim' ? true : v === 'Não' ? false : null);
-
-// CPF (11 dígitos) ou CNPJ (14 caracteres — numérico ou alfanumérico, vigente desde 07/2026)
-function documento(v) {
-  const d = String(v ?? '').toUpperCase().replace(/[^0-9A-Z]/g, '');
-  if (/^\d{11}$/.test(d)) return { documento: d, tipo: 'cpf' };
-  if (/^[0-9A-Z]{12}\d{2}$/.test(d)) return { documento: d, tipo: 'cnpj' };
-  return null;
-}
 
 function protocolo() {
   const abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -72,7 +65,8 @@ function validar(b) {
     if (!clip(p[k])) erros.push(`parceiro.${k}`);
   }
   if (p.email && !EMAIL.test(String(p.email).trim())) erros.push('parceiro.email');
-  if (String(p.whatsapp || '').replace(/\D/g, '').length < 10) erros.push('parceiro.whatsapp');
+  const zap = String(p.whatsapp || '').replace(/\D/g, '');
+  if (zap.length < 10 || zap.length > 13) erros.push('parceiro.whatsapp');
   if (!lista(p.areas).length) erros.push('parceiro.areas');
   if (inteiro(p.capacidade) === null) erros.push('parceiro.capacidade');
   if (!clip(c.validade)) erros.push('condicoes.validade');
@@ -113,7 +107,7 @@ function validar(b) {
   });
 
   return {
-    erros,
+    erros: [...new Set(erros)],
     doc,
     parceiro: {
       nome: clip(p.nome, 160), empresa: clip(p.empresa, 160), tipo_cadastro: clipOuNull(p.tipo, 40),
@@ -141,7 +135,8 @@ export default async function handler(req, res) {
 
   const v = validar(b);
   if (v.erros.length) {
-    return responder(res, 400, { error: 'dados inválidos', campos: v.erros.slice(0, 20) });
+    console.warn('parceiro recusado, campos:', v.erros.join(', ')); // só nomes de campos, sem dados pessoais
+    return responder(res, 400, { error: 'dados inválidos', campos: v.erros.slice(0, 40) });
   }
 
   let client;

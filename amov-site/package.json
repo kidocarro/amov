@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Amov Network — site institucional, landings, /parceiros e captura de leads com atribuição (Supabase)",
   "scripts": {
-    "db:migrate": "node scripts/migrate.mjs"
+    "db:migrate": "node scripts/migrate.mjs",
+    "test": "node scripts/test-validacao.mjs"
   },
   "dependencies": {
     "pg": "^8.13.1"
