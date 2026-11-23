@@ -13,9 +13,11 @@ amov-site/
 ├── imobiliarias/index.html     → /imobiliarias
 ├── medicos/index.html          → /medicos
 ├── parceiros/index.html        → /parceiros     (Tabela do Parceiro, 4 etapas)
+├── admin/index.html            → /admin         (painel de parceiros, com senha)
 ├── js/atribuicao.js            → guarda a origem do visitante (1º e último toque)
 ├── api/lead.js                 → POST /api/lead      (landings)
 ├── api/parceiro.js             → POST /api/parceiro  (/parceiros)
+├── api/admin-*.js              → login e dados do painel /admin
 ├── api/_lib/                   → conexão, migrações, segurança, atribuição (não vira rota)
 ├── supabase/migrations/*.sql   → schema do banco (tabelas, RLS, rate limit, views)
 ├── scripts/migrate.mjs         → aplica as migrações pela linha de comando
@@ -58,6 +60,34 @@ select * from vw_leads_origem order by criado_em desc;      -- lead + origem (ú
 select * from vw_parceiros_origem order by criado_em desc;  -- envios de parceiros + origem
 select * from vw_origem_resumo order by envios desc;        -- envios por canal / campanha / conjunto / anúncio
 ```
+
+## Painel de parceiros (`/admin`)
+
+Área fechada com senha para a equipe organizar a rede de parceiros:
+
+- **Visão geral:** total de parceiros, quantos aguardam revisão, aprovados, serviços cadastrados,
+  serviços por área com a faixa de preço típica e os últimos envios.
+- **Parceiros:** lista com busca (nome, empresa, cidade, CPF/CNPJ, serviço) e filtros por status,
+  área, atendimento remoto e nota fiscal. Clicar abre a ficha completa: contato (WhatsApp, e-mail,
+  portfólio), dados do cadastro, condições, todos os serviços com escopo, especificações e valores,
+  as versões anteriores da tabela e de onde veio o envio.
+- **Serviços e preços:** todos os serviços da tabela mais recente de cada parceiro, com filtros por
+  área, unidade, status e prazo, alternando entre o valor do parceiro e o valor ao cliente (+20%).
+- **Gestão:** mudar o status (novo, em revisão, aprovado, recusado, inativo) e escrever anotações
+  internas, que o parceiro não vê.
+- **Exportar CSV** das duas listas (abre direto no Excel).
+
+**Configuração (obrigatória):** na Vercel → Settings → Environment Variables, crie
+`ADMIN_PASSWORD` com a senha da equipe (mínimo 10 caracteres) e faça um novo deploy.
+Opcional: `ADMIN_SESSION_SECRET` (texto aleatório longo) para assinar o cookie de sessão.
+Sem ela, a assinatura deriva da senha: trocar a senha desconecta todo mundo.
+
+Segurança do painel: a sessão dura 12 h em cookie `HttpOnly`, `Secure`, `SameSite=Strict` e assinado
+(HMAC). Login limitado a 6 tentativas a cada 15 min por IP (e 40/h no total). Alterações só aceitam
+requisições do próprio site. A página e as rotas `/api/admin-*` não são indexadas nem guardadas em cache.
+Os dados continuam fechados para a chave pública do Supabase: só as funções da Vercel leem o banco.
+
+Rotas: `GET/POST/DELETE /api/admin-sessao` (login), `GET /api/admin-dados`, `PATCH /api/admin-parceiro`.
 
 ## Como montar os links dos anúncios
 
