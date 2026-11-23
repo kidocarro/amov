@@ -76,6 +76,8 @@ select * from vw_origem_resumo order by envios desc;        -- envios por canal 
 - **Gestão:** mudar o status (novo, em revisão, aprovado, recusado, inativo) e escrever anotações
   internas, que o parceiro não vê.
 - **Exportar CSV** das duas listas (abre direto no Excel).
+- **Exportar tudo** (no topo): um JSON com todos os parceiros, todas as versões da tabela, todos os
+  serviços (valor do parceiro e ao cliente), status e anotações internas, para usar em outro projeto.
 
 **Configuração (obrigatória):** na Vercel → Settings → Environment Variables, crie
 `ADMIN_PASSWORD` com a senha da equipe (mínimo 10 caracteres) e faça um novo deploy.
