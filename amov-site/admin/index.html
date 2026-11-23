@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Parceiros Amov</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1A1719">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400;500;600;700;800&family=Gelasio:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens — DS Amov Network ===== */
+:root{
+  --red:#e52b20; --red-hover:#c9281f; --red-tint:#fce6e4; --carmim:#6f1418;
+  --black:#1a1719; --black-7:#4b4645; --gray:#9b9593; --gray-40:#cdc7c4;
+  --off:#eee9e5; --off-dim:#d9d4d0; --white:#ffffff;
+  --display:"TASA Orbiter", system-ui, sans-serif;
+  --accent:"Gelasio", Georgia, serif;
+  --m:16px; --max:1280px;
+}
+@media(min-width:720px){:root{--m:24px}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{background:var(--off);color:var(--black);font-family:var(--display);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+em,.it{font-family:var(--accent);font-style:italic;font-weight:700;letter-spacing:-.01em}
+a{color:inherit}
+button{font:inherit;cursor:pointer;color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--m)}
+.label{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.muted{color:var(--black-7)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ===== Topo ===== */
+.top{background:var(--black);color:var(--off);position:sticky;top:0;z-index:30}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{height:22px;width:auto;display:block;flex:none}
+.brand .label{color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-acts{display:flex;gap:8px;flex:none}
+.tbtn{background:none;border:1.5px solid var(--black-7);color:var(--off);height:34px;padding:0 12px;font-size:13px;font-weight:600}
+.tbtn:hover{border-color:var(--red);color:var(--white)}
+
+/* ===== Botões e campos ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border:1.5px solid var(--black);background:var(--black);color:var(--off);font-weight:600;font-size:15px}
+.btn:hover{background:var(--red);border-color:var(--red)}
+.btn.ghost{background:transparent;color:var(--black)}
+.btn.ghost:hover{background:var(--black);color:var(--off);border-color:var(--black)}
+.btn.sm{min-height:36px;padding:0 14px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+.input{width:100%;font:inherit;font-size:15px;color:var(--black);background:var(--white);border:1.5px solid var(--black);border-radius:0;padding:10px 12px;outline:none;-webkit-appearance:none;appearance:none}
+select.input{padding-right:34px;background-image:linear-gradient(45deg,transparent 50%,var(--black) 50%),linear-gradient(135deg,var(--black) 50%,transparent 50%);background-position:calc(100% - 18px) 52%,calc(100% - 13px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+textarea.input{min-height:110px;resize:vertical;line-height:1.45}
+.input:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-tint)}
+.input::placeholder{color:var(--gray)}
+
+/* ===== Login ===== */
+.login{min-height:calc(100vh - 60px);display:grid;place-items:center;padding:40px var(--m)}
+.login-card{width:100%;max-width:420px;background:var(--white);border-top:4px solid var(--red);padding:32px 28px}
+.login-card .label{color:var(--red)}
+.login-card h1{font-size:40px;font-weight:800;line-height:1;letter-spacing:-.02em;margin:10px 0 10px}
+.login-card p{color:var(--black-7);margin-bottom:24px}
+.login-card form{display:grid;gap:12px}
+.login-card .err{color:var(--red);font-weight:600;font-size:14px;min-height:20px}
+
+/* ===== Abas ===== */
+.tabs{background:var(--off);border-bottom:1px solid var(--gray-40);position:sticky;top:60px;z-index:20}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs .wrap::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;border-bottom:4px solid transparent;padding:14px 14px 10px;font-weight:600;font-size:15px;color:var(--black-7);white-space:nowrap}
+.tab:hover{color:var(--black)}
+.tab.on{border-color:var(--red);color:var(--black)}
+.tab .cnt{font-size:12px;color:var(--gray);margin-left:4px}
+
+main{padding:32px 0 96px}
+.view-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:24px}
+.view-head h1{font-size:clamp(30px,5vw,48px);font-weight:800;line-height:1;letter-spacing:-.02em}
+.view-head h1 em{color:var(--red)}
+.view-head .sub{color:var(--black-7);margin-top:8px}
+
+/* ===== KPIs ===== */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:2px solid var(--black);margin-bottom:40px}
+.kpi{padding:16px 16px 18px 0;border-bottom:1px solid var(--gray-40)}
+.kpi b{display:block;font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.kpi span{font-size:13px;color:var(--black-7)}
+.kpi.hot b{color:var(--red)}
+@media(min-width:720px){.kpis{grid-template-columns:repeat(5,1fr)}.kpi{border-bottom:0}}
+
+.cols{display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:960px){.cols{grid-template-columns:1.3fr 1fr}}
+.panel{background:var(--white);border-top:4px solid var(--black);padding:20px}
+.panel h2{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.panel .hint{font-size:13px;color:var(--black-7);margin-bottom:16px}
+
+/* barras horizontais */
+.bars{display:grid;gap:12px}
+.bar-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:baseline;cursor:pointer}
+.bar-row:hover .bar-name{color:var(--red)}
+.bar-name{font-weight:600;font-size:14px}
+.bar-val{font-size:13px;color:var(--black-7);text-align:right}
+.bar-track{grid-column:1/-1;height:10px;background:var(--off)}
+.bar-fill{height:100%;background:var(--black)}
+.bar-row:hover .bar-fill{background:var(--red)}
+
+/* status empilhado */
+.stack{display:flex;height:14px;background:var(--off);margin:6px 0 14px}
+.stack span{height:100%}
+.legend{display:grid;gap:8px}
+.legend button{display:flex;align-items:center;justify-content:space-between;gap:12px;background:none;border:0;padding:4px 0;font-size:14px;text-align:left}
+.legend button:hover{color:var(--red)}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:8px;vertical-align:-1px}
+
+.recent{display:grid}
+.recent button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;background:none;border:0;border-bottom:1px solid var(--off);padding:12px 0;text-align:left}
+.recent button:hover .r-name{color:var(--red)}
+.r-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r-meta{font-size:13px;color:var(--black-7)}
+.r-date{font-size:13px;color:var(--black-7);text-align:right}
+
+/* ===== Filtros ===== */
+.filters{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:16px}
+@media(min-width:640px){.filters{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.filters{grid-template-columns:2fr repeat(4,1fr)}}
+.filters .search{grid-column:1/-1}
+@media(min-width:1000px){.filters .search{grid-column:auto}}
+.bar-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.bar-tools .count{font-size:14px;color:var(--black-7)}
+.seg{display:inline-flex;border:1.5px solid var(--black)}
+.seg button{background:var(--white);border:0;padding:7px 12px;font-size:13px;font-weight:600}
+.seg button.on{background:var(--black);color:var(--off)}
+
+/* ===== Tabelas ===== */
+.tbl-wrap{background:var(--white);border-top:4px solid var(--black);overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{position:sticky;top:0;background:var(--white);text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--black-7);padding:12px 14px;border-bottom:1.5px solid var(--black);white-space:nowrap}
+th.sort{cursor:pointer;user-select:none}
+th.sort:hover{color:var(--red)}
+th .arr{color:var(--red)}
+td{padding:12px 14px;border-bottom:1px solid var(--off);vertical-align:top}
+td.r,th.r{text-align:right}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:#faf7f5}
+.t-main{font-weight:700;letter-spacing:-.01em}
+.t-sub{font-size:13px;color:var(--black-7)}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{display:inline-block;font-size:12px;font-weight:500;padding:2px 8px;background:var(--off);white-space:nowrap}
+.empty{padding:48px 20px;text-align:center;color:var(--black-7)}
+@media(max-width:719px){
+  .tbl-wrap thead{display:none}
+  .tbl-wrap table,.tbl-wrap tbody{display:block}
+  .tbl-wrap tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;padding:16px;border-bottom:1px solid var(--off-dim)}
+  .tbl-wrap td{display:block;padding:0;border:0;text-align:left!important;white-space:normal!important;min-width:0}
+  .tbl-wrap td:first-child,.tbl-wrap td.empty{grid-column:1/-1}
+  .tbl-wrap td[data-l]::before{content:attr(data-l);display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:2px}
+  tbody tr:hover td{background:none}
+}
+
+/* status */
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 9px;white-space:nowrap;border:1.5px solid currentColor}
+.st-novo{color:var(--red);background:var(--red-tint);border-color:var(--red-tint)}
+.st-em_revisao{color:var(--black)}
+.st-aprovado{color:var(--off);background:var(--black);border-color:var(--black)}
+.st-recusado{color:var(--carmim);border-color:var(--off-dim);background:var(--off)}
+.st-inativo{color:var(--gray);border-color:var(--gray-40)}
+
+/* resumo por área (aba serviços) */
+.area-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px}
+@media(max-width:719px){.area-grid{grid-template-columns:1fr 1fr;gap:8px}.area-card{padding:10px 12px}.area-card b{font-size:16px}.area-card small+small{display:none}}
+.area-card{background:var(--white);border:0;border-top:4px solid var(--black);padding:14px 16px;text-align:left}
+.area-card:hover,.area-card.on{border-color:var(--red)}
+.area-card .label{color:var(--black-7)}
+.area-card b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;margin:6px 0 2px}
+.area-card small{display:block;font-size:12px;color:var(--black-7)}
+
+/* ===== Gaveta do parceiro ===== */
+.scrim{position:fixed;inset:0;background:rgba(26,23,25,.55);z-index:40;opacity:0;transition:opacity .2s}
+.scrim.on{opacity:1}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(760px,100%);background:var(--off);z-index:50;overflow-y:auto;transform:translateX(100%);transition:transform .25s ease;overscroll-behavior:contain}
+.drawer.on{transform:none}
+.d-head{background:var(--black);color:var(--off);padding:20px var(--m) 22px;position:sticky;top:0;z-index:2}
+.d-close{position:absolute;top:14px;right:var(--m);background:none;border:1.5px solid var(--black-7);color:var(--off);width:36px;height:36px;font-size:20px;line-height:1}
+.d-close:hover{border-color:var(--red)}
+.d-head .label{color:var(--gray)}
+.d-head h2{font-size:clamp(24px,4vw,34px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin:6px 48px 4px 0}
+.d-head .who{color:var(--off-dim);font-size:14px}
+.d-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.d-acts a{display:inline-flex;align-items:center;height:34px;padding:0 12px;border:1.5px solid var(--black-7);font-size:13px;font-weight:600;text-decoration:none;color:var(--off)}
+.d-acts a:hover{border-color:var(--red)}
+.d-body{padding:24px var(--m) 64px;display:grid;gap:24px}
+.box{background:var(--white);padding:18px 18px 20px}
+.box h3{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.kv{display:grid;grid-template-columns:1fr;gap:10px 20px}
+@media(min-width:560px){.kv{grid-template-columns:1fr 1fr}}
+.kv div{min-width:0}
+.kv dt{font-size:12px;color:var(--black-7)}
+.kv dd{font-weight:500;overflow-wrap:anywhere}
+.kv .full{grid-column:1/-1}
+.manage{display:grid;gap:12px}
+@media(min-width:560px){.manage{grid-template-columns:220px 1fr}}
+.save-row{display:flex;align-items:center;gap:12px;margin-top:10px}
+.save-msg{font-size:13px;color:var(--black-7)}
+.ver{display:flex;flex-wrap:wrap;gap:6px}
+.ver button{border:1.5px solid var(--black);background:var(--white);padding:6px 10px;font-size:12px;font-weight:600}
+.ver button.on{background:var(--black);color:var(--off)}
+
+details.svc{background:var(--white);border-top:4px solid var(--black)}
+details.svc[open]{border-color:var(--red)}
+details.svc + details.svc{margin-top:12px}
+details.svc summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:14px 16px;cursor:pointer}
+details.svc summary::-webkit-details-marker{display:none}
+.s-name{font-weight:700;letter-spacing:-.01em}
+.s-price{text-align:right;font-weight:700;white-space:nowrap}
+.s-meta{font-size:13px;color:var(--black-7)}
+.s-client{font-size:13px;color:var(--black-7);text-align:right;white-space:nowrap}
+.s-body{padding:4px 16px 18px;display:grid;gap:14px}
+.s-body h4{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--black-7);margin-bottom:4px}
+.s-body p,.s-body li{white-space:pre-line;overflow-wrap:anywhere}
+.s-body ul{padding-left:18px}
+.two{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;border-top:1px solid var(--off);padding-top:12px}
+@media(min-width:560px){.facts{grid-template-columns:repeat(4,1fr)}}
+.facts dt{font-size:12px;color:var(--black-7)}
+.facts dd{font-weight:600}
+
+.loading{padding:80px 0;text-align:center;color:var(--black-7)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--black);color:var(--off);padding:12px 18px;font-size:14px;font-weight:500;border-left:4px solid var(--red);opacity:0;transition:opacity .2s,transform .2s;z-index:60;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+    <svg class="logo" viewBox="0 0 420 85" fill="currentColor" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Amov Network">
+<path d="M58.1292 12.9658C52.9957 8.33125 45.293 6.01147 35.0212 6.01147C24.7493 6.01147 17.2062 8.14667 11.2995 12.4171C5.39283 16.6924 2.25988 22.7339 1.8957 30.5513H23.4372C23.6168 27.553 24.6395 25.348 26.5053 23.9411C28.3661 22.5343 30.8456 21.8259 33.9336 21.8259C37.3858 21.8259 39.9301 22.669 41.5664 24.3502C43.2028 26.0314 44.0209 28.5059 44.0209 31.7785V33.3051L22.3447 37.6403C18.6181 38.3687 15.096 39.551 11.7785 41.1823C8.46092 42.8187 5.78195 45.0237 3.73655 47.7925C1.69116 50.5662 0.668457 54.1332 0.668457 58.4934C0.668457 64.5847 2.68891 69.4886 6.73481 73.2153C10.7757 76.9419 16.5727 78.8027 24.1157 78.8027C30.8406 78.8027 36.2484 77.2811 40.3392 74.238C42.5841 72.5667 44.3452 70.5113 45.6572 68.0868V77.1664H65.8318V32.7264C65.8318 24.1856 63.2626 17.5954 58.1292 12.9608V12.9658ZM40.6784 61.4268C38.4485 63.4722 35.5649 64.4949 32.0229 64.4949C29.294 64.4949 27.0491 63.8613 25.2731 62.5842C23.5021 61.312 22.6141 59.4063 22.6141 56.8571C22.6141 54.7668 23.2726 53.0856 24.5896 51.8134C25.9067 50.5413 27.7026 49.6333 29.9725 49.0896L44.0109 45.8069V53.315C44.0109 56.6775 42.8984 59.3814 40.6734 61.4268H40.6784Z"/>
+<path d="M168.68 8.87503C164.999 6.96433 160.933 6.01147 156.483 6.01147C150.666 6.01147 145.712 7.5131 141.621 10.5113C138.498 12.8012 136.069 15.7047 134.323 19.2168C134.048 18.6131 133.759 18.0244 133.44 17.4657C131.26 13.6493 128.326 10.7857 124.649 8.88002C120.968 6.96932 116.947 6.01646 112.587 6.01646C106.859 6.01646 102.09 7.51808 98.2738 10.5163C95.4152 12.7613 93.1453 15.5949 91.4591 19.0122V7.64779H70.7407V77.1714H92.5516V38.4585C92.5516 33.6443 93.5294 29.9376 95.4801 27.3485C97.4357 24.7593 100.364 23.4622 104.275 23.4622C107.274 23.4622 109.798 24.4849 111.843 26.5303C113.889 28.5757 114.911 31.5989 114.911 35.5949V77.1714H136.722V38.4585C136.722 33.6443 137.7 29.9376 139.651 27.3485C141.606 24.7593 144.535 23.4622 148.446 23.4622C151.444 23.4622 153.968 24.4849 156.009 26.5303C158.054 28.5757 159.077 31.5989 159.077 35.5949V77.1714H180.888V31.9132C180.888 26.0963 179.775 21.2821 177.55 17.4607C175.32 13.6443 172.367 10.7807 168.69 8.87503H168.68Z"/>
+<path d="M237.795 10.0324C232.297 7.35346 226.001 6.01147 218.917 6.01147C211.833 6.01147 205.672 7.35346 200.175 10.0324C194.677 12.7164 190.357 16.6675 187.224 21.8907C184.091 27.119 182.519 33.4996 182.519 41.0427V44.8591C182.519 52.1327 184.086 58.3088 187.224 63.3974C190.362 68.4859 194.652 72.3273 200.105 74.9164C205.557 77.5056 211.828 78.8027 218.917 78.8027C226.006 78.8027 232.297 77.5056 237.795 74.9164C243.293 72.3273 247.588 68.466 250.676 63.3275C253.764 58.1941 255.311 51.8533 255.311 44.3103V40.4939C255.311 33.0456 253.764 26.7698 250.676 21.6812C247.588 16.5927 243.293 12.7064 237.795 10.0274V10.0324ZM233.23 44.8641C233.23 50.7708 231.868 55.0012 229.139 57.5405C226.411 60.0848 223.003 61.3569 218.917 61.3569C214.832 61.3569 211.419 60.0848 208.695 57.5405C205.972 54.9963 204.605 50.5862 204.605 44.3153V40.4989C204.605 34.5024 205.967 30.1621 208.695 27.4782C211.424 24.7992 214.832 23.4572 218.917 23.4572C223.003 23.4572 226.301 24.8192 229.075 27.548C231.848 30.2769 233.235 34.7718 233.235 41.0427V44.8591L233.23 44.8641Z"/>
+<path d="M305.343 7.64779L289.12 70.2419L272.901 7.64779H250.132L269.354 77.1714H308.341L327.563 7.64779H305.343Z"/>
+<path d="M337.491 41.1574C337.296 41.1574 337.152 41.0427 337.052 40.8132C336.952 40.5837 336.907 40.4041 336.907 40.2794C336.907 39.9002 337.097 39.6907 337.476 39.6408C337.84 39.6059 338.259 39.551 338.733 39.4662C339.202 39.3864 339.616 39.2467 339.97 39.0422C340.324 38.8426 340.504 38.5582 340.504 38.1891V20.5737C340.504 20.0798 340.314 19.6707 339.935 19.3415C339.556 19.0172 339.122 18.7578 338.638 18.5782C338.149 18.3936 337.73 18.2839 337.371 18.2539C337.132 18.229 336.967 18.1841 336.882 18.1093C336.797 18.0344 336.752 17.8698 336.752 17.6204C336.752 17.4956 336.802 17.316 336.897 17.0866C336.992 16.8571 337.142 16.7423 337.336 16.7423H344.939L358.698 33.9287H358.903V19.9252C358.903 19.4313 358.718 19.0771 358.344 18.8576C357.97 18.6381 357.541 18.4934 357.052 18.4186C356.563 18.3437 356.144 18.2889 355.785 18.2539C355.545 18.229 355.381 18.1841 355.296 18.1093C355.211 18.0344 355.166 17.8698 355.166 17.6204C355.166 17.4956 355.216 17.316 355.311 17.0866C355.405 16.8571 355.555 16.7423 355.75 16.7423H363.817C364.011 16.7423 364.156 16.8571 364.256 17.0866C364.35 17.316 364.4 17.4956 364.4 17.6204C364.4 17.9995 364.211 18.209 363.831 18.2589C363.487 18.2938 363.078 18.3587 362.599 18.4485C362.12 18.5383 361.706 18.6929 361.352 18.9124C360.998 19.132 360.818 19.4512 360.818 19.8753V39.2118C360.818 39.4313 360.828 39.6109 360.853 39.7556C360.878 39.9002 360.898 40.1347 360.923 40.4689C360.958 40.9279 360.773 41.2422 360.374 41.4168C359.97 41.5864 359.611 41.6762 359.292 41.6762C358.878 41.6762 358.568 41.5515 358.364 41.2971L342.814 22.0654H342.519V37.9746C342.519 38.4684 342.724 38.8227 343.128 39.0422C343.537 39.2617 344.001 39.4013 344.53 39.4712C345.059 39.541 345.493 39.5959 345.837 39.6458C346.076 39.6707 346.241 39.7156 346.326 39.7855C346.411 39.8553 346.456 40.02 346.456 40.2844C346.456 40.4091 346.406 40.5887 346.311 40.8182C346.216 41.0476 346.066 41.1624 345.872 41.1624H337.476L337.491 41.1574Z"/>
+<path d="M373.485 41.6563C370.322 41.6563 367.982 40.8531 366.475 39.2467C364.969 37.6403 364.216 35.4053 364.216 32.5368C364.216 30.6211 364.635 29.0097 365.473 27.6927C366.311 26.3806 367.418 25.3879 368.795 24.7194C370.172 24.0509 371.654 23.7116 373.25 23.7116C374.926 23.7116 376.288 23.9511 377.336 24.435C378.384 24.9189 379.192 25.5924 379.751 26.4655C380.314 27.3385 380.689 28.3811 380.888 29.5984C380.958 30.0125 381.003 30.4664 381.023 30.9653C381.048 31.4642 381.058 31.9531 381.058 32.437L369.414 32.452C369.414 34.228 369.678 35.6298 370.207 36.6575C370.736 37.6852 371.389 38.4136 372.178 38.8526C372.961 39.2866 373.749 39.5061 374.542 39.5061C375.53 39.5061 376.383 39.3515 377.107 39.0422C377.83 38.7329 378.439 38.2439 378.932 37.5804C378.987 37.5206 379.042 37.4607 379.097 37.3909C379.147 37.321 379.232 37.3011 379.347 37.321L380.14 37.6802C380.254 37.7251 380.314 37.795 380.314 37.8848C380.314 37.9297 380.304 37.9795 380.289 38.0294C380.274 38.0793 380.245 38.1292 380.215 38.1741C379.651 39.1968 378.823 40.0299 377.72 40.6785C376.618 41.327 375.216 41.6513 373.505 41.6513L373.485 41.6563ZM369.464 30.8855L375.914 30.8506C375.914 28.8551 375.68 27.4183 375.216 26.5403C374.752 25.6623 374.078 25.2232 373.195 25.2232C372.562 25.2232 371.983 25.3979 371.449 25.7421C370.916 26.0863 370.476 26.67 370.127 27.4881C369.778 28.3063 369.559 29.4388 369.464 30.8855Z"/>
+<path d="M388.566 41.6712C387.578 41.6712 386.7 41.5415 385.932 41.2821C385.163 41.0227 384.56 40.5787 384.126 39.9401C383.692 39.3016 383.472 38.4285 383.472 37.316V25.8069H381.581C381.457 25.797 381.357 25.7121 381.282 25.5475C381.207 25.3879 381.172 25.2382 381.172 25.0985C381.172 24.6495 381.322 24.3951 381.621 24.3253C382.529 24.1756 383.258 23.9361 383.816 23.6019C384.37 23.2676 384.824 22.7638 385.173 22.0903C385.523 21.4168 385.827 20.4939 386.076 19.3365C386.121 19.1519 386.231 19.0072 386.396 18.9075C386.56 18.8027 386.84 18.7528 387.229 18.7528C387.643 18.7528 387.917 18.7977 388.062 18.8925C388.207 18.9823 388.276 19.117 388.276 19.2866V24.0509H392.472C392.612 24.0609 392.711 24.1257 392.781 24.2504C392.851 24.3702 392.886 24.4999 392.886 24.6396C392.886 24.9738 392.836 25.2482 392.731 25.4627C392.627 25.6822 392.512 25.787 392.387 25.787H388.276V35.8643C388.276 36.8371 388.341 37.5804 388.476 38.0943C388.606 38.6031 388.8 38.9524 389.05 39.1419C389.299 39.3315 389.613 39.4263 389.978 39.4263C390.491 39.4263 391 39.3515 391.499 39.2018C391.998 39.0521 392.457 38.8576 392.886 38.6181C393.036 38.5283 393.17 38.5682 393.29 38.7378C393.41 38.9075 393.49 39.107 393.53 39.3215C393.569 39.541 393.55 39.6757 393.47 39.7356C393.205 40.02 392.791 40.3093 392.223 40.6036C391.654 40.898 391.045 41.1474 390.392 41.352C389.738 41.5565 389.129 41.6613 388.571 41.6613L388.566 41.6712Z"/>
+<path d="M343.497 67.7326L337.974 53.32C337.7 52.7114 337.386 52.3223 337.037 52.1527C336.687 51.978 336.298 51.8733 335.874 51.8234C335.635 51.7984 335.47 51.7535 335.385 51.6787C335.301 51.6039 335.256 51.4393 335.256 51.1898C335.256 51.0651 335.306 50.9154 335.41 50.7408C335.515 50.5662 335.66 50.4814 335.839 50.4814H344.714C344.909 50.4814 345.054 50.5662 345.153 50.7408C345.253 50.9154 345.298 51.0601 345.298 51.1898C345.298 51.5889 345.108 51.8034 344.729 51.8284C344.215 51.8633 343.776 51.9282 343.412 52.018C343.053 52.1078 342.868 52.2973 342.868 52.5867L346.396 62.4794L349.992 50.681H353.19L357.595 62.2749L360.983 52.6266C360.983 52.432 360.873 52.2824 360.658 52.1726C360.439 52.0629 360.155 51.988 359.805 51.9381C359.456 51.8932 359.077 51.8583 358.678 51.8334C358.299 51.8084 358.109 51.5989 358.109 51.1948C358.109 51.0701 358.159 50.9204 358.254 50.7458C358.349 50.5712 358.498 50.4864 358.693 50.4864H364.869C365.064 50.4864 365.208 50.5712 365.308 50.7458C365.408 50.9204 365.453 51.0651 365.453 51.1948C365.453 51.4492 365.408 51.6089 365.323 51.6837C365.238 51.7585 365.074 51.8084 364.834 51.8284C364.41 51.8733 364.031 51.983 363.697 52.1576C363.362 52.3273 363.063 52.7214 362.804 53.325L357.491 67.7376H354.792L350.287 55.9541L346.45 67.7376H343.492L343.497 67.7326Z"/>
+<path d="M364.595 59.112C364.595 57.2312 364.989 55.6199 365.772 54.2779C366.555 52.9359 367.658 51.9082 369.075 51.1998C370.491 50.4914 372.158 50.1322 374.073 50.1322C375.989 50.1322 377.635 50.4864 379.017 51.1998C380.399 51.9132 381.462 52.9359 382.21 54.2779C382.953 55.6199 383.328 57.2312 383.328 59.112C383.328 60.9928 382.948 62.5992 382.185 63.9361C381.422 65.2731 380.339 66.2958 378.932 67.0042C377.526 67.7176 375.864 68.0718 373.954 68.0718C372.043 68.0718 370.367 67.7176 368.975 67.0042C367.583 66.2958 366.505 65.2681 365.742 63.9361C364.979 62.5992 364.6 60.9928 364.6 59.112H364.595ZM369.928 59.112C369.928 61.4168 370.207 63.2128 370.771 64.5049C371.335 65.797 372.412 66.4405 374.004 66.4405C375.595 66.4405 376.648 65.797 377.186 64.5049C377.725 63.2128 377.995 61.4168 377.995 59.112C377.995 56.8072 377.715 55.0112 377.151 53.7191C376.588 52.427 375.52 51.7835 373.934 51.7835C372.347 51.7835 371.275 52.432 370.736 53.7291C370.197 55.0262 369.928 56.8172 369.928 59.112Z"/>
+<path d="M384.729 67.578C384.535 67.578 384.39 67.4931 384.29 67.3185C384.196 67.1489 384.146 66.9992 384.146 66.8695C384.146 66.4904 384.335 66.2809 384.714 66.231C385.183 66.1861 385.632 66.0913 386.066 65.9566C386.495 65.8169 386.71 65.5824 386.71 65.2532V54.1931C386.71 53.4847 386.56 52.9958 386.261 52.7314C385.962 52.4669 385.612 52.3073 385.213 52.2524C384.814 52.1976 384.455 52.1277 384.146 52.0479C384.031 51.993 383.931 51.9182 383.851 51.8234C383.772 51.7336 383.732 51.5789 383.732 51.3594C383.732 51.2198 383.767 51.0651 383.841 50.8855C383.916 50.7059 384.016 50.6111 384.141 50.6011C385.632 50.5313 386.949 50.4814 388.087 50.4565C389.224 50.4315 390.112 50.4066 390.746 50.3966C390.836 50.3966 390.94 50.4415 391.055 50.5363C391.17 50.6261 391.24 50.8107 391.26 51.0851V54.2679C391.594 53.6044 392.038 52.9558 392.592 52.3223C393.146 51.6937 393.789 51.1699 394.517 50.7558C395.246 50.3417 396.039 50.1372 396.902 50.1372C397.61 50.1372 398.169 50.2819 398.578 50.5662C398.987 50.8556 399.272 51.2198 399.441 51.6588C399.606 52.0978 399.691 52.5667 399.691 53.0606C399.691 53.5994 399.556 54.0833 399.287 54.5074C399.017 54.9314 398.693 55.2706 398.314 55.5251C397.935 55.7795 397.586 55.9042 397.266 55.9042L395.031 52.9958C394.547 52.9958 394.078 53.1704 393.619 53.5096C393.16 53.8538 392.746 54.2928 392.372 54.8366C391.998 55.3754 391.699 55.9341 391.469 56.5029V64.6894C391.469 65.1384 391.634 65.4627 391.958 65.6722C392.282 65.8818 392.687 66.0115 393.16 66.0763C393.634 66.1412 394.093 66.1961 394.527 66.241C394.767 66.2659 394.931 66.3108 395.016 66.3806C395.101 66.4505 395.146 66.6151 395.146 66.8795C395.146 67.0042 395.096 67.1539 395.001 67.3285C394.907 67.5031 394.757 67.5879 394.562 67.5879H384.724L384.729 67.578Z"/>
+<path d="M399.586 67.5779C399.391 67.5779 399.247 67.4931 399.147 67.3185C399.047 67.1489 399.002 66.9992 399.002 66.8695C399.002 66.4904 399.192 66.2809 399.571 66.231C399.995 66.1961 400.394 66.1112 400.768 65.9716C401.142 65.8319 401.327 65.5924 401.327 65.2482V44.6595C401.327 43.9461 401.177 43.4622 400.878 43.2078C400.579 42.9484 400.229 42.7987 399.83 42.7538C399.431 42.7089 399.072 42.644 398.763 42.5642C398.648 42.5093 398.553 42.4345 398.468 42.3397C398.389 42.2499 398.349 42.0953 398.349 41.8758C398.349 41.7361 398.384 41.5764 398.453 41.3919C398.523 41.2073 398.628 41.1125 398.763 41.0975C400.254 41.0077 401.591 40.9479 402.779 40.9229C403.966 40.898 404.874 40.883 405.503 40.873C405.592 40.873 405.702 40.9229 405.827 41.0177C405.952 41.1175 406.016 41.3021 406.016 41.5764V59.3115L412.382 53.0856C412.507 52.9808 412.572 52.886 412.572 52.7912C412.572 52.5617 412.322 52.3771 411.823 52.2325C411.324 52.0878 410.85 52.008 410.406 51.983C410.177 51.9581 410.032 51.8783 409.968 51.7336C409.903 51.5889 409.873 51.4293 409.873 51.2447C409.873 51.12 409.923 50.9603 410.017 50.7658C410.112 50.5712 410.262 50.4714 410.456 50.4714H418.044C418.239 50.4714 418.384 50.5662 418.483 50.7658C418.578 50.9603 418.628 51.12 418.628 51.2447C418.628 51.4492 418.583 51.6288 418.493 51.7685C418.399 51.9132 418.259 51.983 418.064 51.983C417.516 51.983 416.947 52.1127 416.363 52.3722C415.779 52.6316 415.271 52.9259 414.852 53.2602L411.669 56.3233C412.003 56.9519 412.362 57.6253 412.751 58.3337C413.14 59.0471 413.549 59.7605 413.983 60.4739C414.413 61.1923 414.842 61.8907 415.276 62.5742C415.705 63.2577 416.114 63.8962 416.503 64.4899C416.822 64.9738 417.186 65.3729 417.585 65.6922C417.989 66.0115 418.384 66.1911 418.773 66.226C418.967 66.236 419.112 66.2859 419.202 66.3657C419.292 66.4455 419.336 66.6101 419.336 66.8645C419.336 66.9893 419.287 67.1389 419.192 67.3135C419.092 67.4881 418.947 67.573 418.753 67.573H412.597C412.412 67.4333 412.188 67.1389 411.918 66.68C411.649 66.221 411.354 65.6772 411.035 65.0436C410.716 64.4151 410.387 63.7516 410.052 63.0631C409.718 62.3747 409.404 61.7161 409.104 61.0826C408.805 60.449 408.536 59.9202 408.296 59.4812L406.026 61.7012V64.6745C406.026 65.3629 406.211 65.782 406.585 65.9317C406.959 66.0813 407.358 66.1811 407.782 66.226C408.022 66.2509 408.187 66.2958 408.271 66.3657C408.356 66.4355 408.401 66.6001 408.401 66.8645C408.401 66.9893 408.351 67.1389 408.256 67.3135C408.162 67.4881 408.012 67.573 407.817 67.573H399.596L399.586 67.5779Z"/>
+</svg>
+      <span class="label">Painel de parceiros</span>
+    </div>
+    <div class="top-acts" id="topActs" hidden>
+      <button class="tbtn" id="btnReload" type="button">Atualizar</button>
+      <button class="tbtn" id="btnLogout" type="button">Sair</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Login ===== -->
+<section class="login" id="login" hidden>
+  <div class="login-card">
+    <span class="label">Área restrita</span>
+    <h1>Painel de <em>parceiros</em></h1>
+    <p>Entre com a senha da equipe Amov para ver os cadastros, serviços e valores enviados pelos parceiros.</p>
+    <form id="loginForm" autocomplete="on">
+      <input type="text" name="username" value="equipe-amov" autocomplete="username" hidden>
+      <input class="input" type="password" id="senha" name="password" placeholder="Senha" autocomplete="current-password" required>
+      <button class="btn" type="submit" id="btnEntrar">Entrar</button>
+      <div class="err" id="loginErr" role="alert"></div>
+    </form>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <nav class="tabs" aria-label="Seções do painel">
+    <div class="wrap" role="tablist">
+      <button class="tab" data-view="geral" role="tab">Visão geral</button>
+      <button class="tab" data-view="parceiros" role="tab">Parceiros <span class="cnt" id="cntParceiros"></span></button>
+      <button class="tab" data-view="servicos" role="tab">Serviços e preços <span class="cnt" id="cntServicos"></span></button>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <div class="loading" id="loading">Carregando…</div>
+
+      <!-- Visão geral -->
+      <section id="v-geral" class="view" hidden>
+        <div class="view-head">
+          <div>
+            <h1>Rede de <em>parceiros</em></h1>
+            <p class="sub" id="geralSub"></p>
+          </div>
+        </div>
+        <div class="kpis" id="kpis"></div>
+        <div class="cols">
+          <div class="panel">
+            <h2>Serviços por área</h2>
+            <p class="hint">Serviços da tabela mais recente de cada parceiro. Faixa típica = mediana do mínimo à mediana do máximo, na unidade de cobrança mais comum da área.</p>
+            <div class="bars" id="areaBars"></div>
+          </div>
+          <div style="display:grid;gap:32px;align-content:start">
+            <div class="panel">
+              <h2>Status dos parceiros</h2>
+              <div class="stack" id="statusStack"></div>
+              <div class="legend" id="statusLegend"></div>
+            </div>
+            <div class="panel">
+              <h2>Últimos envios</h2>
+              <div class="recent" id="recent"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Parceiros -->
+      <section id="v-parceiros" class="view" hidden>
+        <div class="view-head">
+          <div>
+            <h1>Parceiros</h1>
+            <p class="sub">Clique em um parceiro para ver a tabela de serviços completa, mudar o status e anotar.</p>
+          </div>
+        </div>
+        <div class="filters">
+          <input class="input search" id="pBusca" type="search" placeholder="Buscar por nome, empresa, cidade, CPF/CNPJ, serviço…">
+          <select class="input" id="pStatus"><option value="">Todos os status</option></select>
+          <select class="input" id="pArea"><option value="">Todas as áreas</option></select>
+          <select class="input" id="pRemoto">
+            <option value="">Atendimento: todos</option>
+            <option value="Sim">Atende remoto</option>
+            <option value="Não">Só presencial</option>
+            <option value="Depende do serviço">Depende do serviço</option>
+          </select>
+          <select class="input" id="pNf">
+            <option value="">Nota fiscal: todos</option>
+            <option value="true">Emite NF</option>
+            <option value="false">Não emite NF</option>
+          </select>
+        </div>
+        <div class="bar-tools">
+          <span class="count" id="pCount"></span>
+          <button class="btn ghost sm" id="pCsv" type="button">Exportar CSV</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th class="sort" data-sort="empresa">Parceiro</th>
+              <th>Áreas</th>
+              <th class="sort" data-sort="cidade">Cidade</th>
+              <th class="sort r" data-sort="servicos">Serviços</th>
+              <th class="sort r" data-sort="minimo">Valores (parceiro)</th>
+              <th class="sort" data-sort="status">Status</th>
+              <th class="sort r" data-sort="atualizado">Último envio</th>
+            </tr></thead>
+            <tbody id="pBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Serviços -->
+      <section id="v-servicos" class="view" hidden>
+        <div class="view-head">
+          <div>
+            <h1>Serviços e <em>preços</em></h1>
+            <p class="sub">Todos os serviços da tabela mais recente de cada parceiro. Compare faixas dentro da mesma área e unidade de cobrança.</p>
+          </div>
+          <div class="seg" id="sModo" role="group" aria-label="Valor exibido">
+            <button type="button" data-modo="parceiro" class="on">Valor do parceiro</button>
+            <button type="button" data-modo="cliente">Valor ao cliente</button>
+          </div>
+        </div>
+        <div class="area-grid" id="areaGrid"></div>
+        <div class="filters">
+          <input class="input search" id="sBusca" type="search" placeholder="Buscar serviço, parceiro, escopo…">
+          <select class="input" id="sArea"><option value="">Todas as áreas</option></select>
+          <select class="input" id="sUnidade"><option value="">Todas as unidades</option></select>
+          <select class="input" id="sStatus"><option value="">Status do parceiro</option></select>
+          <select class="input" id="sPrazo">
+            <option value="">Qualquer prazo</option>
+            <option value="7">Até 7 dias úteis</option>
+            <option value="15">Até 15 dias úteis</option>
+            <option value="30">Até 30 dias úteis</option>
+          </select>
+        </div>
+        <div class="bar-tools">
+          <span class="count" id="sCount"></span>
+          <button class="btn ghost sm" id="sCsv" type="button">Exportar CSV</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th class="sort" data-sort="servico">Serviço</th>
+              <th class="sort" data-sort="area">Área</th>
+              <th class="sort" data-sort="parceiro">Parceiro</th>
+              <th class="sort" data-sort="unidade">Unidade</th>
+              <th class="sort r" data-sort="min">Mínimo</th>
+              <th class="sort r" data-sort="max">Máximo</th>
+              <th class="sort r" data-sort="prazo">Prazo</th>
+              <th class="sort r" data-sort="revisoes">Revisões</th>
+              <th>Pagamento</th>
+            </tr></thead>
+            <tbody id="sBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-modal="true" role="dialog" aria-labelledby="dTitle" hidden></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ========= CONFIG ========= */
+const STATUS = [
+  {k:"novo", l:"Novo", c:"#e52b20"},
+  {k:"em_revisao", l:"Em revisão", c:"#9b9593"},
+  {k:"aprovado", l:"Aprovado", c:"#1a1719"},
+  {k:"recusado", l:"Recusado", c:"#6f1418"},
+  {k:"inativo", l:"Inativo", c:"#cdc7c4"}
+];
+const STATUS_L = Object.fromEntries(STATUS.map(s => [s.k, s.l]));
+const CANAL_L = {meta_ads:"Meta Ads", google_ads:"Google Ads", tiktok_ads:"TikTok Ads", organico_busca:"Busca orgânica",
+  social:"Redes sociais", referencia:"Site externo", email:"E-mail", whatsapp:"WhatsApp", direto:"Direto"};
+
+/* ========= HELPERS ========= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl = n => n == null || isNaN(n) ? "—" : Number(n).toLocaleString("pt-BR", {style:"currency", currency:"BRL", maximumFractionDigits: n % 1 ? 2 : 0});
+const brlCurto = n => {
+  if(n == null || isNaN(n)) return "—";
+  if(n >= 1e6) return "R$\u00a0" + (n/1e6).toLocaleString("pt-BR", {maximumFractionDigits:1}) + " mi";
+  if(n >= 1e4) return "R$\u00a0" + (n/1e3).toLocaleString("pt-BR", {maximumFractionDigits:1}) + " mil";
+  return brl(n);
+};
+const TZ = {timeZone:"America/Sao_Paulo"};
+const data = d => d ? new Date(d).toLocaleDateString("pt-BR", {...TZ, day:"2-digit", month:"2-digit", year:"2-digit"}) : "—";
+const dataHora = d => d ? new Date(d).toLocaleString("pt-BR", {...TZ, day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit"}) : "—";
+const relativo = d => {
+  if(!d) return "—";
+  const dias = Math.floor((Date.now() - new Date(d)) / 864e5);
+  return dias <= 0 ? "hoje" : dias === 1 ? "ontem" : dias < 30 ? `há ${dias} dias` : data(d);
+};
+const norm = s => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const mediana = a => { if(!a.length) return null; const s = [...a].sort((x,y) => x-y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m-1] + s[m]) / 2; };
+const plural = (n, um, varios) => `${n.toLocaleString("pt-BR")} ${n === 1 ? um : varios}`;
+const stHTML = k => `<span class="st st-${esc(k)}">${esc(STATUS_L[k] || k)}</span>`;
+function docFmt(d, tipo){
+  d = String(d || "");
+  if(tipo === "cpf" && d.length === 11) return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  if(tipo === "cnpj" && d.length === 14) return d.replace(/(.{2})(.{3})(.{3})(.{4})(.{2})/, "$1.$2.$3/$4-$5");
+  return d;
+}
+// só links http(s); "site.com" vira https://site.com
+function linkSeguro(u){
+  u = String(u || "").trim();
+  if(!u) return null;
+  if(/^@/.test(u)) return "https://instagram.com/" + encodeURIComponent(u.slice(1));
+  if(!/^https?:\/\//i.test(u)){ if(/^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(u)) u = "https://" + u; else return null; }
+  try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; }
+}
+function zapLink(z){
+  let d = String(z || "").replace(/\D/g, "");
+  if(d.length === 10 || d.length === 11) d = "55" + d;
+  return d.length >= 12 ? "https://wa.me/" + d : null;
+}
+let toastT;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2600); }
+
+/* ========= API ========= */
+async function api(url, opts = {}){
+  const r = await fetch(url, {credentials:"same-origin", cache:"no-store", ...opts,
+    headers: opts.body ? {"Content-Type":"application/json", ...(opts.headers || {})} : opts.headers});
+  let j = {}; try { j = await r.json(); } catch {}
+  if(r.status === 401 && !url.includes("admin-sessao")){ mostrarLogin(); throw new Error("sessão expirada"); }
+  if(!r.ok) throw Object.assign(new Error(j.error || `erro ${r.status}`), {status: r.status});
+  return j;
+}
+
+/* ========= ESTADO ========= */
+const S = {
+  parceiros: [], servicos: [], view: "geral", modo: "parceiro",
+  pSort: {k:"atualizado", dir:-1}, sSort: {k:"area", dir:1},
+  aberto: null, versao: 0
+};
+
+function preparar(lista){
+  S.parceiros = lista.map(p => {
+    const atual = p.tabelas[0] || null;
+    const servs = atual ? atual.servicos : [];
+    const mins = servs.map(s => s.valor_min), maxs = servs.map(s => s.valor_max);
+    return {...p, atual, nServicos: servs.length,
+      minimo: mins.length ? Math.min(...mins) : null, maximo: maxs.length ? Math.max(...maxs) : null,
+      ultimoEnvio: atual ? atual.criado_em : p.atualizado_em,
+      busca: norm([p.nome, p.empresa, p.cidade, p.documento, p.email, p.whatsapp, p.areas.join(" "), servs.map(s => s.servico).join(" ")].join(" "))};
+  });
+  S.servicos = S.parceiros.flatMap(p => (p.atual ? p.atual.servicos : []).map(s => ({...s, p,
+    busca: norm([s.servico, s.descricao, s.area, s.incluso, p.empresa, p.nome, Object.values(s.especificacoes || {}).join(" ")].join(" "))})));
+}
+
+/* ========= VISÃO GERAL ========= */
+function resumoAreas(servs){
+  const m = new Map();
+  for(const s of servs){
+    if(!m.has(s.area)) m.set(s.area, []);
+    m.get(s.area).push(s);
+  }
+  return [...m].map(([area, lista]) => {
+    const porUnid = {};
+    lista.forEach(s => porUnid[s.unidade || "—"] = (porUnid[s.unidade || "—"] || 0) + 1);
+    const unidade = Object.entries(porUnid).sort((a,b) => b[1] - a[1])[0][0];
+    const base = lista.filter(s => (s.unidade || "—") === unidade);
+    const k = S.modo === "cliente" ? "valor_cliente_" : "valor_";
+    return {area, n: lista.length, parceiros: new Set(lista.map(s => s.p.id)).size, unidade,
+      medMin: mediana(base.map(s => s[k + "min"])), medMax: mediana(base.map(s => s[k + "max"])),
+      menor: Math.min(...lista.map(s => s[k + "min"])), maior: Math.max(...lista.map(s => s[k + "max"]))};
+  }).sort((a,b) => b.n - a.n || a.area.localeCompare(b.area));
+}
+
+function renderGeral(){
+  const P = S.parceiros;
+  const cont = Object.fromEntries(STATUS.map(s => [s.k, P.filter(p => p.status === s.k).length]));
+  const areas = new Set(S.servicos.map(s => s.area));
+  const semana = P.filter(p => Date.now() - new Date(p.ultimoEnvio) < 7 * 864e5).length;
+  $("#geralSub").textContent = P.length
+    ? `${plural(P.length, "parceiro cadastrado", "parceiros cadastrados")} · ${plural(semana, "envio", "envios")} nos últimos 7 dias`
+    : "Nenhum parceiro enviou a tabela ainda.";
+  const kpis = [
+    {v: P.length, l: "Parceiros cadastrados"},
+    {v: cont.novo + cont.em_revisao, l: "Aguardando revisão", hot: cont.novo + cont.em_revisao > 0, go: {view:"parceiros", status: cont.novo ? "novo" : "em_revisao"}},
+    {v: cont.aprovado, l: "Aprovados", go: {view:"parceiros", status:"aprovado"}},
+    {v: S.servicos.length, l: "Serviços nas tabelas atuais", go: {view:"servicos"}},
+    {v: areas.size, l: "Áreas cobertas"}
+  ];
+  $("#kpis").innerHTML = kpis.map((k, i) => `<div class="kpi${k.hot ? " hot" : ""}"${k.go ? ` data-kpi="${i}" style="cursor:pointer"` : ""}><b class="num">${k.v.toLocaleString("pt-BR")}</b><span>${esc(k.l)}</span></div>`).join("");
+  $$("#kpis [data-kpi]").forEach(el => el.onclick = () => {
+    const g = kpis[+el.dataset.kpi].go;
+    if(g.status){ $("#pStatus").value = g.status; }
+    ir(g.view);
+  });
+
+  const res = resumoAreas(S.servicos);
+  const maxN = Math.max(1, ...res.map(r => r.n));
+  $("#areaBars").innerHTML = res.length ? res.map(r => `
+    <div class="bar-row" data-area="${esc(r.area)}">
+      <span class="bar-name">${esc(r.area)} <span class="muted" style="font-weight:400">· ${plural(r.n, "serviço", "serviços")}, ${plural(r.parceiros, "parceiro", "parceiros")}</span></span>
+      <span class="bar-val num">${brlCurto(r.medMin)} a ${brlCurto(r.medMax)} <span class="muted">${esc(r.unidade.toLowerCase())}</span></span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(r.n / maxN * 100).toFixed(1)}%"></div></div>
+    </div>`).join("") : `<p class="muted">Sem serviços cadastrados.</p>`;
+  $$("#areaBars [data-area]").forEach(el => el.onclick = () => { $("#sArea").value = el.dataset.area; ir("servicos"); });
+
+  const tot = Math.max(1, P.length);
+  $("#statusStack").innerHTML = STATUS.map(s => cont[s.k] ? `<span style="width:${cont[s.k] / tot * 100}%;background:${s.c}" title="${esc(s.l)}: ${cont[s.k]}"></span>` : "").join("");
+  $("#statusLegend").innerHTML = STATUS.map(s => `<button type="button" data-st="${s.k}"><span><i style="background:${s.c}"></i>${esc(s.l)}</span><b class="num">${cont[s.k]}</b></button>`).join("");
+  $$("#statusLegend [data-st]").forEach(b => b.onclick = () => { $("#pStatus").value = b.dataset.st; ir("parceiros"); });
+
+  const ult = [...P].sort((a,b) => new Date(b.ultimoEnvio) - new Date(a.ultimoEnvio)).slice(0, 6);
+  $("#recent").innerHTML = ult.length ? ult.map(p => `
+    <button type="button" data-id="${p.id}">
+      <span class="r-name">${esc(p.empresa)}</span><span class="r-date">${esc(relativo(p.ultimoEnvio))}</span>
+      <span class="r-meta">${plural(p.nServicos, "serviço", "serviços")} · ${esc(p.areas.join(", "))}</span>${stHTML(p.status)}
+    </button>`).join("") : `<p class="muted">Nenhum envio ainda.</p>`;
+  $$("#recent [data-id]").forEach(b => b.onclick = () => abrir(+b.dataset.id));
+}
+
+/* ========= PARCEIROS ========= */
+function parceirosFiltrados(){
+  const q = norm($("#pBusca").value.trim()), st = $("#pStatus").value, ar = $("#pArea").value,
+        rm = $("#pRemoto").value, nf = $("#pNf").value;
+  const {k, dir} = S.pSort;
+  const val = p => ({empresa: norm(p.empresa), cidade: norm(p.cidade), servicos: p.nServicos, minimo: p.minimo ?? Infinity,
+    status: STATUS.findIndex(s => s.k === p.status), atualizado: new Date(p.ultimoEnvio).getTime()})[k];
+  return S.parceiros.filter(p =>
+    (!q || q.split(/\s+/).every(t => p.busca.includes(t))) && (!st || p.status === st) &&
+    (!ar || p.areas.includes(ar) || (p.atual && p.atual.servicos.some(s => s.area === ar))) &&
+    (!rm || p.remoto === rm) && (!nf || String(p.emite_nf) === nf)
+  ).sort((a,b) => { const x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+}
+
+function renderParceiros(){
+  const lista = parceirosFiltrados();
+  $("#pCount").textContent = `${plural(lista.length, "parceiro", "parceiros")}${lista.length !== S.parceiros.length ? ` de ${S.parceiros.length}` : ""}`;
+  $("#pBody").innerHTML = lista.length ? lista.map(p => `
+    <tr data-id="${p.id}">
+      <td><div class="t-main">${esc(p.empresa)}</div><div class="t-sub">${esc(p.nome)} · ${esc(p.tipo_cadastro || "")}</div></td>
+      <td data-l="Áreas"><div class="tags">${p.areas.map(a => `<span class="tag">${esc(a)}</span>`).join("")}</div></td>
+      <td data-l="Cidade"><div>${esc(p.cidade || "—")}</div><div class="t-sub">${p.remoto === "Sim" ? "Atende remoto" : p.remoto === "Não" ? "Presencial" : esc(p.remoto || "")}</div></td>
+      <td class="r num" data-l="Serviços">${p.nServicos}</td>
+      <td class="r num" data-l="Valores (parceiro)" style="white-space:nowrap">${p.minimo != null ? `${brlCurto(p.minimo)} a ${brlCurto(p.maximo)}` : "—"}</td>
+      <td data-l="Status">${stHTML(p.status)}</td>
+      <td class="r" data-l="Último envio" style="white-space:nowrap"><div>${esc(relativo(p.ultimoEnvio))}</div><div class="t-sub">${p.total_envios > 1 ? `${p.total_envios} envios` : "1 envio"}</div></td>
+    </tr>`).join("") : `<tr><td colspan="7" class="empty">Nenhum parceiro com esses filtros.</td></tr>`;
+  setas("#v-parceiros", S.pSort);
+}
+
+/* ========= SERVIÇOS ========= */
+function servicosFiltrados(){
+  const q = norm($("#sBusca").value.trim()), ar = $("#sArea").value, un = $("#sUnidade").value,
+        st = $("#sStatus").value, pz = +$("#sPrazo").value || 0;
+  const c = S.modo === "cliente" ? "valor_cliente_" : "valor_";
+  const {k, dir} = S.sSort;
+  const val = s => ({servico: norm(s.servico), area: norm(s.area), parceiro: norm(s.p.empresa), unidade: norm(s.unidade),
+    min: s[c + "min"], max: s[c + "max"], prazo: s.prazo_dias ?? Infinity, revisoes: s.revisoes ?? -1})[k];
+  return S.servicos.filter(s =>
+    (!q || q.split(/\s+/).every(t => s.busca.includes(t))) && (!ar || s.area === ar) && (!un || s.unidade === un) &&
+    (!st || s.p.status === st) && (!pz || (s.prazo_dias != null && s.prazo_dias <= pz))
+  ).sort((a,b) => { const x = val(a), y = val(b); return ((x > y ? 1 : x < y ? -1 : 0) * dir) || (a[c+"min"] - b[c+"min"]); });
+}
+
+function renderServicos(){
+  const c = S.modo === "cliente" ? "valor_cliente_" : "valor_";
+  const ar = $("#sArea").value;
+  const res = resumoAreas(S.servicos);
+  $("#areaGrid").innerHTML = res.map(r => `
+    <button type="button" class="area-card${r.area === ar ? " on" : ""}" data-area="${esc(r.area)}">
+      <span class="label">${esc(r.area)}</span>
+      <b class="num">${brlCurto(r.medMin)} a ${brlCurto(r.medMax)}</b>
+      <small>faixa típica, ${esc(r.unidade.toLowerCase())}</small>
+      <small>${plural(r.n, "serviço", "serviços")} · de ${brlCurto(r.menor)} a ${brlCurto(r.maior)}</small>
+    </button>`).join("");
+  $$("#areaGrid [data-area]").forEach(b => b.onclick = () => {
+    $("#sArea").value = $("#sArea").value === b.dataset.area ? "" : b.dataset.area; renderServicos();
+  });
+
+  const lista = servicosFiltrados();
+  $("#sCount").textContent = `${plural(lista.length, "serviço", "serviços")}${lista.length !== S.servicos.length ? ` de ${S.servicos.length}` : ""}` +
+    (S.modo === "cliente" ? " · valores com a margem Amov" : " · valores que o parceiro recebe");
+  $("#sBody").innerHTML = lista.length ? lista.map(s => `
+    <tr data-id="${s.p.id}" data-svc="${s.id}">
+      <td><div class="t-main">${esc(s.servico)}</div><div class="t-sub">${esc(s.descricao || "")}</div></td>
+      <td data-l="Área"><span class="tag">${esc(s.area)}</span></td>
+      <td data-l="Parceiro"><div>${esc(s.p.empresa)}</div><div style="margin-top:4px">${stHTML(s.p.status)}</div></td>
+      <td data-l="Unidade" style="white-space:nowrap">${esc(s.unidade || "—")}</td>
+      <td class="r num" data-l="Mínimo" style="white-space:nowrap">${brl(s[c + "min"])}</td>
+      <td class="r num" data-l="Máximo" style="white-space:nowrap">${brl(s[c + "max"])}</td>
+      <td class="r num" data-l="Prazo" style="white-space:nowrap">${s.prazo_dias != null ? `${s.prazo_dias} d` : "—"}</td>
+      <td class="r num" data-l="Revisões">${s.revisoes ?? "—"}</td>
+      <td data-l="Pagamento" style="white-space:nowrap">${esc(s.pagamento || "—")}</td>
+    </tr>`).join("") : `<tr><td colspan="9" class="empty">Nenhum serviço com esses filtros.</td></tr>`;
+  setas("#v-servicos", S.sSort);
+}
+
+function setas(sel, sort){
+  $$(`${sel} th.sort`).forEach(th => {
+    th.querySelector(".arr")?.remove();
+    if(th.dataset.sort === sort.k) th.insertAdjacentHTML("beforeend", ` <span class="arr">${sort.dir > 0 ? "↑" : "↓"}</span>`);
+  });
+}
+
+/* ========= GAVETA DO PARCEIRO ========= */
+function abrir(id, svcId){
+  const p = S.parceiros.find(x => x.id === id);
+  if(!p) return;
+  S.aberto = p; S.versao = 0;
+  renderGaveta(svcId);
+  const d = $("#drawer"), sc = $("#scrim");
+  d.hidden = false; sc.hidden = false; document.body.classList.add("lock");
+  requestAnimationFrame(() => { d.classList.add("on"); sc.classList.add("on"); });
+  d.scrollTop = 0;
+  if(svcId){ const el = $(`#svc-${svcId}`); if(el){ el.open = true; setTimeout(() => el.scrollIntoView({block:"start", behavior:"smooth"}), 280); } }
+  $(".d-close", d).focus({preventScroll:true});
+}
+function fechar(){
+  const d = $("#drawer"), sc = $("#scrim");
+  d.classList.remove("on"); sc.classList.remove("on"); document.body.classList.remove("lock");
+  setTimeout(() => { d.hidden = true; sc.hidden = true; }, 250);
+  S.aberto = null;
+}
+
+const kv = (l, v, full) => `<div${full ? ' class="full"' : ""}><dt>${esc(l)}</dt><dd>${v}</dd></div>`;
+const txt = v => v == null || v === "" ? "—" : esc(v);
+const lnk = (u, rotulo) => { const h = linkSeguro(u); return h ? `<a href="${esc(h)}" target="_blank" rel="noopener noreferrer">${esc(rotulo || u)}</a>` : txt(u); };
+
+function renderGaveta(){
+  const p = S.aberto, t = p.tabelas[S.versao] || null;
+  const zap = zapLink(p.whatsapp), port = linkSeguro(p.portfolio);
+  const o = t && t.origem || {};
+  const origem = t ? [CANAL_L[o.canal] || o.canal, o.utm_campaign && `campanha ${o.utm_campaign}`, o.adset_name && `conjunto ${o.adset_name}`, o.ad_name && `anúncio ${o.ad_name}`].filter(Boolean).join(" · ") : "";
+
+  $("#drawer").innerHTML = `
+    <div class="d-head">
+      <button class="d-close" type="button" aria-label="Fechar">×</button>
+      <span class="label">${esc(p.tipo_cadastro || "Parceiro")} · ${esc(docFmt(p.documento, p.tipo_documento))}</span>
+      <h2 id="dTitle">${esc(p.empresa)}</h2>
+      <div class="who">${esc(p.nome)} · ${esc(p.cidade || "")}</div>
+      <div class="d-acts">
+        ${zap ? `<a href="${esc(zap)}" target="_blank" rel="noopener noreferrer">WhatsApp</a>` : ""}
+        ${p.email ? `<a href="mailto:${esc(p.email)}">E-mail</a>` : ""}
+        ${port ? `<a href="${esc(port)}" target="_blank" rel="noopener noreferrer">Portfólio</a>` : ""}
+      </div>
+    </div>
+    <div class="d-body">
+      <div class="box">
+        <h3>Gestão interna</h3>
+        <div class="manage">
+          <label><span class="t-sub">Status</span>
+            <select class="input" id="dStatus">${STATUS.map(s => `<option value="${s.k}"${s.k === p.status ? " selected" : ""}>${esc(s.l)}</option>`).join("")}</select>
+            <span class="t-sub" style="display:block;margin-top:6px">${p.status_alterado_em ? `Alterado em ${esc(dataHora(p.status_alterado_em))}` : "Status de entrada"}</span>
+          </label>
+          <label><span class="t-sub">Anotações da equipe (o parceiro não vê)</span>
+            <textarea class="input" id="dNotas" maxlength="8000" placeholder="Ex.: conversamos em 12/11, topa prazo menor para clientes recorrentes…">${esc(p.notas_internas || "")}</textarea>
+          </label>
+        </div>
+        <div class="save-row"><button class="btn sm" id="dSalvar" type="button">Salvar anotações</button><span class="save-msg" id="dMsg"></span></div>
+      </div>
+
+      <div class="box">
+        <h3>Cadastro</h3>
+        <dl class="kv">
+          ${kv("Responsável", txt(p.nome))}
+          ${kv("WhatsApp", zap ? `<a href="${esc(zap)}" target="_blank" rel="noopener noreferrer">${esc(p.whatsapp)}</a>` : txt(p.whatsapp))}
+          ${kv("E-mail", p.email ? `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>` : "—")}
+          ${kv("Cidade", txt(p.cidade))}
+          ${kv("Atende remoto", txt(p.remoto))}
+          ${kv("Experiência", txt(p.experiencia))}
+          ${kv("Emite nota fiscal", p.emite_nf == null ? "—" : p.emite_nf ? "Sim" : "Não")}
+          ${kv("Modelo de parceria", txt(p.modelo_parceria))}
+          ${kv("Projetos simultâneos", txt(p.capacidade))}
+          ${kv("Portfólio", lnk(p.portfolio))}
+          ${kv("Instagram ou site", lnk(p.redes))}
+          ${kv("Áreas", `<span class="tags">${p.areas.map(a => `<span class="tag">${esc(a)}</span>`).join("")}</span>`, 1)}
+          ${kv("Primeiro cadastro", esc(dataHora(p.criado_em)))}
+          ${kv("Envios da tabela", esc(p.total_envios))}
+        </dl>
+      </div>
+
+      ${t ? `
+      <div class="box">
+        <h3>Tabela de valores</h3>
+        ${p.tabelas.length > 1 ? `<p class="t-sub" style="margin-bottom:8px">Versões enviadas (a mais recente primeiro):</p>
+          <div class="ver" id="dVer">${p.tabelas.map((x, i) => `<button type="button" data-v="${i}"${i === S.versao ? ' class="on"' : ""}>${esc(data(x.criado_em))} · ${esc(x.protocolo)}</button>`).join("")}</div>` : ""}
+        <dl class="kv" style="margin-top:${p.tabelas.length > 1 ? 16 : 0}px">
+          ${kv("Protocolo", esc(t.protocolo))}
+          ${kv("Enviada em", esc(dataHora(t.criado_em)))}
+          ${kv("Validade", txt(t.validade))}
+          ${kv("Aviso de reajuste", txt(t.reajuste))}
+          ${kv("Margem Amov", `${Math.round((t.margem_amov ?? .2) * 100)}%`)}
+          ${kv("Origem do envio", txt(origem || "—"))}
+          ${t.cancelamento ? kv("Cancelamento", esc(t.cancelamento), 1) : ""}
+          ${t.observacoes ? kv("Observações", `<span style="white-space:pre-line">${esc(t.observacoes)}</span>`, 1) : ""}
+          ${kv("Aceites", t.aceites && t.aceites.length ? `<span class="t-sub">${plural(t.aceites.length, "termo aceito", "termos aceitos")} no envio</span>` : "—", 1)}
+        </dl>
+      </div>
+
+      <div>
+        <div class="bar-tools"><span class="count">${plural(t.servicos.length, "serviço", "serviços")} nesta versão</span></div>
+        ${t.servicos.map(servicoHTML).join("")}
+      </div>` : `<div class="box"><p class="muted">Este parceiro ainda não tem tabela de valores.</p></div>`}
+    </div>`;
+
+  $(".d-close").onclick = fechar;
+  $$("#dVer [data-v]").forEach(b => b.onclick = () => { S.versao = +b.dataset.v; renderGaveta(); });
+  $("#dStatus").onchange = e => salvar({status: e.target.value});
+  $("#dSalvar").onclick = () => salvar({notas: $("#dNotas").value});
+}
+
+function servicoHTML(s){
+  const esp = Object.entries(s.especificacoes || {}).filter(([,v]) => Array.isArray(v) ? v.length : v);
+  return `
+  <details class="svc" id="svc-${s.id}">
+    <summary>
+      <span class="s-name">${esc(s.servico)}</span>
+      <span class="s-price num">${brl(s.valor_min)} a ${brl(s.valor_max)}</span>
+      <span class="s-meta">${esc(s.area)} · ${esc((s.unidade || "").toLowerCase())}${s.prazo_dias != null ? ` · ${s.prazo_dias} dias úteis` : ""}</span>
+      <span class="s-client num">cliente: ${brl(s.valor_cliente_min)} a ${brl(s.valor_cliente_max)}</span>
+    </summary>
+    <div class="s-body">
+      ${s.descricao ? `<p>${esc(s.descricao)}</p>` : ""}
+      <div class="two">
+        <div><h4>Incluso</h4><p>${txt(s.incluso)}</p></div>
+        <div><h4>Não incluso</h4><p>${txt(s.nao_incluso)}</p></div>
+      </div>
+      <div><h4>Do mínimo ao máximo</h4><p>${txt(s.criterio)}</p></div>
+      <dl class="facts">
+        <div><dt>Prazo</dt><dd>${s.prazo_dias != null ? `${s.prazo_dias} dias úteis` : "—"}</dd></div>
+        <div><dt>Revisões</dt><dd>${s.revisoes ?? "—"}</dd></div>
+        <div><dt>Revisão/hora extra</dt><dd>${s.valor_extra != null ? brl(s.valor_extra) : "—"}</dd></div>
+        <div><dt>Pagamento</dt><dd>${txt(s.pagamento)}</dd></div>
+      </dl>
+      ${s.custos && s.custos.length ? `<div><h4>Custos por fora</h4><div class="tags">${s.custos.map(c => `<span class="tag">${esc(c)}</span>`).join("")}</div></div>` : ""}
+      ${esp.length ? `<div><h4>Especificações</h4><dl class="kv">${esp.map(([k, v]) => kv(k, esc(Array.isArray(v) ? v.join(", ") : v))).join("")}</dl></div>` : ""}
+      ${s.requisitos ? `<div><h4>O cliente precisa enviar</h4><p>${esc(s.requisitos)}</p></div>` : ""}
+      ${s.exemplo_url ? `<div><h4>Exemplo</h4><p>${lnk(s.exemplo_url)}</p></div>` : ""}
+    </div>
+  </details>`;
+}
+
+async function salvar(mud){
+  const p = S.aberto; if(!p) return;
+  const msg = $("#dMsg"), btn = $("#dSalvar"), sel = $("#dStatus");
+  btn.disabled = true; sel.disabled = true; msg.textContent = "Salvando…";
+  try {
+    const r = await api("/api/admin-parceiro", {method:"PATCH", body: JSON.stringify({id: p.id, ...mud})});
+    Object.assign(p, r.parceiro);
+    msg.textContent = "Salvo.";
+    toast(mud.status ? `Status: ${STATUS_L[p.status]}` : "Anotações salvas");
+    renderAtual();
+    if(mud.status) renderGaveta();
+  } catch(e){
+    msg.textContent = "Não salvou: " + e.message;
+    if(mud.status) sel.value = p.status;
+  } finally {
+    const b = $("#dSalvar"), s = $("#dStatus");
+    if(b) b.disabled = false; if(s) s.disabled = false;
+  }
+}
+
+/* ========= CSV ========= */
+function baixarCSV(nome, cab, linhas){
+  const cel = v => {
+    if(v == null) return "";
+    if(typeof v === "number") return String(v).replace(".", ",");
+    const s = String(v).replace(/^([=+\-@\t\r])/, "'$1"); // evita fórmula no Excel
+    return /[;"\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const csv = "﻿" + [cab, ...linhas].map(l => l.map(cel).join(";")).join("\r\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"}));
+  a.download = `${nome}-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+$("#pCsv").onclick = () => baixarCSV("parceiros-amov",
+  ["Empresa","Responsável","Tipo","CPF/CNPJ","Cidade","Remoto","WhatsApp","E-mail","Portfólio","Áreas","Experiência","Emite NF","Modelo","Capacidade","Status","Serviços","Menor valor","Maior valor","Último envio","Envios","Anotações"],
+  parceirosFiltrados().map(p => [p.empresa, p.nome, p.tipo_cadastro, docFmt(p.documento, p.tipo_documento), p.cidade, p.remoto, p.whatsapp, p.email, p.portfolio,
+    p.areas.join(", "), p.experiencia, p.emite_nf == null ? "" : p.emite_nf ? "Sim" : "Não", p.modelo_parceria, p.capacidade, STATUS_L[p.status], p.nServicos,
+    p.minimo, p.maximo, dataHora(p.ultimoEnvio), p.total_envios, p.notas_internas]));
+$("#sCsv").onclick = () => baixarCSV("servicos-amov",
+  ["Serviço","Área","Parceiro","Status do parceiro","Unidade","Mínimo parceiro","Máximo parceiro","Mínimo cliente","Máximo cliente","Prazo (dias úteis)","Revisões","Revisão extra","Pagamento","Custos por fora","Descrição","Incluso","Não incluso","Critério","Protocolo"],
+  servicosFiltrados().map(s => [s.servico, s.area, s.p.empresa, STATUS_L[s.p.status], s.unidade, s.valor_min, s.valor_max, s.valor_cliente_min, s.valor_cliente_max,
+    s.prazo_dias, s.revisoes, s.valor_extra, s.pagamento, (s.custos || []).join(", "), s.descricao, s.incluso, s.nao_incluso, s.criterio, s.p.atual.protocolo]));
+
+/* ========= NAVEGAÇÃO ========= */
+function renderAtual(){
+  if(S.view === "geral") renderGeral();
+  if(S.view === "parceiros") renderParceiros();
+  if(S.view === "servicos") renderServicos();
+}
+function ir(view, semHash){
+  S.view = ["geral","parceiros","servicos"].includes(view) ? view : "geral";
+  $$(".tab").forEach(t => { const on = t.dataset.view === S.view; t.classList.toggle("on", on); t.setAttribute("aria-selected", on); });
+  $$(".view").forEach(v => v.hidden = v.id !== "v-" + S.view);
+  if(!semHash) history.replaceState(null, "", "#" + S.view);
+  renderAtual();
+  window.scrollTo({top:0});
+}
+$$(".tab").forEach(t => t.onclick = () => ir(t.dataset.view));
+["#pBusca","#pStatus","#pArea","#pRemoto","#pNf"].forEach(s => $(s).addEventListener("input", renderParceiros));
+["#sBusca","#sArea","#sUnidade","#sStatus","#sPrazo"].forEach(s => $(s).addEventListener("input", renderServicos));
+$$("#v-parceiros th.sort").forEach(th => th.onclick = () => {
+  const k = th.dataset.sort; S.pSort = {k, dir: S.pSort.k === k ? -S.pSort.dir : (k === "atualizado" || k === "servicos" ? -1 : 1)}; renderParceiros();
+});
+$$("#v-servicos th.sort").forEach(th => th.onclick = () => {
+  const k = th.dataset.sort; S.sSort = {k, dir: S.sSort.k === k ? -S.sSort.dir : 1}; renderServicos();
+});
+$$("#sModo button").forEach(b => b.onclick = () => {
+  S.modo = b.dataset.modo; $$("#sModo button").forEach(x => x.classList.toggle("on", x === b)); renderServicos();
+});
+$("#pBody").onclick = e => { const tr = e.target.closest("tr[data-id]"); if(tr) abrir(+tr.dataset.id); };
+$("#sBody").onclick = e => { const tr = e.target.closest("tr[data-id]"); if(tr) abrir(+tr.dataset.id, +tr.dataset.svc); };
+$("#scrim").onclick = fechar;
+document.addEventListener("keydown", e => { if(e.key === "Escape" && S.aberto) fechar(); });
+
+function opcoes(sel, valores, rotulo = v => v){
+  const el = $(sel), atual = el.value, primeira = el.options[0].outerHTML;
+  el.innerHTML = primeira + valores.map(v => `<option value="${esc(v)}">${esc(rotulo(v))}</option>`).join("");
+  if(valores.includes(atual)) el.value = atual;
+}
+
+/* ========= CARREGAR / LOGIN ========= */
+async function carregar(){
+  $("#loading").hidden = false;
+  try {
+    const j = await api("/api/admin-dados");
+    preparar(j.parceiros || []);
+    const areas = [...new Set([...S.parceiros.flatMap(p => p.areas), ...S.servicos.map(s => s.area)])].sort((a,b) => a.localeCompare(b, "pt-BR"));
+    opcoes("#pArea", areas); opcoes("#sArea", areas);
+    opcoes("#sUnidade", [...new Set(S.servicos.map(s => s.unidade).filter(Boolean))].sort());
+    opcoes("#pStatus", STATUS.map(s => s.k), k => STATUS_L[k]); opcoes("#sStatus", STATUS.map(s => s.k), k => STATUS_L[k]);
+    $("#cntParceiros").textContent = S.parceiros.length;
+    $("#cntServicos").textContent = S.servicos.length;
+    $("#loading").hidden = true;
+    renderAtual();
+    if(S.aberto){ const p = S.parceiros.find(x => x.id === S.aberto.id); if(p){ S.aberto = p; renderGaveta(); } }
+  } catch(e){
+    if(e.message !== "sessão expirada") $("#loading").textContent = "Não foi possível carregar os dados: " + e.message;
+  }
+}
+
+function mostrarLogin(msg){
+  if(S.aberto) fechar();
+  $("#app").hidden = true; $("#topActs").hidden = true; $("#login").hidden = false;
+  $("#loginErr").textContent = msg || "";
+  setTimeout(() => $("#senha").focus(), 50);
+}
+function mostrarApp(){
+  $("#login").hidden = true; $("#app").hidden = false; $("#topActs").hidden = false;
+  ir(location.hash.slice(1) || "geral", true);
+  carregar();
+}
+
+$("#loginForm").onsubmit = async e => {
+  e.preventDefault();
+  const btn = $("#btnEntrar"); btn.disabled = true; $("#loginErr").textContent = "";
+  try {
+    await api("/api/admin-sessao", {method:"POST", body: JSON.stringify({senha: $("#senha").value})});
+    $("#senha").value = "";
+    mostrarApp();
+  } catch(err){
+    $("#loginErr").textContent = err.status === 401 ? "Senha incorreta." : err.message;
+    $("#senha").select();
+  } finally { btn.disabled = false; }
+};
+$("#btnLogout").onclick = async () => {
+  try { await api("/api/admin-sessao", {method:"DELETE"}); } catch {}
+  S.parceiros = []; S.servicos = [];
+  mostrarLogin();
+};
+$("#btnReload").onclick = async () => { await carregar(); toast("Dados atualizados"); };
+
+(async () => {
+  try {
+    const s = await api("/api/admin-sessao");
+    if(!s.configurado) return mostrarLogin("O painel ainda não tem senha. Defina ADMIN_PASSWORD (mínimo 10 caracteres) nas variáveis da Vercel e faça um novo deploy.");
+    s.autenticado ? mostrarApp() : mostrarLogin();
+  } catch(e){ mostrarLogin("Não foi possível falar com o servidor."); }
+})();
+</script>
+</body>
+</html>
