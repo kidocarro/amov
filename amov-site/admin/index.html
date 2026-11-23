@@ -254,6 +254,7 @@ details.svc summary::-webkit-details-marker{display:none}
       <span class="label">Painel de parceiros</span>
     </div>
     <div class="top-acts" id="topActs" hidden>
+      <button class="tbtn" id="btnExport" type="button" title="Baixa todos os parceiros, tabelas e serviços em JSON">Exportar tudo</button>
       <button class="tbtn" id="btnReload" type="button">Atualizar</button>
       <button class="tbtn" id="btnLogout" type="button">Sair</button>
     </div>
@@ -879,6 +880,7 @@ async function carregar(){
   $("#loading").hidden = false;
   try {
     const j = await api("/api/admin-dados");
+    S.bruto = j;
     preparar(j.parceiros || []);
     const areas = [...new Set([...S.parceiros.flatMap(p => p.areas), ...S.servicos.map(s => s.area)])].sort((a,b) => a.localeCompare(b, "pt-BR"));
     opcoes("#pArea", areas); opcoes("#sArea", areas);
@@ -920,8 +922,45 @@ $("#loginForm").onsubmit = async e => {
 };
 $("#btnLogout").onclick = async () => {
   try { await api("/api/admin-sessao", {method:"DELETE"}); } catch {}
-  S.parceiros = []; S.servicos = [];
+  S.parceiros = []; S.servicos = []; S.bruto = null;
   mostrarLogin();
+};
+// Exportação completa: todos os parceiros, todas as versões da tabela, todos os serviços,
+// status e anotações internas, num JSON pronto para usar em outro projeto.
+$("#btnExport").onclick = async () => {
+  try {
+    const j = await api("/api/admin-dados");
+    S.bruto = j;
+    const parceiros = (j.parceiros || []).map(p => ({
+      ...p,
+      documento_formatado: docFmt(p.documento, p.tipo_documento),
+      status_rotulo: STATUS_L[p.status] || p.status,
+      tabela_atual_protocolo: p.tabelas[0] ? p.tabelas[0].protocolo : null,
+      tabelas: p.tabelas.map((t, i) => ({...t, versao: p.tabelas.length - i, atual: i === 0}))
+    }));
+    const doc = {
+      fonte: "Amov Network — painel de parceiros (/admin)",
+      exportado_em: new Date().toISOString(),
+      observacoes: {
+        valores: "valor_min/valor_max = o que o parceiro recebe; valor_cliente_min/max = com a margem Amov (margem_amov).",
+        tabelas: "Cada envio do formulário /parceiros é uma tabela versionada; a de atual=true é a mais recente.",
+        status: Object.fromEntries(STATUS.map(s => [s.k, s.l]))
+      },
+      totais: {
+        parceiros: parceiros.length,
+        tabelas: parceiros.reduce((n, p) => n + p.tabelas.length, 0),
+        servicos_tabelas_atuais: parceiros.reduce((n, p) => n + (p.tabelas[0] ? p.tabelas[0].servicos.length : 0), 0),
+        servicos_todas_versoes: parceiros.reduce((n, p) => n + p.tabelas.reduce((m, t) => m + t.servicos.length, 0), 0)
+      },
+      parceiros
+    };
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(doc, null, 2)], {type:"application/json"}));
+    a.download = `parceiros-amov-completo-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast(`Exportados ${plural(parceiros.length, "parceiro", "parceiros")}`);
+  } catch(e){ if(e.message !== "sessão expirada") toast("Não exportou: " + e.message); }
 };
 $("#btnReload").onclick = async () => { await carregar(); toast("Dados atualizados"); };
 
